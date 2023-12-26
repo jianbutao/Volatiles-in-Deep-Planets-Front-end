@@ -36,8 +36,8 @@ jobs:
           script: |
               datename=$(date +%Y-%m-%d-%H:%M:%S)
               mkdir /usr/share/nginx/archives/$datename
-              cp /usr/share/nginx/build/dist /usr/share/nginx/archives/$datename/dist
-              cp /etc/nginx/nginx.conf/ /usr/share/nginx/archives/$datename/nginx.conf
+              cp -r /usr/share/nginx/build/dist /usr/share/nginx/archives/$datename/dist
+              cp /etc/nginx/nginx.conf /usr/share/nginx/archives/$datename/nginx.conf
      
       - name: Upload new version
         uses: garygrossgarten/github-action-scp@release
