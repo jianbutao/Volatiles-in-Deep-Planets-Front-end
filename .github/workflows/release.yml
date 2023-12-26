@@ -7,46 +7,46 @@ on:
 
 jobs:
 
- build:
-   name: build
-   runs-on: ubuntu-latest
+  build:
+    name: build
+    runs-on: ubuntu-latest
 
-   steps:
-     - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-     - name: Setup
-       uses: actions/setup-node@v2
-       with:
-          node-version: 20
-          cache: 'npm'
+      - name: Setup
+        uses: actions/setup-node@v2
+        with:
+            node-version: 20
+            cache: 'npm'
      
-     - name: Install
-       run: npm install
+      - name: Install
+        run: npm install
      
-     - name: Build
-       run: npm run build
+      - name: Build
+        run: npm run build
       
-     - name: Archive old version
-       uses: appleboy/ssh-action@master
-       with:
-         host: ${{ secrets.HOST }}
-         username: ${{ secrets.SSH_USER }}
-         password: ${{ secrets.SSH_PASSWORD }}
-         command_timeout: 20s #shell 命令超时时间，20
-         script: |
-            datename=$(date +%Y-%m-%d-%H:%M:%S)
-            mkdir /usr/share/nginx/archives/$datename
-            cp /usr/share/nginx/build/dist /usr/share/nginx/archives/$datename/dist
-            cp /etc/nginx/nginx.conf/ /usr/share/nginx/archives/$datename/nginx.conf
+      - name: Archive old version
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          command_timeout: 20s #shell 命令超时时间，20
+          script: |
+              datename=$(date +%Y-%m-%d-%H:%M:%S)
+              mkdir /usr/share/nginx/archives/$datename
+              cp /usr/share/nginx/build/dist /usr/share/nginx/archives/$datename/dist
+              cp /etc/nginx/nginx.conf/ /usr/share/nginx/archives/$datename/nginx.conf
      
-     - name: Upload new version
-       uses: garygrossgarten/github-action-scp@release
-       with:
-         local: build
-         remote: /usr/share/nginx/build
-         host: ${{ secrets.HOST }}
-         username: ${{ secrets.SSH_USER }}
-         password: ${{ secrets.SSH_PASSWORD }}
+      - name: Upload new version
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: build
+          remote: /usr/share/nginx/build
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
     
   release:
     needs: [build]
