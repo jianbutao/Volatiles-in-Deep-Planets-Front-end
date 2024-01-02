@@ -10,6 +10,7 @@
           placement="bottom"
           v-for="(dropdown, index) in dropdowns"
           :key="index"
+          v-if="shouldShowItem(dropdown)"
         >
           <div class="dropdown-link">
             {{ dropdown.title }}
@@ -31,12 +32,8 @@
           <MyPopover :userName="userName"></MyPopover>
         </div>
         <div class="user-div" v-else>
-          <el-button class="user-btn" type="text" @click="login('login')"
+          <el-button class="user-btn" type="text" @click="login('main')"
             >Log in</el-button
-          >
-          <span class="user-btn"> | </span>
-          <el-button class="user-btn" type="text" @click="login('register')"
-            >Sign up</el-button
           >
         </div>
       </div>
@@ -78,6 +75,8 @@
 <script>
 import LogoComponent from "@/components/myComponent/LogoComponent.vue";
 import MyPopover from "@/components/myComponent/PopoverCompont.vue";
+import { loginURL }  from "@/store/loginURL"
+import axios from "axios";
 export default {
   components: {
     LogoComponent,
@@ -85,6 +84,11 @@ export default {
   },
   data() {
     return {
+
+      test_code: "CNe379bb4f37c7b236504703b8a3908e71",
+
+      role_id: 2,
+
       logo_src: require('../../assets/logo_simple.png'),
 
       displayInfo: {
@@ -138,7 +142,34 @@ export default {
     };
   },
   computed: {},
-  created() {},
+
+  created() {
+
+    // 首先检测是不是cookie里面已经有信息了，如果有的话应当直接显示用户信息以及exit窗口
+
+    // 其次检测是否从DDE这边回来，如果是的话则要跳转到对应界面
+    const codeValue = this.$route.query.code;
+    if(codeValue){
+      // 通过验证
+      if(this.getTokenAndValidate(codeValue)){
+        const whereToGo = this.$route.query.context;
+        if(whereToGo){
+          const decodedContext = whereToGo
+
+          // const decodedContext = btoa(whereToGo)
+
+          // 使用 Vue Router 跳转到对应路由
+          this.$router.push({ path: decodedContext });
+        }
+        else{
+          console.error("No Context Returned!")
+        }
+      }
+    }
+
+    // 最后，如果没有codeValue，说明用户尚未登陆，不做处理
+  },
+
   mounted() {
     if (sessionStorage.getItem("store")) {
       this.$store.replaceState(
@@ -167,11 +198,102 @@ export default {
         this.userName = "";
       }
     },
-    //跳转到登录页
-    login(type) {
-      this.$store.commit("setUserStatus", type);
-      this.$router.push({ path: "/login" });
+    
+    //跳转到DDE登录页
+    login(context) {
+      const loginUrl = loginURL.baseURL + loginURL.login
+      // 构建携带参数的 URL
+      const params = {
+        appCode: loginURL.appCode,
+        context: context,
+      };
+      // BASE64转化
+      params.context = btoa(params.context);
+      const queryString = Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+      // 拼接完整的 URL
+      const urlWithParams = `${loginUrl}?${queryString}`;
+      // 使用 window.location.href 进行跳转
+      window.location.href = urlWithParams;
     },
+
+    getTokenFromCookie() {
+      // 根据实际情况从 cookie 中获取 token
+      const storedCookie = this.$cookie.get("token")
+      return storedCookie
+    },
+
+    async getTokenAndValidate(code) {
+      try {
+
+        const tokenUrl = loginURL.baseURL + loginURL.tokenChange
+
+        // 构建携带参数的 URL
+        const params = {
+          appcode: loginURL.appCode,
+          code: code,
+          secret: loginURL.secretCode,
+        };
+
+        const queryString = Object.keys(params)
+          .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+          .join('&');
+
+        // 拼接完整的 URL
+        const urlWithParams = `${tokenUrl}?${queryString}`;
+
+        // 发送 GET 请求获取 token
+        const tokenResponse = await axios.get(urlWithParams);
+
+        const token = tokenResponse.data.accessToken;
+        const expire = tokenResponse.data.expire;
+
+        // 发送验证请求
+        const isValid = await this.validateToken(token);
+
+        if (isValid) {
+          // 如果 token 验证成功，使用 vue-cookies 设置 cookie
+          this.$cookies.set('token', token, expire); // 设置过期时间，1天
+          this.$cookies.set('domain', loginURL.domain);
+          return true;
+
+        } else {
+          // 处理验证失败的情况
+          console.error('Token validation failed');
+        }
+      } catch (error) {
+        // 处理请求错误的情况
+        console.error('Error fetching or validating token:', error);
+      }
+      return false;
+    },
+
+    async validateToken(token) {
+      const validateUrl = loginURL.baseURL + loginURL.validate
+
+      // 构建携带参数的 URL
+      const params = {
+        token: token,
+      };
+
+      const queryString = Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+
+      // 拼接完整的 URL
+      const urlWithParams = `${validateUrl}?${queryString}`;
+
+      // 发送 token 验证请求
+      const validationResponse = await axios.get(urlWithParams);
+
+      if(validationResponse.data.code === "SUCCESS"){
+        return validationResponse.data.data
+      }
+
+      return false
+    },
+
     //退出登录
     exitLogin() {
       this.$cookies.remove("token");
@@ -189,6 +311,13 @@ export default {
         }
       }
       return false;
+    },
+    shouldShowItem(item) {
+      // 根据用户的角色ID决定是否显示特定的菜单项
+      if (item.title === "Upload Data" && this.role_id === 2) {
+        return false; // 隐藏 About Us 部分
+      }
+      return true; // 显示其他部分
     },
     handleCommand(command) {
       let pathUrl = "/";

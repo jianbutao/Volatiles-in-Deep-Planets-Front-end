@@ -28,7 +28,7 @@
 
             <!-- 下载部分 -->
             <div class="show-div">
-              <el-table :data="fileList"
+              <el-table :data="fileList" empty-text="No available data"
               :show-header="false" :cell-style="{'text-align':'center'}">
                 <el-table-column prop="file_name" label="File Name"></el-table-column>
                 <el-table-column label="Download">
@@ -59,6 +59,7 @@
 </template>
 <script>
 import LogoComponent from "@/components/myComponent/LogoComponent.vue";
+import { loginURL } from "@/store/loginURL";
 export default {
   components: {
     LogoComponent,
@@ -102,7 +103,7 @@ export default {
           message: "Please log in first!",
           type: "warning",
         });
-        this.$router.push({ path: "/login" });
+        this.login("dataTemplate")
         return;
       }
       return this.$service.get(`/template/download/${objectType}_template?format=${fileType}`, { responseType: 'arraybuffer' })
@@ -138,6 +139,23 @@ export default {
         console.error('Error downloading file:', error);
         return false;
       });
+    },
+    login(context){
+      const loginUrl = loginURL.baseURL + loginURL.login
+      // 构建携带参数的 URL
+      const params = {
+        appCode: loginURL.appCode,
+        context: context,
+      };
+      // BASE64转化
+      params.context = btoa(params.context);
+      const queryString = Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+      // 拼接完整的 URL
+      const urlWithParams = `${loginUrl}?${queryString}`;
+      // 使用 window.location.href 进行跳转
+      window.location.href = urlWithParams;
     },
   },
 };

@@ -16,6 +16,7 @@
               v-loading="loading"
               :data="tableData" class="table-left"
               element-loading-text="now loading"
+              empty-text="No available data"
             >
               <el-table-column  key="No" label="No">
                 <template slot-scope="scope">
@@ -23,7 +24,7 @@
                 </template>
               </el-table-column>
               <template v-for="(item, key) in tableData[0]">
-                <el-table-column :key="key" :prop="key" :label="translate(key)">
+                <el-table-column :prop="key" :label="translate(key)">
                   <template v-if="isObject(item)">
                     <template v-for="(subItem, subKey) in item">
                       <template v-if="subKey == 'title'">
@@ -93,8 +94,9 @@
             <div style="margin:10px 0; width: 100%; background-color: rgba(255, 255, 255, 0.8);">
               <span class="note-one">click to Geochemistry π app.</span>
             </div>
+
             <span class="note-two">Your Search History</span>
-            <el-table :data="searchHistory" class="table-right" height="350">
+            <el-table :data="searchHistory" class="table-right" height="350" empty-text="You can login to view">
               <el-table-column prop="SearchType" label="Type" width="60">
               </el-table-column>
               <el-table-column prop="SearchNote" label="Filter" width="75">
@@ -113,6 +115,7 @@
 </template>
   <script>
 import LogoComponent from "@/components/myComponent/LogoComponent.vue";
+import { loginURL } from "@/store/loginURL";
 export default {
   components: {
     LogoComponent,
@@ -214,7 +217,7 @@ export default {
           message: "Please log in first!",
           type: "warning",
         });
-        this.$router.push({ path: "/login" });
+        this.login("searchResult")
         return;
       }
       // 调用下载
@@ -425,6 +428,24 @@ export default {
 
     matchyourData(){
       this.$message.error("Please expecting at Version 2.0");
+    },
+
+    login(context){
+      const loginUrl = loginURL.baseURL + loginURL.login
+      // 构建携带参数的 URL
+      const params = {
+        appCode: loginURL.appCode,
+        context: context,
+      };
+      // BASE64转化
+      params.context = btoa(params.context);
+      const queryString = Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+      // 拼接完整的 URL
+      const urlWithParams = `${loginUrl}?${queryString}`;
+      // 使用 window.location.href 进行跳转
+      window.location.href = urlWithParams;
     },
     
   },

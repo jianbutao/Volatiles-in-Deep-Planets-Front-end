@@ -242,7 +242,7 @@
               </el-form-item>
               <br />
 
-              <el-form-item label="terrain" >
+              <!-- <el-form-item label="terrain" >
                 <el-select
                   filterable 
                   placeholder="Please Select"
@@ -260,7 +260,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <br />
+              <br /> -->
 
               <el-form-item label="P (GPa)" prop="environment.press">
                 <el-input style="width: 40%; margin-right: 2%" v-model="form.environment.pressLowerBound" placeholder="Enter Lower Bound"></el-input>
@@ -306,7 +306,7 @@
               </el-form-item>
               <br />
               
-              <el-form-item label="journal" >
+              <!-- <el-form-item label="journal" >
                 <el-select
                   filterable 
                   placeholder="Please Select"
@@ -321,6 +321,15 @@
                     :label="item"
                     :value="item"
                   >
+                    <el-tooltip
+                      placement="top"
+                      :disabled="item.length<50"
+                    >
+                      <div slot="content">
+                          <span>{{item}}</span>
+                      </div>
+                      <div class="iclass-text-ellipsis">{{ item.length < 50 ? item:item.substring(0, 50) + "..." }}</div>
+                    </el-tooltip>
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -344,7 +353,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <br />
+              <br /> -->
 
               <el-form-item label="publish year" prop="source.year">
                 <el-input style="width: 40%; margin-right: 2%" v-model.number="form.source.minYear" placeholder="Enter Lower Bound"></el-input>
@@ -1112,5 +1121,16 @@
 .remove-button {
   align-self: flex-end;
   margin-top: 10px; /* 调整按钮与其他表单项的间距 */
+}
+.el-select {
+  width: 300px;
+}
+.el-select ::v-deep .popper-class {
+  width: 300px;
+}
+.iclass-text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

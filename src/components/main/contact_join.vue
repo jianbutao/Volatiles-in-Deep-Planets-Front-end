@@ -81,6 +81,7 @@
 </template>
 <script>
 import LogoComponent from "@/components/myComponent/LogoComponent.vue";
+import { loginURL } from "@/store/loginURL";
 export default {
   components: {
     LogoComponent,
@@ -162,7 +163,7 @@ export default {
           message: "Please log in first!",
           type: "warning",
         });
-        this.$router.push({ path: "/login" });
+        this.login("contactJoin")
         return;
       }
       const userName = this.$store.state.userName
@@ -192,7 +193,25 @@ export default {
       else{
         this.$message.error("please login first");
       }
-    }
+    },
+    
+    login(context){
+      const loginUrl = loginURL.baseURL + loginURL.login
+      // 构建携带参数的 URL
+      const params = {
+        appCode: loginURL.appCode,
+        context: context,
+      };
+      // BASE64转化
+      params.context = btoa(params.context);
+      const queryString = Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+      // 拼接完整的 URL
+      const urlWithParams = `${loginUrl}?${queryString}`;
+      // 使用 window.location.href 进行跳转
+      window.location.href = urlWithParams;
+    },
   },
 };
 </script>
