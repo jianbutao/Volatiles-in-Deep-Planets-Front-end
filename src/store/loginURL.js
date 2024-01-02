@@ -14,4 +14,6 @@ export const loginURL = {
     infoChange: '/ngiam-rst/oauth2/userinfo',
 
     validate: '/ngiam-rst/oauth2/validate',
+
+    exit: '/ngiam-rst/cas/logout'
 }
