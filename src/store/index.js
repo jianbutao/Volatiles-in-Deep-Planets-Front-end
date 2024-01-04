@@ -1,39 +1,63 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { loginURL } from './loginURL'
 
 Vue.use(Vuex)
- 
-// 用来存储数据
+
 const state = {
-    userStatus:'login',//初始设为登录状态
-    userName: '',//记录登录用户名
-    showPassForm: false,//控制修改密码对话框
+    userStatus: 'login',
+    userName: '',
+    showPassForm: false,
 }
-// 响应组件中的事件
+
 const actions = {
- 
+    login({ commit }, context) {
+        const loginUrl = loginURL.baseURL + loginURL.login;
+    
+        const params = {
+          appCode: loginURL.appCode,
+          context: context,
+        };
+    
+        params.context = btoa(params.context);
+    
+        const queryString = Object.keys(params)
+          .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+          .join('&');
+    
+        const urlWithParams = `${loginUrl}?${queryString}`;
+        window.location.href = urlWithParams;
+    },
+
+    loginCheck({ dispatch }) {
+        let cookies = document.cookie.split("; ");
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].split("=");
+            if (cookie[0] === "token") {
+                dispatch('login', 'context_value');
+            }
+        }
+        return true;
+    }
 }
-// 操作方法
+
 const mutations = {
-    setUserStatus(state,status){
+    setUserStatus(state, status) {
         state.userStatus = status;
     },
-    setUserName(state,userName){
+    setUserName(state, userName) {
         state.userName = userName;
     },
     showPassForm(state) {
         state.showPassForm = true;
     },
 }
-// 用来将state数据进行加工
-const getters = {
- 
-}
-// 新建并暴露store
+
+const getters = {}
+
 export default new Vuex.Store({
     state,
     actions,
     mutations,
     getters,
 })
- 

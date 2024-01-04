@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
     next();
   } else {
     // 用户未登录且访问了不允许的页面，跳转到登录页面
-    next('/login');
+    next('/main');
   }
 
 });

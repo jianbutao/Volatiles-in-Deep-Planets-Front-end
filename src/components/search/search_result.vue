@@ -24,7 +24,7 @@
                 </template>
               </el-table-column>
               <template v-for="(item, key) in tableData[0]">
-                <el-table-column :prop="key" :label="translate(key)">
+                <el-table-column :prop="key" :label="translate(key)" width="100">
                   <template v-if="isObject(item)">
                     <template v-for="(subItem, subKey) in item">
                       <template v-if="subKey == 'title'">
@@ -54,7 +54,7 @@
             
           <div class="main-right">
             <div class="sub-div">
-              <el-button type="primary" class="my-btn" @click="downloadData()">Download Data</el-button>
+              <el-button type="primary" class="my-btn" :disabled="isDownloading" @click="downloadData()">Download Data</el-button>
             </div>
             <div class="sub-div" style="margin-top: 10%;">
               <el-button type="primary" class="my-btn" @click="matchyourData()">Match Your Data</el-button>
@@ -149,6 +149,9 @@ export default {
 
       // 搜索历史:
       searchHistory: null,
+
+      // 正在下载
+      isDownloading: false,
     };
   },
   computed: {},
@@ -199,31 +202,17 @@ export default {
       return dict[objType];
     },
 
-    //判断是否登录
-    hasLogin() {
-      let cookies = document.cookie.split("; ");
-      for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i].split("=");
-        if (cookie[0] === "token") {
-          return true;
-        }
-      }
-      return false;
-    },
 
     downloadData(){
-      if(!this.hasLogin()){
-        this.$message({
-          message: "Please log in first!",
-          type: "warning",
-        });
-        this.login("searchResult")
-        return;
-      }
-      // 调用下载
+
+      // if(!this.$store.dispatch('login', "searchResult")){
+      //   return;
+      // }
+
       const url_final = `/download/${this.dataType}Data`;
       const listForm = new FormData();
       listForm.append("list", this.downloadList);
+      this.isDownloading = true;
       this.$service.post(url_final, listForm, { responseType: 'arraybuffer' }).then((response) => {
         if(response){
           let mimeType = 'application/octet-stream'; // 默认 MIME 类型
@@ -241,12 +230,14 @@ export default {
           // 释放资源
           window.URL.revokeObjectURL(url);
           document.body.removeChild(link);
+          this.isDownloading = false;
         }
         else{
           this.$message({
             message: "Message Transform Error!",
             type: "warning",
           });
+          this.isDownloading = false;
         }
       })
     },
@@ -374,6 +365,7 @@ export default {
     },
 
     translateHistory(historyRawData){
+      if(historyRawData == null) return;
       historyRawData.forEach((item) =>{
         item["SearchTime"] = new Date(item["SearchTime"]).toLocaleString();
       })
@@ -398,7 +390,11 @@ export default {
     },
 
     translate(key){
-      return key.replaceAll("_", " ");
+      if(key == "samp_age"){
+        key = "Sample age(Ma)"
+      }
+      key = key.replaceAll("_", " ")
+      return key.charAt(0).toUpperCase() + key.slice(1);
     },
 
     getTableColumnNumber(){

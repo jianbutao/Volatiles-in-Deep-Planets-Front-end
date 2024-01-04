@@ -148,7 +148,7 @@ export default {
     // 首先检测是不是cookie里面已经有信息了，如果有的话应当直接显示用户信息以及exit窗口
 
     // 其次检测是否从DDE这边回来，如果是的话则要跳转到对应界面
-    const codeValue = this.$route.query.code;
+    const codeValue = this.test_code
     if(codeValue){
       // 通过验证
       if(this.getTokenAndValidate(codeValue)){
@@ -201,21 +201,7 @@ export default {
     
     //跳转到DDE登录页
     login(context) {
-      const loginUrl = loginURL.baseURL + loginURL.login
-      // 构建携带参数的 URL
-      const params = {
-        appCode: loginURL.appCode,
-        context: context,
-      };
-      // BASE64转化
-      params.context = btoa(params.context);
-      const queryString = Object.keys(params)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
-      // 拼接完整的 URL
-      const urlWithParams = `${loginUrl}?${queryString}`;
-      // 使用 window.location.href 进行跳转
-      window.location.href = urlWithParams;
+      this.$store.dispatch('login', context);
     },
 
     getTokenFromCookie() {
@@ -227,7 +213,7 @@ export default {
     async getTokenAndValidate(code) {
       try {
 
-        const tokenUrl = loginURL.baseURL + loginURL.tokenChange
+        const tokenUrl = loginURL.tokenChange
 
         // 构建携带参数的 URL
         const params = {
@@ -244,23 +230,27 @@ export default {
         const urlWithParams = `${tokenUrl}?${queryString}`;
 
         // 发送 GET 请求获取 token
-        const tokenResponse = await axios.get(urlWithParams);
+        const tokenResponse = await axios.get(urlWithParams)
 
         const token = tokenResponse.data.accessToken;
         const expire = tokenResponse.data.expire;
+        if(token){
+          // 发送验证请求
+          const isValid = await this.validateToken(token);
 
-        // 发送验证请求
-        const isValid = await this.validateToken(token);
+          if (isValid) {
+            // 如果 token 验证成功，使用 vue-cookies 设置 cookie
+            this.$cookies.set('token', token, expire); // 设置过期时间，1天
+            this.$cookies.set('domain', loginURL.domain);
+            return true;
 
-        if (isValid) {
-          // 如果 token 验证成功，使用 vue-cookies 设置 cookie
-          this.$cookies.set('token', token, expire); // 设置过期时间，1天
-          this.$cookies.set('domain', loginURL.domain);
-          return true;
-
-        } else {
-          // 处理验证失败的情况
-          console.error('Token validation failed');
+          } else {
+            // 处理验证失败的情况
+            console.error('Token validation failed');
+          }
+        }
+        else{
+          console.error("Token get failed");
         }
       } catch (error) {
         // 处理请求错误的情况
@@ -270,7 +260,7 @@ export default {
     },
 
     async validateToken(token) {
-      const validateUrl = loginURL.baseURL + loginURL.validate
+      const validateUrl = loginURL.validate
 
       // 构建携带参数的 URL
       const params = {
@@ -285,7 +275,7 @@ export default {
       const urlWithParams = `${validateUrl}?${queryString}`;
 
       // 发送 token 验证请求
-      const validationResponse = await axios.get(urlWithParams);
+      const validationResponse = this.$service.get(urlWithParams);
 
       if(validationResponse.data.code === "SUCCESS"){
         return validationResponse.data.data
@@ -301,7 +291,7 @@ export default {
       sessionStorage.removeItem("store");
 
       // DDE系统那边的退出
-      const exitUrl = loginURL.baseURL + loginURL.exit
+      const exitUrl = loginURL.exit
 
       // 构建携带参数的 URL
       const params = {
