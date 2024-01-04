@@ -154,9 +154,9 @@ export default {
       if(this.getTokenAndValidate(codeValue)){
         const whereToGo = this.$route.query.context;
         if(whereToGo){
-          const decodedContext = whereToGo
+          // const decodedContext = whereToGo
 
-          // const decodedContext = btoa(whereToGo)
+          const decodedContext = atob(whereToGo)
 
           // 使用 Vue Router 跳转到对应路由
           this.$router.push({ path: decodedContext });
