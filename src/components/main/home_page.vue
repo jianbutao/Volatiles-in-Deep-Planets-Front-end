@@ -49,7 +49,7 @@
         <div class="bottom-div">
           <el-button class="card-div" @click="toSearchPage('rock')">
             <div class="card-icon">🌍</div>
-            <div class="card-text">60000+</div>
+            <div class="card-text">10000+</div>
             <div class="discription-text">Natural Rock</div>
           </el-button>
           <el-button class="card-div" @click="toSearchPage('mineral')">
