@@ -160,6 +160,7 @@ export default {
 
     // 其次检测是否从DDE这边回来，如果是的话则要跳转到对应界面
     const codeValue = this.$route.query.code;
+    // const codeValue = "CNde2300129e9c7a48d5a10be7dea34c34"
     if(codeValue){
       // 通过验证
       if(await this.getTokenAndValidate(codeValue)){
