@@ -51,6 +51,7 @@
 </template>
   
 <script>
+import { loginURL } from '@/store/loginURL';
 export default {
   name: "PopoverCompont",
   props: ["userName"],
@@ -133,8 +134,24 @@ export default {
       this.$cookies.remove("token");
       this.$store.commit("setUserName", "");
       sessionStorage.removeItem("store");
-      let currentPath = this.$router.currentRoute.path;
-      this.$router.push({ path: "/login" });
+
+      // DDE系统那边的退出
+      const exitUrl = loginURL.baseURL + loginURL.exit
+
+      // 构建携带参数的 URL
+      const params = {
+        context: "https://htgdb.deep-time.org/main"
+      };
+
+      const queryString = Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+
+      // 拼接完整的 URL
+      const urlWithParams = `${exitUrl}?${queryString}`;
+
+      // 发送 token 验证请求
+      window.location.href = urlWithParams;
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {

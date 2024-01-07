@@ -85,7 +85,7 @@ export default {
   data() {
     return {
 
-      test_code: "CNe379bb4f37c7b236504703b8a3908e71",
+      // test_code: "CN9e02d255844a424bfcc127c361ed357a",
 
       role_id: 2,
 
@@ -143,15 +143,27 @@ export default {
   },
   computed: {},
 
-  created() {
+  async created() {
 
     // 首先检测是不是cookie里面已经有信息了，如果有的话应当直接显示用户信息以及exit窗口
+    if(this.$cookies.get("token")){
+      // 检测是否过期
+      const expired = await this.validateToken(this.$cookies.get("token"))
+      if(expired){
+        this.exitLogin()
+      }
+      else{
+        this.showUserName = true;
+      }
+      return;
+    }
 
     // 其次检测是否从DDE这边回来，如果是的话则要跳转到对应界面
-    const codeValue = this.test_code
+    const codeValue = this.$route.query.code;
     if(codeValue){
       // 通过验证
-      if(this.getTokenAndValidate(codeValue)){
+      if(await this.getTokenAndValidate(codeValue)){
+        // 存储路由信息
         const whereToGo = this.$route.query.context;
         if(whereToGo){
           // const decodedContext = whereToGo
@@ -159,7 +171,13 @@ export default {
           const decodedContext = atob(whereToGo)
 
           // 使用 Vue Router 跳转到对应路由
-          this.$router.push({ path: decodedContext });
+          this.showUserName = true;
+          if(decodedContext == "main"){
+            this.$router.go(0);
+          }
+          else{
+            this.$router.push({ path: decodedContext });
+          }
         }
         else{
           console.error("No Context Returned!")
@@ -190,6 +208,7 @@ export default {
   methods: {
     getUserName() {
       var userName = this.$store.state.userName;
+      console.log(userName)
       if (userName.length > 0) {
         this.showUserName = true;
         this.userName = userName;
@@ -229,24 +248,25 @@ export default {
         // 拼接完整的 URL
         const urlWithParams = `${tokenUrl}?${queryString}`;
 
-        // 发送 GET 请求获取 token
+        // // 发送 GET 请求获取 token
         const tokenResponse = await axios.get(urlWithParams)
 
         const token = tokenResponse.data.accessToken;
         const expire = tokenResponse.data.expire;
+
+
         if(token){
           // 发送验证请求
-          const isValid = await this.validateToken(token);
-
-          if (isValid) {
+          const tokenExpired = await this.validateToken(token);
+          if (!tokenExpired) {
             // 如果 token 验证成功，使用 vue-cookies 设置 cookie
             this.$cookies.set('token', token, expire); // 设置过期时间，1天
-            this.$cookies.set('domain', loginURL.domain);
+            this.getUserInfo(token);
             return true;
 
           } else {
             // 处理验证失败的情况
-            console.error('Token validation failed');
+            console.error('Token Expired or Error');
           }
         }
         else{
@@ -275,13 +295,38 @@ export default {
       const urlWithParams = `${validateUrl}?${queryString}`;
 
       // 发送 token 验证请求
-      const validationResponse = this.$service.get(urlWithParams);
-
+      const validationResponse = await axios.get(urlWithParams);
       if(validationResponse.data.code === "SUCCESS"){
         return validationResponse.data.data
       }
+      // 代表token失效
+      return true
+    },
 
-      return false
+    async getUserInfo(token) {
+      const validateUrl = loginURL.infoChange
+
+      // 构建携带参数的 URL
+      const params = {
+        appcode: loginURL.appCode,
+        token: token,
+        secret: loginURL.secretCode,
+      };
+
+      const queryString = Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+
+      // 拼接完整的 URL
+      const urlWithParams = `${validateUrl}?${queryString}`;
+
+      // 发送 token 验证请求
+      const validationResponse = await axios.get(urlWithParams);
+
+      if(validationResponse.data){
+        this.$store.commit("setUserName", validationResponse.data.accountName);
+        this.getUserName();
+      }
     },
 
     //退出登录
@@ -291,7 +336,7 @@ export default {
       sessionStorage.removeItem("store");
 
       // DDE系统那边的退出
-      const exitUrl = loginURL.exit
+      const exitUrl = loginURL.baseURL + loginURL.exit
 
       // 构建携带参数的 URL
       const params = {
@@ -306,7 +351,7 @@ export default {
       const urlWithParams = `${exitUrl}?${queryString}`;
 
       // 发送 token 验证请求
-      await axios.get(urlWithParams);
+      window.location.href = urlWithParams;
     },
     //判断是否登录
     hasLogin() {

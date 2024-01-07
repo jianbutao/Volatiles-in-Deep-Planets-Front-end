@@ -15,5 +15,5 @@ export const loginURL = {
 
     validate: '/login/ngiam-rst/oauth2/validate',
 
-    exit: '/login/ngiam-rst/cas/logout'
+    exit: '/ngiam-rst/cas/logout'
 }
