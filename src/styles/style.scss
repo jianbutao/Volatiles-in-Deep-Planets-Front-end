@@ -1,0 +1,21 @@
+/*icon字体路径变量*/
+$--font-path: "~element-ui/lib/theme-chalk/fonts";
+
+
+// element 主题色修改
+$--color-primary: #f25b28 !default;
+$--color-success: #19be6b !default;
+$--color-warning: #faad14 !default;
+$--color-danger: #ff4d4f !default;
+$--color-info: #878d99 !default;
+
+$--color-text-primary: #262626 !default;
+$--color-text-regular: #535353 !default;
+$--color-text-placeholder: #C9C9C9 !default;
+$--border-color-base: #262626 !default;
+$--color-text-secondary: #999999 !default;
+
+
+
+/*按需引入用到的组件的scss文件和基础scss文件*/
+@import "~element-ui/packages/theme-chalk/src/index.scss";

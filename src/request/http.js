@@ -1,7 +1,7 @@
 import axios from "axios";
 //让 axios 将 cookie 发送到服务器，并在响应中接收 cookie
 axios.defaults.withCredentials = true
-let baseURL = "api";
+let baseURL = process.env.VUE_APP_BASE_API;
 
 const service = axios.create({
     baseURL,

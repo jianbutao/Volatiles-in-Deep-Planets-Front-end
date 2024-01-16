@@ -16,7 +16,7 @@
             
             <!-- type 段落 -->
             <p>
-              <el-button :type="showMineralTypeForm ? 'danger' : ''" round @click="showMineralTypeForm = !showMineralTypeForm">Filter By Mineral Type</el-button>
+              <el-button :type="showMineralTypeForm ? 'primary' : ''" round @click="showMineralTypeForm = !showMineralTypeForm">Filter By Mineral Type</el-button>
             </p>
             <el-card shadow="never" v-if="showMineralTypeForm">
               <el-form-item label="mineral name" >
@@ -55,7 +55,7 @@
 
             <!-- age 段落 -->
             <p>
-              <el-button :type="showAgeForm ? 'danger' : ''" round @click="showAgeForm = !showAgeForm">Filter By Age</el-button>
+              <el-button :type="showAgeForm ? 'primary' : ''" round @click="showAgeForm = !showAgeForm">Filter By Age</el-button>
             </p>
             <el-card class="filter-card" shadow="never" v-if="showAgeForm">
               <el-form-item label="chronology" >
@@ -95,7 +95,7 @@
             <!-- Element 段落 -->
 
             <p>
-              <el-button :type="showElementsForm ? 'danger' : ''" round @click="showElementsForm = !showElementsForm">Filter By Elements & Isotopes</el-button>
+              <el-button :type="showElementsForm ? 'primary' : ''" round @click="showElementsForm = !showElementsForm">Filter By Elements & Isotopes</el-button>
             </p>
             <el-card class="filter-card" shadow="never" v-if="showElementsForm">
               <!-- 动态表单 -->
@@ -140,11 +140,11 @@
                     <span>—</span>
                     <el-input style="width: 40%; margin-left: 2%" v-model="single_element.elem_upper_bound" placeholder="Enter Upper Bound"></el-input>
                   </el-form-item>
-                  <el-button class="remove-button" size="mini" type="danger" @click.prevent="removeElement(single_element)">Delete</el-button>
+                  <el-button class="remove-button" size="mini" type="primary" @click.prevent="removeElement(single_element)">Delete</el-button>
                 </div>
               </el-card>
               <p>
-                <el-button size="mini" type="success" @click="addElement">Add Element</el-button>
+                <el-button size="mini" type="warning" @click="addElement">Add Element</el-button>
                 <el-button size="mini" type="info" @click="clearByType('element')">Clear</el-button>
                 <el-button size="mini" type="primary" @click="submitAll('element')" :disabled="!submitReady">Submit Filter</el-button>
               </p>
@@ -153,7 +153,7 @@
 
             <!-- Location 段落 -->
             <p>
-              <el-button :type="showLocationForm ? 'danger' : ''" round @click="showLocationForm = !showLocationForm">Filter By Location</el-button>
+              <el-button :type="showLocationForm ? 'primary' : ''" round @click="showLocationForm = !showLocationForm">Filter By Location</el-button>
             </p>
             <el-card class="filter-card" shadow="never" v-if="showLocationForm">
               <!-- Continent/Ocean选择 -->
@@ -218,7 +218,7 @@
 
             <!-- Environment 段落 -->
             <p>
-              <el-button :type="showGeologicalForm ? 'danger' : ''" round @click="showGeologicalForm = !showGeologicalForm">Filter By Geological Setting</el-button>
+              <el-button :type="showGeologicalForm ? 'primary' : ''" round @click="showGeologicalForm = !showGeologicalForm">Filter By Geological Setting</el-button>
             </p>
             <el-card class="filter-card" shadow="never" v-if="showGeologicalForm">
 
@@ -290,7 +290,7 @@
 
             <!-- DataSource 段落 -->
             <p>
-              <el-button :type="showDataSourceForm ? 'danger' : ''" round @click="showDataSourceForm = !showDataSourceForm">Filter By Data Source</el-button>
+              <el-button :type="showDataSourceForm ? 'primary' : ''" round @click="showDataSourceForm = !showDataSourceForm">Filter By Data Source</el-button>
             </p>
             <el-card class="filter-card" shadow="never" v-if="showDataSourceForm">
 
@@ -742,17 +742,17 @@
         return (rule, value, callback) => {
           let numberLower, numberUpper;
           let lowerName, upperName;
-          let lowerInfo, upperInfo;
+          let lowerprimary, upperprimary;
 
           if(type == 'age'){
-            lowerInfo = this.global_age_min;
-            upperInfo = this.global_age_max;
+            lowerprimary = this.global_age_min;
+            upperprimary = this.global_age_max;
           }
 
           else if(type == 'element'){
             // 注意提取单位
-            lowerInfo = this.form[type][index]["elem_lower_bound"]
-            upperInfo = this.form[type][index]["elem_upper_bound"]
+            lowerprimary = this.form[type][index]["elem_lower_bound"]
+            upperprimary = this.form[type][index]["elem_upper_bound"]
             let unit = this.form[type][index]["elem_unit"]
             let name = this.form[type][index]["elem_name"]
             if(name == ""){
@@ -784,23 +784,23 @@
               lowerName = name + "LowerBound";
               upperName = name + "UpperBound";
             }
-            lowerInfo = this.form[type][lowerName];
-            upperInfo = this.form[type][upperName];
+            lowerprimary = this.form[type][lowerName];
+            upperprimary = this.form[type][upperName];
           }
 
           // 如果全空，允许用户通过，返回所有结果
-          if(lowerInfo == null && upperInfo == null || lowerInfo == "" && upperInfo == ""){
+          if(lowerprimary == null && upperprimary == null || lowerprimary == "" && upperprimary == ""){
             return;
           }
 
           // 如果用户输了一半，提醒它输另一半
-          if(lowerInfo == null !== upperInfo == null){
+          if(lowerprimary == null !== upperprimary == null){
             callback(new Error("Please fill with lower and upper bound"))
             return;
           }
 
-          numberLower = parseFloat(lowerInfo);
-          numberUpper = parseFloat(upperInfo);
+          numberLower = parseFloat(lowerprimary);
+          numberUpper = parseFloat(upperprimary);
 
           // 异常检测，非数字输入
           if (isNaN(numberLower) || isNaN(numberUpper)){
@@ -906,16 +906,16 @@
         }
         
         // 添加键值对信息
-        search_types.forEach((type_info) => {
-          if(type_info == "element"){
+        search_types.forEach((type_primary) => {
+          if(type_primary == "element"){
             result = this.elementTransform();
           }
           else{
-            if(type_info == 'age'){
+            if(type_primary == 'age'){
               this.ageTranslation();
             }
-            for (const key in this.form[type_info]) {
-              result[key] = this.form[type_info][key];
+            for (const key in this.form[type_primary]) {
+              result[key] = this.form[type_primary][key];
             }
           }
         });
@@ -930,7 +930,7 @@
         // 发起 POST 请求
         this.$service.post(url_final, result).then((res) => {
           this.submitReady = true;
-          if (!res.data.success) {
+          if (!res.data.warning) {
               this.$message.error(res.data.error.message);
               return false;
           } else {
@@ -947,18 +947,18 @@
 
               // 发送查询历史记录
               this.$service.post("/search-history/details", hisform).then((historyRes) => {
-                let searchHistoryInfo = null;
-                if(historyRes.data.success){
-                  searchHistoryInfo = JSON.stringify(historyRes.data.data.data)
+                let searchHistoryprimary = null;
+                if(historyRes.data.warning){
+                  searchHistoryprimary = JSON.stringify(historyRes.data.data.data)
                 }
                 // 存储信息
-                sessionStorage.setItem('searchInfo',  JSON.stringify({
+                sessionStorage.setItem('searchprimary',  JSON.stringify({
                   object: this.object,
                   form: result,
                   url: url_final,
                   rows: res.data.data.data[0],
                   total: res.data.data.total,
-                  searchHistory: searchHistoryInfo,
+                  searchHistory: searchHistoryprimary,
                   downloadList: res.data.data.samp_id,
                 }));
 
