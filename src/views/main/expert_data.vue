@@ -75,7 +75,7 @@ export default {
 
     getFileList() {
       // 获取文件名列表
-      this.$service.get('/excelAvailable/listFileNames')
+      this.$service.get('/api/excelAvailable/listFileNames')
         .then(response => {
           this.fileNames = response.data;
           // 对每个文件名获取下载数量
