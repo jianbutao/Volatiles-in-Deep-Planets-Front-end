@@ -49,7 +49,7 @@
         <div class="bottom-div">
           <el-button class="card-div" @click="toSearchPage('rock')">
             <div class="card-icon">🌍</div>
-            <div class="card-text">10000+</div>
+            <div class="card-text">60000+</div>
             <div class="discription-text">Natural Rock</div>
           </el-button>
           <el-button class="card-div" @click="toSearchPage('mineral')">
@@ -262,7 +262,6 @@ export default {
           if (!tokenExpired) {
             // 如果 token 验证成功,使用 vue-cookies 设置 cookie
             this.$cookies.set('token', token, expire); // 设置过期时间,1天
-            this.getUserInfo(token);
             return true;
 
           } else {
@@ -298,6 +297,9 @@ export default {
       // 发送 token 验证请求
       const validationResponse = await axios.get(urlWithParams);
       if(validationResponse.data.code === "SUCCESS"){
+        if(!validationResponse.data.data){
+          this.getUserInfo(token);
+        }
         return validationResponse.data.data
       }
       // 代表token失效
