@@ -7,6 +7,7 @@ const service = axios.create({
     baseURL,
     timeout:3000000,//请求超时时间,
     withCredentials:true,//是否跨站点访问请求控制
+    cache: false,
 })
 
 //封装请求
