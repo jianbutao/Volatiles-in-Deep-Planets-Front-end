@@ -14,7 +14,7 @@
     props: ['page'],
     data() {
       return {
-        logo_src:require('../../assets/logo_simple.png'),
+        logo_src:require('../assets/logo_simple.png'),
       };
     },
     methods: {

@@ -4,7 +4,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import router from "./router"
 import store from './store'
-import service from './components/service/http'
+import service from './request/http'
 import VueCookies from "vue-cookies";
 import './styles/globalStyle.less';
 import './styles/font.less';

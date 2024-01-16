@@ -74,7 +74,7 @@
   </div>
 </template>
   <script>
-import LogoComponent from "@/components/myComponent/LogoComponent.vue";
+import LogoComponent from "@/components/LogoComponent.vue";
 export default {
   components: {
     LogoComponent,

@@ -405,7 +405,7 @@
   </div>
 </template>
 <script>
-  import LogoComponent from "@/components/myComponent/LogoComponent.vue";
+  import LogoComponent from "@/components/LogoComponent.vue";
   import { searchPageData }  from "@/store/searchPageData"
 
   // 恢复到最初形态的数据

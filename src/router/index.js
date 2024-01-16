@@ -8,85 +8,85 @@ const routes = [
     { path: '/', redirect: '/main' },
     {
         path: '/main',
-        component: () => import('../components/main/home_page')
+        component: () => import('../views/main/home_page')
     },
     {
         path:'/login',
-        component: () => import('../components//user/user_login')
+        component: () => import('../views//user/user_login')
     },
     {
         path:'/rockData',
-        component: () => import('../components/search/rock_data')
+        component: () => import('../views/search/rock_data')
     },
     {
         path:'/mineralData',
-        component: () => import('../components/search/mineral_data')
+        component: () => import('../views/search/mineral_data')
     },
     {
         path:'/experimentData',
-        component: () => import('../components/search/experiment_data')
+        component: () => import('../views/search/experiment_data')
     },
     {
         path:'/uploadOnline',
-        component: () => import('../components/main/upload_online')
+        component: () => import('../views/main/upload_online')
     },
     {
         path:'/expertData',
-        component: () => import('../components/main/expert_data')
+        component: () => import('../views/main/expert_data')
     },
     {
         path:'/rawCleanPair',
-        component: () => import('../components/main/row_clean_pair')
+        component: () => import('../views/main/row_clean_pair')
     },
     {
         path:'/dataTemplate',
-        component: () => import('../components/main/data_template')
+        component: () => import('../views/main/data_template')
     },
     {
         path:'/searchResult',
-        component: () => import('../components/search/search_result')
+        component: () => import('../views/search/search_result')
     },
     {
         path:'/teamProject',
-        component: () => import('../components/main/team_project')
+        component: () => import('../views/main/team_project')
     },
     {
         path:'/contactJoin',
-        component: () => import('../components/main/contact_join')
+        component: () => import('../views/main/contact_join')
     },
     {
         path:'/userCenter',
-        component: () => import('../components/user/user_center'),
+        component: () => import('../views/user/user_center'),
         children:[
             {   path: 'userMessage', 
-                component: () => import('../components/user/user_message') 
+                component: () => import('../views/user/user_message') 
             },
             {   path: 'userUploadStatus', 
-                component: () => import('../components/user/user_upload_status') 
+                component: () => import('../views/user/user_upload_status') 
             },
             {   path: 'userReportStatus', 
-                component: () => import('../components/user/user_report_status') 
+                component: () => import('../views/user/user_report_status') 
             },
             {   path: 'userSearchHistory', 
-                component: () => import('../components/user/user_search_history') 
+                component: () => import('../views/user/user_search_history') 
             }
         ]
     },
     {
         path:'/manageCenter',
-        component: () => import('../components/manage/manage_center'),
+        component: () => import('../views/manage/manage_center'),
         children:[
             {   path: 'userMessage', 
-                component: () => import('../components/manage/manage_message') 
+                component: () => import('../views/manage/manage_message') 
             },
             {   path: 'uploadManage', 
-                component: () => import('../components/manage/upload_manage') 
+                component: () => import('../views/manage/upload_manage') 
             },
             {   path: 'reportManage', 
-                component: () => import('../components/manage/report_manage') 
+                component: () => import('../views/manage/report_manage') 
             },
             {   path: 'userManage', 
-                component: () => import('../components/manage/user_manage') 
+                component: () => import('../views/manage/user_manage') 
             }
         ]
     }

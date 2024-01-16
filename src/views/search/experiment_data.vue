@@ -2,34 +2,34 @@
   <div id="building">
     <el-container>
       <el-header>
-        <LogoComponent :page="'mineralData'" />
-        <div class="title-div">Search Data - Mineral</div>
+        <LogoComponent :page="'rockData'" />
+        <div class="title-div">Search Data - Experiment</div>
         <el-button class="back-btn" @click="back">Home</el-button>
       </el-header>
       <el-main>
         <div style="max-width: 800px; margin: auto;">
-          <h2>Let's customize your mineral data filter!</h2>
+          <h2>Let's customize your experiment data filter!</h2>
           <el-form style="text-align: left;" label-position="left" label-width="200px" size="mini" 
             :model="form" 
             :rules="rules" 
             ref="form">
             
-            <!-- type 段落 -->
+            <!-- sample 段落 -->
             <p>
-              <el-button :type="showMineralTypeForm ? 'danger' : ''" round @click="showMineralTypeForm = !showMineralTypeForm">Filter By Mineral Type</el-button>
+              <el-button :type="showSampleForm ? 'danger' : ''" round @click="showSampleForm = !showSampleForm">Filter By Experiment Sample</el-button>
             </p>
-            <el-card shadow="never" v-if="showMineralTypeForm">
-              <el-form-item label="mineral name" >
+            <el-card shadow="never" v-if="showSampleForm">
+              <el-form-item label="sample name" >
                 <el-select
                   filterable 
                   placeholder="Please Select"
-                  v-model="form.type.mineralName"
+                  v-model="form.sample.sampleName"
                   multiple
                   clearable
                   collapse-tags
                   >
                   <el-option
-                    v-for="(item, index) in mineralName"
+                    v-for="(item, index) in sampleName"
                     :key="item"
                     :label="item"
                     :value="item"
@@ -38,62 +38,23 @@
                 </el-select>
               </el-form-item>
               <br />
+
               <!-- 多选框 -->
-              <el-form-item label="spot location">
-                <el-checkbox-group v-model="form.type.spotLocation">
-                  <el-checkbox v-for="item in spotLocation" :label="item" :key="item">
+              <el-form-item label="sample type">
+                <el-checkbox-group v-model="form.sample.dataType">
+                  <el-checkbox v-for="item in sampleType" :label="item" :key="item">
                     {{item}}
                   </el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
               <br />
               <p>
-                <el-button size="mini" type="info" @click="clearByType('type')">Clear</el-button>
-                <el-button size="mini" type="primary" @click="submitAll('type')" :disabled="!submitReady">Submit Filter</el-button>
-              </p>
-            </el-card>
-
-            <!-- age 段落 -->
-            <p>
-              <el-button :type="showAgeForm ? 'danger' : ''" round @click="showAgeForm = !showAgeForm">Filter By Age</el-button>
-            </p>
-            <el-card class="filter-card" shadow="never" v-if="showAgeForm">
-              <el-form-item label="chronology" >
-                <!-- 纪元选择 -->
-                <el-select
-                  filterable 
-                  placeholder="Please Select"
-                  v-model="selectGeologicalPeriods"
-                  multiple
-                  clearable
-                  collapse-tags
-                  >
-                  <el-option
-                    v-for="(item, index) in geologicalPeriods"
-                    :key="item"
-                    :label="`${item}  ${geologicalAges[index]} - ${geologicalAges[index+1]}`"
-                    :value="item"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <br />
-
-              <el-form-item label="age(Ma)" prop="age.global_age">
-                <el-input style="width: 40%; margin-right: 2%" v-model="global_age_min" placeholder="Enter Lower Bound"></el-input>
-                <span>—</span>
-                <el-input style="width: 40%; margin-left: 2%" v-model="global_age_max" placeholder="Enter Upper Bound"></el-input>
-              </el-form-item>
-              <br />
-              
-              <p>
-                <el-button size="mini" type="info" @click="clearByType('age')">Clear</el-button>
-                <el-button size="mini" type="primary" @click="submitAll('age')" :disabled="!submitReady">Submit Filter</el-button>
+                <el-button size="mini" type="info" @click="clearByType('sample')">Clear</el-button>
+                <el-button size="mini" type="primary" @click="submitAll('sample')" :disabled="!submitReady">Submit Filter</el-button>
               </p>
             </el-card>
 
             <!-- Element 段落 -->
-
             <p>
               <el-button :type="showElementsForm ? 'danger' : ''" round @click="showElementsForm = !showElementsForm">Filter By Elements & Isotopes</el-button>
             </p>
@@ -150,149 +111,48 @@
               </p>
             </el-card>
 
-
-            <!-- Location 段落 -->
+            <!-- Condition 段落 -->
             <p>
-              <el-button :type="showLocationForm ? 'danger' : ''" round @click="showLocationForm = !showLocationForm">Filter By Location</el-button>
+              <el-button :type="showConditionForm ? 'danger' : ''" round @click="showConditionForm = !showConditionForm">Filter By Condition Setting</el-button>
             </p>
-            <el-card class="filter-card" shadow="never" v-if="showLocationForm">
-              <!-- Continent/Ocean选择 -->
-              <el-form-item label="continent/ocean" >
-                <el-select
-                  filterable 
-                  placeholder="Please Select"
-                  v-model="form.location.continent"
-                  multiple
-                  clearable
-                  collapse-tags
-                  >
-                  <el-option
-                    v-for="(item, index) in continent"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <br />
-              <!-- Country选择 -->
-              <el-form-item label="country" >
-                <el-select
-                  filterable 
-                  placeholder="Please Select"
-                  v-model="form.location.country"
-                  multiple
-                  clearable
-                  collapse-tags
-                  >
-                  <el-option
-                    v-for="(item, index) in country"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <br />
-              <el-form-item label="latitude" prop="location.latitude">
-                <el-input style="width: 40%; margin-right: 2%" v-model="form.location.latitudeLowerBound" placeholder="Enter Lower Bound"></el-input>
+            <el-card shadow="never" v-if="showConditionForm">
+
+              <el-form-item label="T (℃)" prop="condition.exper_temperature">
+                <el-input style="width: 40%; margin-right: 2%" v-model="form.condition.exper_temperatureLower" placeholder="Enter Lower Bound"></el-input>
                 <span>—</span>
-                <el-input style="width: 40%; margin-left: 2%" v-model="form.location.latitudeUpperBound" placeholder="Enter Upper Bound"></el-input>
+                <el-input style="width: 40%; margin-left: 2%" v-model="form.condition.exper_temperatureUpper" placeholder="Enter Upper Bound"></el-input>
               </el-form-item>
               <br />
-              <el-form-item label="longitude" prop="location.longitude">
-                <el-input style="width: 40%; margin-right: 2%" v-model="form.location.longitudeLowerBound" placeholder="Enter Lower Bound"></el-input>
+              <el-form-item label="Press (GPa)" prop="condition.exper_press">
+                <el-input style="width: 40%; margin-right: 2%" v-model="form.condition.exper_pressLower" placeholder="Enter Lower Bound"></el-input>
                 <span>—</span>
-                <el-input style="width: 40%; margin-left: 2%" v-model="form.location.longitudeUpperBound" placeholder="Enter Upper Bound"></el-input>
+                <el-input style="width: 40%; margin-left: 2%" v-model="form.condition.exper_pressUpper" placeholder="Enter Upper Bound"></el-input>
+              </el-form-item>
+              <br />
+              <el-form-item label="Time (min)" prop="condition.exper_time">
+                <el-input style="width: 40%; margin-right: 2%" v-model="form.condition.exper_timeLower" placeholder="Enter Lower Bound"></el-input>
+                <span>—</span>
+                <el-input style="width: 40%; margin-left: 2%" v-model="form.condition.exper_timeUpper" placeholder="Enter Upper Bound"></el-input>
+              </el-form-item>
+              <br />
+              <el-form-item label="Log(fO2)" prop="condition.logf_o2">
+                <el-input style="width: 40%; margin-right: 2%" v-model="form.condition.logf_o2Lower" placeholder="Enter Lower Bound"></el-input>
+                <span>—</span>
+                <el-input style="width: 40%; margin-left: 2%" v-model="form.condition.logf_o2Upper" placeholder="Enter Upper Bound"></el-input>
               </el-form-item>
               <br />
 
               <p>
-                <el-button size="mini" type="info" @click="clearByType('location')">Clear</el-button>
-                <el-button size="mini" type="primary" @click="submitAll('location')" :disabled="!submitReady">Submit Filter</el-button>
+                <el-button size="mini" type="info" @click="clearByType('condition')">Clear</el-button>
+                <el-button size="mini" type="primary" @click="submitAll('condition')" :disabled="!submitReady">Submit Filter</el-button>
               </p>
             </el-card>
-
-
-            <!-- Environment 段落 -->
-            <p>
-              <el-button :type="showGeologicalForm ? 'danger' : ''" round @click="showGeologicalForm = !showGeologicalForm">Filter By Geological Setting</el-button>
-            </p>
-            <el-card class="filter-card" shadow="never" v-if="showGeologicalForm">
-
-              <el-form-item label="plate" >
-                <el-select
-                  filterable 
-                  placeholder="Please Select"
-                  v-model="form.environment.plate"
-                  multiple
-                  clearable
-                  collapse-tags
-                  >
-                  <el-option
-                    v-for="(item, index) in plate"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <br />
-
-              <!-- <el-form-item label="terrain" >
-                <el-select
-                  filterable 
-                  placeholder="Please Select"
-                  v-model="form.environment.terrane"
-                  multiple
-                  clearable
-                  collapse-tags
-                  >
-                  <el-option
-                    v-for="(item, index) in terrane"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <br /> -->
-
-              <el-form-item label="P (GPa)" prop="environment.press">
-                <el-input style="width: 40%; margin-right: 2%" v-model="form.environment.pressLowerBound" placeholder="Enter Lower Bound"></el-input>
-                <span>—</span>
-                <el-input style="width: 40%; margin-left: 2%" v-model="form.environment.pressUpperBound" placeholder="Enter Upper Bound"></el-input>
-              </el-form-item>
-              <br />
-              <el-form-item label="T (℃)" prop="environment.temperature">
-                <el-input style="width: 40%; margin-right: 2%" v-model="form.environment.temperatureLowerBound" placeholder="Enter Lower Bound"></el-input>
-                <span>—</span>
-                <el-input style="width: 40%; margin-left: 2%" v-model="form.environment.temperatureUpperBound" placeholder="Enter Upper Bound"></el-input>
-              </el-form-item>
-              <br />
-              <el-form-item label="depth (km)" prop="environment.depth">
-                <el-input style="width: 40%; margin-right: 2%" v-model="form.environment.depthLowerBound" placeholder="Enter Lower Bound"></el-input>
-                <span>—</span>
-                <el-input style="width: 40%; margin-left: 2%" v-model="form.environment.depthUpperBound" placeholder="Enter Upper Bound"></el-input>
-              </el-form-item>
-              <br />
-
-              <p>
-                <el-button size="mini" type="info" @click="clearByType('environment')">Clear</el-button>
-                <el-button size="mini" type="primary" @click="submitAll('environment')" :disabled="!submitReady">Submit Filter</el-button>
-              </p>
-            </el-card>
-
 
             <!-- DataSource 段落 -->
             <p>
               <el-button :type="showDataSourceForm ? 'danger' : ''" round @click="showDataSourceForm = !showDataSourceForm">Filter By Data Source</el-button>
             </p>
-            <el-card class="filter-card" shadow="never" v-if="showDataSourceForm">
+            <el-card shadow="never" v-if="showDataSourceForm">
 
               <el-form-item label="source type">
                 <el-select v-model="form.source.collectSource" placeholder="Please Select">
@@ -367,8 +227,8 @@
                 <el-button size="mini" type="primary" @click="submitAll('source')" :disabled="!submitReady">Submit Filter</el-button>
               </p>
             </el-card>
-
           </el-form>
+
 
           <!-- 统一提交 -->
           <p>
@@ -382,79 +242,62 @@
 </template>
 
 <script>
-  import LogoComponent from "@/components/myComponent/LogoComponent.vue";
+  import LogoComponent from "@/components/LogoComponent.vue";
   import { searchPageData }  from "@/store/searchPageData"
 
- // 恢复到最初形态的数据
+  // 恢复到最初形态的数据
   const initialData = {
-    // 全局设定 分页相关信息
-    page: 1,
-    size: 10,
+      // 全局设定 分页相关信息
+      page: 1,
+      size: 10,
 
-    // 这个有啥用?
-    dataType: [],
-
-    // 根据age 进行检索
-    age: {
-      minAge: [],
-      maxAge: [],
-      testMethod: [],
-    },
-    // 根据type 进行检索
-    type: {
-      mineralName: [],
-      spotLocation: [],
-    },
-    // 根据element 进行检索, 注意结果要转置
-    element: [
-      {
-        // 用来构造伪删除，避免删除出错
-        disabled: false,
-        elem_name: "",
-        elem_unit: "",
-        elem_lower_bound: "",
-        elem_upper_bound: "",
+      // sample 相关
+      sample: {
+        sampleName: [],
+        dataType: [],
       },
-    ],
-    // 根据location 进行检索
-    location: {
-      continent: [],
-      country: [],
-      longitudeLowerBound: null,
-      longitudeUpperBound: null,
-      latitudeLowerBound: null,
-      latitudeUpperBound: null,
-    },
-    // 根据environment 进行检索
-    environment: {
-      plate: [],
-      terrane: [],
-      pressLowerBound: null,
-      pressUpperBound: null,
-      temperatureLowerBound: null,
-      temperatureUpperBound: null,
-      depthLowerBound: null,
-      depthUpperBound: null,
-    },
-    // 根据DataSource 进行检索
-    source: {
-      collectSource: [],
-      minYear: null,
-      maxYear: null,
-      journal: [],
-      author: [],
-    }
+
+      // condition 相关
+      condition: {
+        exper_temperatureLower: null,
+        exper_temperatureUpper: null,
+        exper_pressLower: null,
+        exper_pressUpper: null,
+        exper_timeLower: null,
+        exper_timeUpper: null,
+        logf_o2Lower: null,
+        logf_o2Upper: null,
+      },
+
+      // source 相关
+      source: {
+        collectSource: [],
+        minYear: null,
+        maxYear: null,
+        journal: [],
+        author: [],
+      },
+
+      // 根据element 进行检索, 注意结果要转置
+      element: [
+        {
+          // 用来构造伪删除，避免删除出错
+          disabled: false,
+          elem_name: "",
+          elem_unit: "",
+          elem_lower_bound: "",
+          elem_upper_bound: "",
+        },
+      ],
   };
 
   // url对照表
   const url_range_data = {
-    age: "/mainSample/search/mineral",
-    element: "/element/search/mineral",
-    type: "/mineralProperty/search",
-    location: "/geoLocation/search/mineral",
-    source: "/dataSource/search/mineral",
-    environment: "/geoEnviron/search/mineral",
-    all: "/filter/all/mineral",
+    element: "/element/search/experiment",
+    sample: "/experimentProperty/search/sampleType",
+    source: "/dataSource/search/experiment",
+    condition: "/experimentProperty/search/condition",
+    all: "/filter/all/experiment",
   };
 
   export default {
@@ -463,35 +306,21 @@
     },
     data() {
       return {
-        object: 'mineral',
+        object: 'experiment',
 
-        // 多选框所有可能答案
-        // 写死部分
-        spotLocation: searchPageData.mineralSpotLocation,
-        continent: searchPageData.continent,
-        country: searchPageData.countries,
-        
         // 动态获取部分
-        mineralName: searchPageData.mineralNames,
-        plate: searchPageData.plate,
-        terrane: searchPageData.terrane,
-        elementName: searchPageData.elementNamesForMineral,
-        journal: searchPageData.journalForMineral,
-        firstAuthor: searchPageData.firstAuthorForMineral,
+        sampleName: searchPageData.sampleNames,
+        elementName: searchPageData.elementNamesForExperiment,
+        journal: searchPageData.journalForExperiment,
+        firstAuthor: searchPageData.firstAuthorForExperiment,
 
-        // age相关辅助字段
-        geologicalPeriods: searchPageData.geologicalPeriods,
-        geologicalAges: searchPageData.geologicalAges,
-        selectGeologicalPeriods: "",
-        global_age_min: null,
-        global_age_max: null,
+        // type相关辅助字段
+        sampleType: searchPageData.experimentSampleType,
 
         // 表单是否展开
-        showMineralTypeForm: false, //是否显示mineral type搜索表单
-        showAgeForm: false,
+        showSampleForm: false,
         showElementsForm: false, 
-        showLocationForm: false,
-        showGeologicalForm: false,
+        showConditionForm: false,
         showDataSourceForm: false,
 
         // 最终的表单数据
@@ -501,20 +330,33 @@
           page: 1,
           size: 10,
 
-          // 这个有啥用?
-          dataType: [],
+          // sample 相关
+          sample: {
+            sampleName: [],
+            dataType: [],
+          },
 
-          // 根据age 进行检索
-          age: {
-            minAge: [],
-            maxAge: [],
-            testMethod: [],
+          // condition 相关
+          condition: {
+            exper_temperatureLower: null,
+            exper_temperatureUpper: null,
+            exper_pressLower: null,
+            exper_pressUpper: null,
+            exper_timeLower: null,
+            exper_timeUpper: null,
+            logf_o2Lower: null,
+            logf_o2Upper: null,
           },
-          // 根据type 进行检索
-          type: {
-            mineralName: [],
-            spotLocation: [],
+
+          // source 相关
+          source: {
+            collectSource: [],
+            minYear: null,
+            maxYear: null,
+            journal: [],
+            author: [],
           },
+
           // 根据element 进行检索, 注意结果要转置
           element: [
             {
@@ -526,44 +368,11 @@
               elem_upper_bound: "",
             },
           ],
-          // 根据location 进行检索
-          location: {
-            continent: [],
-            country: [],
-            longitudeLowerBound: null,
-            longitudeUpperBound: null,
-            latitudeLowerBound: null,
-            latitudeUpperBound: null,
-          },
-          // 根据environment 进行检索
-          environment: {
-            plate: [],
-            terrane: [],
-            pressLowerBound: null,
-            pressUpperBound: null,
-            temperatureLowerBound: null,
-            temperatureUpperBound: null,
-            depthLowerBound: null,
-            depthUpperBound: null,
-          },
-          // 根据DataSource 进行检索
-          source: {
-            collectSource: [],
-            minYear: null,
-            maxYear: null,
-            journal: [],
-            author: [],
-          },
         },
 
         // 表单验证
         rules: {
-          type: {},
-          age: {
-            global_age: [
-              { validator: this.validateNumberRange("age", "age", 0, 4600), trigger: 'blur' },
-            ]
-          },
+          sample: {},
           element: [
             {
               value: [
@@ -571,23 +380,18 @@
               ],
             },
           ],
-          location: {
-            latitude: [
-              { validator: this.validateNumberRange("location", "latitude", "-90.00", "90.00"), trigger: 'blur' },
+          condition: {
+            exper_temperature: [
+              { validator: this.validateNumberRange("condition", "exper_temperature", 0, 9999), trigger: 'blur' },
             ],
-            longitude: [
-              { validator: this.validateNumberRange("location", "longitude", "-180.00", "180.00"), trigger: 'blur' },
-            ]
-          },
-          environment: {
-            depth: [
-              { validator: this.validateNumberRange("environment", "depth", 0, 3500), trigger: 'blur' },
+            exper_press: [
+              { validator: this.validateNumberRange("condition", "exper_press", 0, 9999), trigger: 'blur' },
             ],
-            temperature: [
-              { validator: this.validateNumberRange("environment", "temperature", 0, 9999), trigger: 'blur' },
+            exper_time: [
+              { validator: this.validateNumberRange("condition", "exper_time", 0, 99999), trigger: 'blur' },
             ],
-            press: [
-              { validator: this.validateNumberRange("environment", "press", 0, 9999), trigger: 'blur' },
+            logf_o2: [
+              { validator: this.validateNumberRange("condition", "logf_o2", "-100.00", "100.00"), trigger: 'blur' },
             ],
           },
           source: {
@@ -604,77 +408,6 @@
     computed: {},
     created() {},
     methods: {
-      // age的提交，需要提前转换，因此单独列出
-      ageTranslation(){
-        const all_decades = this.selectGeologicalPeriods
-
-        let range_age_min = this.global_age_min ? this.global_age_min : 0;
-        let range_age_max = this.global_age_max ? this.global_age_max : 4600;
-
-        if(all_decades.length == 0){
-          this.form.age.minAge = [range_age_min];
-          this.form.age.maxAge = [range_age_max];
-          return;
-        }
-        // 临时查询列表
-        let age_min_list = [];
-        let age_max_list = [];
-
-        let temp_min = -1;
-        let temp_max = -1;
-        // 使用map方法，返回一个新数组，每个元素是对应的索引编号
-        const indexes = all_decades.map(item => this.geologicalPeriods.findIndex(obj => obj === item))
-        // 使用forEach方法，遍历索引数组，根据索引从this.selectGeologicalAges中获取minAge和maxAge，然后存入temp_age_list中
-
-        let temp_list = [];
-        indexes.forEach(index => {
-          // 内部方法
-          if(temp_min == -1){
-            temp_min = this.geologicalAges[index]
-            temp_max = this.geologicalAges[index + 1]
-          }
-          else{
-            // 重叠时间段
-            if(temp_max == this.geologicalAges[index]){
-              temp_max = this.geologicalAges[index + 1]
-            }
-            // 重叠结束
-            else{
-              temp_list.push([temp_min, temp_max]);
-              // 存放新的
-              temp_min = this.geologicalAges[index];
-              temp_max = this.geologicalAges[index + 1];
-            }
-          }
-        })
-        if(temp_min != -1){
-          temp_list.push([temp_min, temp_max])
-        }
-
-        // 区间求交
-        const temp_result = [];
-
-        temp_list.forEach((interval) => {
-          const [startA, endA] = interval;
-
-          // 找到与 B 相交的部分
-          const startB = Math.max(startA, range_age_min);
-          const endB = Math.min(endA, range_age_max);
-
-          // 如果相交部分的起始点小于等于结束点，说明存在交集
-          if (startB <= endB) {
-            temp_result.push([startB, endB]);
-          }
-        })
-
-        temp_result.forEach((interval) =>{
-          age_min_list.push(interval[0]);
-          age_max_list.push(interval[1]);
-        })
-        this.form.age.minAge = age_min_list;
-        this.form.age.maxAge = age_max_list;
-      },
-
       // element的提交需要转置
       elementTransform(){
         const transform = {
@@ -735,8 +468,6 @@
           },
         )
       },
-
-      // 表单验证部分
       // (仅上下限相关页面使用) 表单验证自适应
       validateNumberRange(type, name, min_number, max_number, index=0) {
         return (rule, value, callback) => {
@@ -744,12 +475,7 @@
           let lowerName, upperName;
           let lowerInfo, upperInfo;
 
-          if(type == 'age'){
-            lowerInfo = this.global_age_min;
-            upperInfo = this.global_age_max;
-          }
-
-          else if(type == 'element'){
+          if(type == 'element'){
             // 注意提取单位
             lowerInfo = this.form[type][index]["elem_lower_bound"]
             upperInfo = this.form[type][index]["elem_upper_bound"]
@@ -763,7 +489,7 @@
               callback(new Error("Please choose element unit"))
               return;
             }
-            else if(unit =="major(wt%)"){
+            else if(unit == "major(wt%)"){
               max_number = 100;
             }
             else if(unit == "trace(ppm)"){
@@ -774,29 +500,17 @@
               max_number = 100;
             }
           }
-
           else{
              if(type == 'source'){
               lowerName = "minYear";
               upperName = "maxYear";
             }
             else{
-              lowerName = name + "LowerBound";
-              upperName = name + "UpperBound";
+              lowerName = name + "Lower";
+              upperName = name + "Upper";
             }
             lowerInfo = this.form[type][lowerName];
             upperInfo = this.form[type][upperName];
-          }
-
-          // 如果全空，允许用户通过，返回所有结果
-          if(lowerInfo == null && upperInfo == null || lowerInfo == "" && upperInfo == ""){
-            return;
-          }
-
-          // 如果用户输了一半，提醒它输另一半
-          if(lowerInfo == null !== upperInfo == null){
-            callback(new Error("Please fill with lower and upper bound"))
-            return;
           }
 
           numberLower = parseFloat(lowerInfo);
@@ -809,6 +523,9 @@
           }
           // 超过界限
           if(numberLower < min_number || numberUpper > max_number){
+            if(name == "logf_o2"){
+              name = "Log(fO2)"
+            }
             callback(new Error(`${name} range should be between ${min_number} and ${max_number}`))
             return;
           }
@@ -823,15 +540,10 @@
             return;
           }
 
-          if(type == 'age'){
-            this.global_age_min = numberLower;
-            this.global_age_max = numberUpper;
-          }
-          else{
-            // 保证传输是转化后结果: 例如12ab3会自动解析为12 
-            this.form[type][lowerName] = numberLower;
-            this.form[type][upperName] = numberUpper;
-          }
+          // 恢复
+          // 保证传输是转化后结果: 例如12ab3会自动解析为12 
+          this.form[type][lowerName] = numberLower;
+          this.form[type][upperName] = numberUpper;
         };
       },
 
@@ -843,11 +555,6 @@
 
       // 根据当前的type清除所有的数据
       clearByType(search_type){
-        if(search_type == "age"){
-          this.selectGeologicalPeriods = "";
-          this.global_age_min = 0;
-          this.global_age_max = 4600;
-        }
         if(search_type == "element"){
           this["form"][search_type] = [{ ...initialData[search_type][0] }];
         }
@@ -864,13 +571,12 @@
 
       // 提交表单
       submitAll(search_type){
-        // 最终提交
         let result = {};
         let search_types = [];
 
         // 如果查询为all
         if(search_type == 'all'){
-          search_types = ['element', 'age', 'location', 'source', 'environment', 'type'];
+          search_types = ['source', 'element', 'sample', 'condition'];
         }
         else{
           search_types = [search_type];
@@ -900,20 +606,17 @@
           return;
         }
 
-        // 如果查询为all
+        // 如果查询为element, 用all暂时代替
         if(search_type == 'element'){
-          search_types = ['element', 'age', 'location', 'source', 'environment', 'type'];
+          search_types = ['source', 'element', 'sample', 'condition'];
         }
-        
+
         // 添加键值对信息
         search_types.forEach((type_info) => {
           if(type_info == "element"){
             result = this.elementTransform();
           }
           else{
-            if(type_info == 'age'){
-              this.ageTranslation();
-            }
             for (const key in this.form[type_info]) {
               result[key] = this.form[type_info][key];
             }
@@ -969,7 +672,7 @@
       },
       
       clearAll() {
-        let search_types = ['element', 'age', 'location', 'source', 'environment', 'type'];
+        let search_types = ['source', 'element', 'sample', 'condition'];
         search_types.forEach((item) => {
           this.clearByType(item)
         })
@@ -1110,10 +813,11 @@
 #building {
   width: 100%;
   height: 100%;
-  position: fixed;
   overflow-y: auto;
+  position: fixed;
   background-size: 100% 100%;
 }
+
 .card-content {
   display: flex;
   flex-direction: column;
@@ -1122,6 +826,7 @@
   align-self: flex-end;
   margin-top: 10px; /* 调整按钮与其他表单项的间距 */
 }
+
 .el-select {
   width: 300px;
 }

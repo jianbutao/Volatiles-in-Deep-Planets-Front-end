@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import MyPopover from '@/components/myComponent/PopoverCompont.vue';
+import MyPopover from '@/components/PopoverCompont.vue';
 export default {
   components: {
     MyPopover

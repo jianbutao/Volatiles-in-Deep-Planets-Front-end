@@ -73,8 +73,8 @@
   </div>
 </template>
 <script>
-import LogoComponent from "@/components/myComponent/LogoComponent.vue";
-import MyPopover from "@/components/myComponent/PopoverCompont.vue";
+import LogoComponent from "@/components/LogoComponent.vue";
+import MyPopover from "@/components/PopoverCompont.vue";
 import { loginURL }  from "@/store/loginURL"
 import axios from "axios";
 export default {
@@ -145,7 +145,7 @@ export default {
 
   async created() {
 
-    // 首先检测是不是cookie里面已经有信息了，如果有的话应当直接显示用户信息以及exit窗口
+    // 首先检测是不是cookie里面已经有信息了,如果有的话应当直接显示用户信息以及exit窗口
     if(this.$cookies.get("token")){
       // 检测是否过期
       const expired = await this.validateToken(this.$cookies.get("token"))
@@ -158,9 +158,9 @@ export default {
       return;
     }
 
-    // 其次检测是否从DDE这边回来，如果是的话则要跳转到对应界面
+    // 其次检测是否从DDE这边回来,如果是的话则要跳转到对应界面
     const codeValue = this.$route.query.code;
-    // const codeValue = "CNde2300129e9c7a48d5a10be7dea34c34"
+    // const codeValue = "CN1d18bf30278eac6f804542697401f8a0"
     if(codeValue){
       // 通过验证
       if(await this.getTokenAndValidate(codeValue)){
@@ -186,7 +186,7 @@ export default {
       }
     }
 
-    // 最后，如果没有codeValue，说明用户尚未登陆，不做处理
+    // 最后,如果没有codeValue,说明用户尚未登陆,不做处理
   },
 
   mounted() {
@@ -260,8 +260,8 @@ export default {
           // 发送验证请求
           const tokenExpired = await this.validateToken(token);
           if (!tokenExpired) {
-            // 如果 token 验证成功，使用 vue-cookies 设置 cookie
-            this.$cookies.set('token', token, expire); // 设置过期时间，1天
+            // 如果 token 验证成功,使用 vue-cookies 设置 cookie
+            this.$cookies.set('token', token, expire); // 设置过期时间,1天
             this.getUserInfo(token);
             return true;
 
@@ -520,7 +520,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 调整这里的透明度，0为完全透明，1为完全不透明 */
+  background-color: rgba(0, 0, 0, 0.5); /* 调整这里的透明度,0为完全透明,1为完全不透明 */
   z-index: -1; /* 确保叠加在图片底下 */
 }
 

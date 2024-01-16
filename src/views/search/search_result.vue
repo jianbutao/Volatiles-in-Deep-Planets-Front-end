@@ -114,7 +114,7 @@
   </div>
 </template>
   <script>
-import LogoComponent from "@/components/myComponent/LogoComponent.vue";
+import LogoComponent from "@/components/LogoComponent.vue";
 import { loginURL } from "@/store/loginURL";
 export default {
   components: {
