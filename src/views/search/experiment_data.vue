@@ -166,7 +166,7 @@
               </el-form-item>
               <br />
               
-              <!-- <el-form-item label="journal" >
+              <el-form-item label="journal" >
                 <el-select
                   filterable 
                   placeholder="Please Select"
@@ -213,7 +213,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <br /> -->
+              <br />
 
               <el-form-item label="publish year" prop="source.year">
                 <el-input style="width: 40%; margin-right: 2%" v-model.number="form.source.minYear" placeholder="Enter Lower Bound"></el-input>
@@ -280,24 +280,7 @@
 
       // 根据element 进行检索, 注意结果要转置
       element: [
-        {
-          // 用来构造伪删除，避免删除出错
-          disabled: false,
-          elem_name: "",
-          elem_unit: "",
-          elem_lower_bound: "",
-          elem_upper_bound: "",
-        },
       ],
-  };
-
-  // url对照表
-  const url_range_data = {
-    element: "/element/search/experiment",
-    sample: "/experimentProperty/search/sampleType",
-    source: "/dataSource/search/experiment",
-    condition: "/experimentProperty/search/condition",
-    all: "/filter/all/experiment",
   };
 
   export default {
@@ -358,16 +341,7 @@
           },
 
           // 根据element 进行检索, 注意结果要转置
-          element: [
-            {
-              // 用来构造伪删除，避免删除出错
-              disabled: false,
-              elem_name: "",
-              elem_unit: "",
-              elem_lower_bound: "",
-              elem_upper_bound: "",
-            },
-          ],
+          element: [],
         },
 
         // 表单验证
@@ -406,7 +380,15 @@
       };
     },
     computed: {},
-    created() {},
+    created() {
+      if(sessionStorage.getItem("searchInfo")) {
+        let searchObj = JSON.parse(sessionStorage.getItem("searchInfo"));
+        if(searchObj.object == "experiment"){
+          // search的表单
+          this.form = searchObj.originalForm;
+        }
+      }
+    },
     methods: {
       // element的提交需要转置
       elementTransform(){
@@ -499,6 +481,10 @@
               min_number = -100;
               max_number = 100;
             }
+            if(lowerInfo == "" || upperInfo == ""){
+              callback(new Error("Please fill element bound"))
+              return;
+            }
           }
           else{
              if(type == 'source'){
@@ -515,7 +501,18 @@
 
           numberLower = parseFloat(lowerInfo);
           numberUpper = parseFloat(upperInfo);
+          
+          // 如果全空,允许用户通过,返回所有结果
+          if(lowerInfo == null && upperInfo == null || lowerInfo == "" && upperInfo == ""){
+            return;
+          }
 
+          // 如果用户输了一半,提醒它输另一半
+          if(lowerInfo == null !== upperInfo == null){
+            callback(new Error("Please fill with lower and upper bound"))
+            return;
+          }
+          
           // 异常检测，非数字输入
           if (isNaN(numberLower) || isNaN(numberUpper)){
             callback(new Error("Please enter valid number"))
@@ -556,7 +553,7 @@
       // 根据当前的type清除所有的数据
       clearByType(search_type){
         if(search_type == "element"){
-          this["form"][search_type] = [{ ...initialData[search_type][0] }];
+          this["form"][search_type] = [];
         }
         else{
           // 清除数据
@@ -571,74 +568,106 @@
 
       // 提交表单
       submitAll(search_type){
+        // 最终提交
         let result = {};
         let search_types = [];
+        let validation_types = [];
 
-        // 如果查询为all
+        // 全查询
+        search_types = ['element', 'sample', 'condition', 'source'];
+
         if(search_type == 'all'){
-          search_types = ['source', 'element', 'sample', 'condition'];
+          validation_types = ['element', 'sample', 'condition', 'source'];
         }
         else{
-          search_types = [search_type];
+          validation_types = [search_type]
         }
 
-        // 表单验证
-        let validation_number = 0;
-        search_types.forEach((search_type) => {
-          // element区别对待
-          const validation_items = Object.keys(this.rules[search_type]);
-          let validate_str = ""
-          if(search_type == "element"){
-            validate_str += ".value"
-          }
-          validation_items.forEach(item => {
-            this.$refs["form"].validateField(`${search_type}.${item}` + validate_str, (formError) => {
-              if(formError){
-                validation_number += 1;
-                return;
-              }
-            });
-          })
-        })
-
-        if(validation_number > 0){
-          this.$message.error("Form Error, Please check your input!");
-          return;
-        }
-
-        // 如果查询为element, 用all暂时代替
-        if(search_type == 'element'){
-          search_types = ['source', 'element', 'sample', 'condition'];
-        }
-
-        // 添加键值对信息
+        // 添加键值对信息(对于element和age两个字段进行修改)
         search_types.forEach((type_info) => {
           if(type_info == "element"){
             result = this.elementTransform();
           }
           else{
             for (const key in this.form[type_info]) {
-              result[key] = this.form[type_info][key];
+              result[key] = this.handleEmptyString(this.form[type_info][key]);
             }
           }
         });
 
+        // 表单验证
+        let validation_number = 0;
+        let contain_info_number = 0;
+
+        // 对于每一个类别
+        validation_types.forEach((validation_type) => {
+          // element区别对待
+          const validation_items = Object.keys(this.rules[validation_type]);
+          let validate_str = ""
+          if(validation_type == "element"){
+            validate_str += ".value"
+          }
+          // 表单错误校验
+          validation_items.forEach(item => {
+            this.$refs["form"].validateField(`${validation_type}.${item}` + validate_str, (formError) => {
+              if(formError){
+                validation_number += 1;
+                return;
+              }
+            });
+          })
+          // 空值校验
+          if(validation_type == "element"){
+            this.form.element.forEach((item) =>{
+              if(!item.disabled){
+                contain_info_number += 1;
+                return;
+              }
+            })
+          }
+          else{
+            const null_items = Object.keys(this.form[validation_type]);
+            null_items.forEach(item => {
+              let info = JSON.parse(JSON.stringify(this.form[validation_type][item]));
+              if(info != null){
+                if((Array.isArray(info) && info.length > 0)){
+                  contain_info_number += 1;
+                }
+                else if(info != ""){
+                  contain_info_number += 1;
+                }
+              }
+            });
+          }
+        })
+
+        if(validation_number > 0){
+          this.$message.error("Form Error, Please check your input!");
+          return;
+        }
+        if(contain_info_number == 0){
+          this.$message.error("All filter field is empty, please at least fill one!");
+          return;
+        }
+
         result['page'] = this.form.page;
         result['size'] = this.form.size;
 
-        // 将 URL 参数附加到请求 URL 中
-        const url_final = url_range_data[search_type];
         this.submitReady = false;
 
         // 发起 POST 请求
-        this.$service.post(url_final, result).then((res) => {
+        this.$service.post("/filter/all/experiment", result).then((res) => {
           this.submitReady = true;
+          if(!res){
+            this.$message.error("time out");
+            return false;
+          }
           if (!res.data.success) {
               this.$message.error(res.data.error.message);
               return false;
           } else {
               // 结果
-              if(res.data.data.total == 0 || res.data.data.message == "All value is null"){
+              if(res.data.data.total == 0 || res.data.data.message == "All value are null"){
                 this.$message.error("No Available Result");
                 return false;
               }
@@ -658,7 +687,7 @@
                 sessionStorage.setItem('searchInfo',  JSON.stringify({
                   object: this.object,
                   form: result,
-                  url: url_final,
+                  url: "/filter/all/experiment",
                   rows: res.data.data.data[0],
                   total: res.data.data.total,
                   searchHistory: searchHistoryInfo,
@@ -676,6 +705,10 @@
         search_types.forEach((item) => {
           this.clearByType(item)
         })
+      },
+
+      handleEmptyString(value) {
+        return value === "" ? null : value;
       },
     },
   };

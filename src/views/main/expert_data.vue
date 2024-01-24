@@ -15,10 +15,15 @@
             Here, we provide three templates for rock, mineral/Inclusion and
             experiment sample respectively.
           </div>
-          <div class="file-list-div" v-if="isDataLoaded">
-            <el-table :data="fileList" class="my-table" height="400"
-            :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}"
-            empty-text="No available data"
+          <div class="file-list-div">
+            <el-table :data="fileList" 
+              class="my-table" 
+              height="400"
+              v-loading="loading"
+              :header-cell-style="{'text-align':'center'}"
+              :cell-style="{'text-align':'center'}"
+              empty-text="No available data"
+              element-loading-text="now loading"
             >
               <el-table-column prop="file_name">
                 <template slot="header">
@@ -58,7 +63,8 @@ export default {
     return {
       isDataLoaded: false,
       fileNames: null,
-      fileList: null
+      fileList: [1],
+      loading: true,
     };
   },
   computed: {},
@@ -86,7 +92,7 @@ export default {
           return Promise.all(promises);
         })
         .then(downloadCounts => {
-          this.isDataLoaded = true;
+          this.loading = false;
           // 组装数据
           this.fileList = downloadCounts.map((count, index) => {
             return {
@@ -187,6 +193,7 @@ export default {
 }
 .my-table{
   width: 100%;
+  height: 400px;
   font-family: "Arial Normal", "Arial";
 }
 .file-list-div {

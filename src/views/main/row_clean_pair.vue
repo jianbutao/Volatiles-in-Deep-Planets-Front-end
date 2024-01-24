@@ -28,10 +28,17 @@
                   <div class="file-header-div">
                     Raw-Clean Pairs for Clinopyroxene mineral
                   </div>
-                  <div class="file-main-div" v-if="isDataLoaded">
-                    <el-table :data="mineralFileList" class="my-table" height="350"
-                    empty-text="No available data"
-                      :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+                  <div class="file-main-div">
+                    <el-table 
+                      :data="mineralFileList" 
+                      class="my-table"
+                      height="350"
+                      empty-text="No available data"
+                      v-loading="mineralLoading"
+                      element-loading-text="now loading"
+                      :header-cell-style="{'text-align':'center'}" 
+                      :cell-style="{'text-align':'center'}"
+                    >
                         <el-table-column prop="file_name">
                           <template slot="header">
                             <div class="table-title">File Name</div>
@@ -64,10 +71,17 @@
                     <div class="file-header-div">
                       Raw-Clean Pairs for Igneous rock
                     </div>
-                    <div class="file-main-div" v-if="isDataLoaded">
-                      <el-table :data="rockFileList" class="my-table" height="350"
-                      empty-text="No available data"
-                        :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+                    <div class="file-main-div">
+                      <el-table 
+                        :data="rockFileList" 
+                        class="my-table"
+                        height="350"
+                        empty-text="No available data"
+                        v-loading="rockLoading"
+                        element-loading-text="now loading"
+                        :header-cell-style="{'text-align':'center'}" 
+                        :cell-style="{'text-align':'center'}"
+                      >
                           <el-table-column prop="file_name">
                             <template slot="header">
                               <div class="table-title">File Name</div>
@@ -111,11 +125,12 @@ export default {
   },
   data() {
     return {
-      isDataLoaded: false,
+      rockLoading: true,
+      mineralLoading: true,
       rockFileNames: null,
       mineralFileNames: null,
-      rockFileList: null,
-      mineralFileList: null,
+      rockFileList: [1],
+      mineralFileList: [1],
     };
   },
   computed: {},
@@ -150,7 +165,7 @@ export default {
             };
           });
           this[objectType + "FileList"] = tempList;
-          this.isDataLoaded = true;
+          this[objectType + "Loading"] = false;
         })
         .catch(error => {
           console.error('Error fetching data:', error);

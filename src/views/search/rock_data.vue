@@ -19,7 +19,7 @@
               <el-button :type="showRockTypeForm ? 'danger' : ''" round @click="showRockTypeForm = !showRockTypeForm">Filter By Rock Type</el-button>
             </p>
             <el-card class="filter-card" shadow="never" v-if="showRockTypeForm">
-              <el-form-item label="rock name" >
+              <el-form-item label="rock name">
                 <el-select
                   filterable 
                   placeholder="Please Select"
@@ -40,17 +40,27 @@
               <br />
 
               <!-- 多选框 -->
-              <!-- <el-form-item label="mafic/felsic">
+              <el-form-item label="mafic/felsic">
                 <el-checkbox-group v-model="form.type.composition">
                   <el-checkbox v-for="item in composition" :label="item" :key="item">
                     {{item}}
                   </el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
-              <br /> -->
+              <br />
 
               <!-- 多选框 -->
-              <!-- <el-form-item label="alkalinity" >
+              <el-form-item label="attitude">
+                <el-checkbox-group v-model="form.type.attitude">
+                  <el-checkbox v-for="item in attitude" :label="item" :key="item">
+                    {{item}}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <br />
+
+              <!-- 多选框 -->
+              <el-form-item label="alkalinity">
                 <el-select
                   filterable 
                   placeholder="Please Select"
@@ -67,7 +77,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <br /> -->
+              <br />
 
 
               <p>
@@ -81,12 +91,12 @@
               <el-button :type="showAgeForm ? 'danger' : ''" round @click="showAgeForm = !showAgeForm">Filter By Age</el-button>
             </p>
             <el-card class="filter-card" shadow="never" v-if="showAgeForm">
-              <el-form-item label="chronology" >
+              <el-form-item label="chronology">
                 <!-- 纪元选择 -->
                 <el-select
                   filterable 
                   placeholder="Please Select"
-                  v-model="selectGeologicalPeriods"
+                  v-model="form.selectGeologicalPeriods"
                   multiple
                   clearable
                   collapse-tags
@@ -103,9 +113,9 @@
               <br />
 
               <el-form-item label="age(Ma)" prop="age.global_age">
-                <el-input style="width: 40%; margin-right: 2%" v-model="global_age_min" placeholder="Enter Lower Bound"></el-input>
+                <el-input style="width: 40%; margin-right: 2%" v-model="form.global_age_min" placeholder="Enter Lower Bound"></el-input>
                 <span>—</span>
-                <el-input style="width: 40%; margin-left: 2%" v-model="global_age_max" placeholder="Enter Upper Bound"></el-input>
+                <el-input style="width: 40%; margin-left: 2%" v-model="form.global_age_max" placeholder="Enter Upper Bound"></el-input>
               </el-form-item>
               <br />
               
@@ -265,7 +275,7 @@
               </el-form-item>
               <br />
 
-              <!-- <el-form-item label="terrain" >
+              <el-form-item label="terrain" >
                 <el-select
                   filterable 
                   placeholder="Please Select"
@@ -283,7 +293,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <br /> -->
+              <br />
 
               <el-form-item label="P (GPa)" prop="environment.press">
                 <el-input style="width: 40%; margin-right: 2%" v-model="form.environment.pressLowerBound" placeholder="Enter Lower Bound"></el-input>
@@ -317,19 +327,29 @@
             </p>
             <el-card class="filter-card" shadow="never" v-if="showDataSourceForm">
 
-              <el-form-item label="source type">
-                <el-select v-model="form.source.collectSource" placeholder="Please Select">
+              <el-form-item label="source type" >
+                <el-select
+                  class="select-container"
+                  filterable 
+                  placeholder="Please Select"
+                  v-model="form.source.collectSource"
+                  multiple
+                  clearable
+                  collapse-tags
+                  >
                   <el-option
-                    v-for="item in ['paper', 'test', 'database']"
+                    v-for="(item, index) in ['paper', 'test', 'database']"
                     :key="item"
                     :label="item"
-                    :value="item">
+                    :value="item"
+                  >
                   </el-option>
                 </el-select>
               </el-form-item>
               <br />
+
               
-              <!-- <el-form-item label="journal" >
+              <el-form-item label="journal" >
                 <el-select
                   class="select-container"
                   filterable 
@@ -377,7 +397,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <br /> -->
+              <br />
 
               <el-form-item label="publish year" prop="source.year">
                 <el-input style="width: 40%; margin-right: 2%" v-model.number="form.source.minYear" placeholder="Enter Lower Bound"></el-input>
@@ -431,16 +451,7 @@
       composition: [],
     },
     // 根据element 进行检索, 注意结果要转置
-    element: [
-      {
-        // 用来构造伪删除，避免删除出错
-        disabled: false,
-        elem_name: "",
-        elem_unit: "",
-        elem_lower_bound: "",
-        elem_upper_bound: "",
-      },
-    ],
+    element: [],
     // 根据location 进行检索
     location: {
       continent: [],
@@ -471,18 +482,6 @@
     }
   };
 
-  // url对照表
-  const url_range_data = {
-    age: "/mainSample/search/rock",
-    // 临时更改，把filter转到all里面去
-    element: "/filter/all/rock",
-    type: "/rockProperty/search",
-    location: "/geoLocation/search/rock",
-    source: "/dataSource/search/rock",
-    environment: "/geoEnviron/search/rock",
-    all: "/filter/all/rock",
-  };
-
   export default {
     components: {
       LogoComponent,
@@ -511,9 +510,6 @@
         // age相关辅助字段
         geologicalPeriods: searchPageData.geologicalPeriods,
         geologicalAges: searchPageData.geologicalAges,
-        selectGeologicalPeriods: "",
-        global_age_min: null,
-        global_age_max: null,
 
         // 表单是否展开
         showRockTypeForm: false, //是否显示rock type搜索表单
@@ -530,8 +526,10 @@
           page: 1,
           size: 10,
 
-          // 这个有啥用?
-          dataType: [],
+          // 辅助字段
+          selectGeologicalPeriods: "",
+          global_age_min: null,
+          global_age_max: null,
 
           // 根据age 进行检索
           age: {
@@ -548,14 +546,6 @@
           },
           // 根据element 进行检索, 注意结果要转置
           element: [
-            {
-              // 用来构造伪删除，避免删除出错
-              disabled: false,
-              elem_name: "",
-              elem_unit: "",
-              elem_lower_bound: "",
-              elem_upper_bound: "",
-            },
           ],
           // 根据location 进行检索
           location: {
@@ -589,11 +579,13 @@
 
         // 表单验证
         rules: {
-          type: {},
+          type: {
+
+          },
           age: {
             global_age: [
               { validator: this.validateNumberRange("age", "age", 0, 4600), trigger: 'blur' },
-            ]
+            ],
           },
           element: [
             {
@@ -628,25 +620,39 @@
           }
         },
 
-        // 查询按钮拦截，一旦发起请求，设置为false并且组织用户的一切提交
+        // 查询按钮拦截,一旦发起请求,设置为false并且组织用户的一切提交
         submitReady: true,
 
       };
     },
     computed: {},
-    created() {},
+    created() {
+      if(sessionStorage.getItem("searchInfo")) {
+        let searchObj = JSON.parse(sessionStorage.getItem("searchInfo"));
+        if(searchObj.object == "rock"){
+          // search的表单
+          this.form = searchObj.originalForm;
+        }
+      }
+    },
 
     methods: {
-      // age的提交，需要提前转换，因此单独列出
+      // age的提交,需要提前转换,因此单独列出
       ageTranslation(){
-        const all_decades = this.selectGeologicalPeriods
+        const all_decades = this.form.selectGeologicalPeriods
 
-        let range_age_min = this.global_age_min ? this.global_age_min : 0;
-        let range_age_max = this.global_age_max ? this.global_age_max : 4600;
+        let range_age_min = this.form.global_age_min ? this.form.global_age_min : 0;
+        let range_age_max = this.form.global_age_max ? this.form.global_age_max : 4600;
 
         if(all_decades.length == 0){
-          this.form.age.minAge = [range_age_min];
-          this.form.age.maxAge = [range_age_max];
+          if(range_age_min == 0 && range_age_max == 4600){
+            this.form.age.minAge = [];
+            this.form.age.maxAge = [];
+          }
+          else{
+            this.form.age.minAge = [range_age_min];
+            this.form.age.maxAge = [range_age_max];
+          }
           return;
         }
         // 临时查询列表
@@ -655,9 +661,9 @@
 
         let temp_min = -1;
         let temp_max = -1;
-        // 使用map方法，返回一个新数组，每个元素是对应的索引编号
+        // 使用map方法,返回一个新数组,每个元素是对应的索引编号
         const indexes = all_decades.map(item => this.geologicalPeriods.findIndex(obj => obj === item))
-        // 使用forEach方法，遍历索引数组，根据索引从this.selectGeologicalAges中获取minAge和maxAge，然后存入temp_age_list中
+        // 使用forEach方法,遍历索引数组,根据索引从this.selectGeologicalAges中获取minAge和maxAge,然后存入temp_age_list中
 
         let temp_list = [];
         indexes.forEach(index => {
@@ -694,7 +700,7 @@
           const startB = Math.max(startA, range_age_min);
           const endB = Math.min(endA, range_age_max);
 
-          // 如果相交部分的起始点小于等于结束点，说明存在交集
+          // 如果相交部分的起始点小于等于结束点,说明存在交集
           if (startB <= endB) {
             temp_result.push([startB, endB]);
           }
@@ -704,6 +710,7 @@
           age_min_list.push(interval[0]);
           age_max_list.push(interval[1]);
         })
+        
         this.form.age.minAge = age_min_list;
         this.form.age.maxAge = age_max_list;
       },
@@ -724,13 +731,7 @@
         this.form.element.forEach((item) => {
           if(!item.disabled){
             // 避免用户疏漏
-            if(item.elem_unit == ""){
-              elementResult.elem_unit.push("wt%");
-            }
-            else{
-              elementResult.elem_unit.push(transform[item.elem_unit]);
-            }
-
+            elementResult.elem_unit.push(transform[item.elem_unit]);
             elementResult.elem_name.push(item.elem_name);
             elementResult.elem_lower_bound.push(parseFloat(item.elem_lower_bound));
             elementResult.elem_upper_bound.push(parseFloat(item.elem_upper_bound));
@@ -778,8 +779,8 @@
           let lowerInfo, upperInfo;
 
           if(type == 'age'){
-            lowerInfo = this.global_age_min;
-            upperInfo = this.global_age_max;
+            lowerInfo = this.form.global_age_min;
+            upperInfo = this.form.global_age_max;
           }
 
           else if(type == 'element'){
@@ -806,6 +807,10 @@
               min_number = -100;
               max_number = 100;
             }
+            if(lowerInfo == "" && upperInfo == ""){
+              callback(new Error("Please fill element bound"))
+              return;
+            }
           }
 
           else{
@@ -821,12 +826,12 @@
             upperInfo = this.form[type][upperName];
           }
 
-          // 如果全空，允许用户通过，返回所有结果
+          // 如果全空,允许用户通过,返回所有结果
           if(lowerInfo == null && upperInfo == null || lowerInfo == "" && upperInfo == ""){
             return;
           }
 
-          // 如果用户输了一半，提醒它输另一半
+          // 如果用户输了一半,提醒它输另一半
           if(lowerInfo == null !== upperInfo == null){
             callback(new Error("Please fill with lower and upper bound"))
             return;
@@ -835,7 +840,7 @@
           numberLower = parseFloat(lowerInfo);
           numberUpper = parseFloat(upperInfo);
 
-          // 异常检测，非数字输入
+          // 异常检测,非数字输入
           if (isNaN(numberLower) || isNaN(numberUpper)){
             callback(new Error("Please enter valid number"))
             return;
@@ -877,12 +882,12 @@
       // 根据当前的type清除所有的数据
       clearByType(search_type){
         if(search_type == "age"){
-          this.selectGeologicalPeriods = "";
-          this.global_age_min = 0;
-          this.global_age_max = 4600;
+          this.form.selectGeologicalPeriods = "";
+          this.form.global_age_min = 0;
+          this.form.global_age_max = 4600;
         }
         if(search_type == "element"){
-          this["form"][search_type] = [{ ...initialData[search_type][0] }];
+          this["form"][search_type] = [];
         }
         else{
           // 清除数据
@@ -900,45 +905,19 @@
         // 最终提交
         let result = {};
         let search_types = [];
+        let validation_types = [];
 
-        // 如果查询为all
+        // 全查询
+        search_types = ['element', 'age', 'location', 'source', 'environment', 'type'];
+
         if(search_type == 'all'){
-          search_types = ['element', 'age', 'location', 'source', 'environment', 'type'];
+          validation_types = ['element', 'age', 'location', 'source', 'environment', 'type'];
         }
         else{
-          search_types = [search_type];
+          validation_types = [search_type]
         }
 
-        // 表单验证
-        let validation_number = 0;
-        search_types.forEach((search_type) => {
-          // element区别对待
-          const validation_items = Object.keys(this.rules[search_type]);
-          let validate_str = ""
-          if(search_type == "element"){
-            validate_str += ".value"
-          }
-          validation_items.forEach(item => {
-            this.$refs["form"].validateField(`${search_type}.${item}` + validate_str, (formError) => {
-              if(formError){
-                validation_number += 1;
-                return;
-              }
-            });
-          })
-        })
-
-        if(validation_number > 0){
-          this.$message.error("Form Error, Please check your input!");
-          return;
-        }
-
-        // 如果查询为element, 用all暫時代替
-        if(search_type == 'element'){
-          search_types = ['element', 'age', 'location', 'source', 'environment', 'type'];
-        }
-        
-        // 添加键值对信息
+        // 添加键值对信息(对于element和age两个字段进行修改)
         search_types.forEach((type_info) => {
           if(type_info == "element"){
             result = this.elementTransform();
@@ -948,28 +927,85 @@
               this.ageTranslation();
             }
             for (const key in this.form[type_info]) {
-              result[key] = this.form[type_info][key];
+              result[key] = this.handleEmptyString(this.form[type_info][key]);
             }
           }
         });
 
+        // 表单验证
+        let validation_number = 0;
+        let contain_info_number = 0;
+
+        // 对于每一个类别
+        validation_types.forEach((validation_type) => {
+          // element区别对待
+          const validation_items = Object.keys(this.rules[validation_type]);
+          let validate_str = ""
+          if(validation_type == "element"){
+            validate_str += ".value"
+          }
+          // 表单错误校验
+          validation_items.forEach(item => {
+            this.$refs["form"].validateField(`${validation_type}.${item}` + validate_str, (formError) => {
+              if(formError){
+                validation_number += 1;
+                return;
+              }
+            });
+          })
+          // 空值校验
+          if(validation_type == "element"){
+            this.form.element.forEach((item) =>{
+              if(!item.disabled){
+                contain_info_number += 1;
+                return;
+              }
+            })
+          }
+          else{
+            const null_items = Object.keys(this.form[validation_type]);
+            null_items.forEach(item => {
+              let info = JSON.parse(JSON.stringify(this.form[validation_type][item]));
+              if(info != null){
+                if((Array.isArray(info) && info.length > 0)){
+                  contain_info_number += 1;
+                }
+                else if(info != ""){
+                  contain_info_number += 1;
+                }
+              }
+            });
+          }
+        })
+
+        if(validation_number > 0){
+          this.$message.error("Form Error, Please check your input!");
+          return;
+        }
+        if(contain_info_number == 0){
+          this.$message.error("All filter field is empty, please at least fill one!");
+          return;
+        }
+
         result['page'] = this.form.page;
         result['size'] = this.form.size;
 
-        // 将 URL 参数附加到请求 URL 中
-        const url_final = url_range_data[search_type];
         this.submitReady = false;
 
         // 发起 POST 请求
-        this.$service.post(url_final, result).then((res) => {
+        this.$service.post("/filter/all/rock", result).then((res) => {
           this.submitReady = true;
+          if(!res){
+            this.$message.error("time out");
+            return false;
+          }
           if (!res.data.success) {
               this.$message.error(res.data.error.message);
               return false;
           } else {
               // 结果
-              if(res.data.data.total == 0 || res.data.data.message == "All value is null"){
-                this.$message.error("No Available Result");
+              if(res.data.data.total == 0){
+                this.$message.error("No Available Data");
                 return false;
               }
 
@@ -988,7 +1024,8 @@
                 sessionStorage.setItem('searchInfo',  JSON.stringify({
                   object: this.object,
                   form: result,
-                  url: url_final,
+                  originalForm: this.form,
+                  url: "/filter/all/rock",
                   rows: res.data.data.data[0],
                   total: res.data.data.total,
                   searchHistory: searchHistoryInfo,
@@ -1006,6 +1043,10 @@
         search_types.forEach((item) => {
           this.clearByType(item)
         })
+      },
+
+      handleEmptyString(value) {
+        return value === "" ? null : value;
       },
     },
   };

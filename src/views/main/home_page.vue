@@ -1,5 +1,5 @@
 <template>
-  <div id="building">
+  <div id="building" :style="{ backgroundImage: `url(${imgUrl})` }">
     <el-header>
       <img class="icon-div" fit="cover" :src="logo_src">
 
@@ -42,10 +42,15 @@
     </el-header>
     <el-main>
       <div class="main-div">
-        <div class="text">
-          High Temperature Geochemistry<br/>
+        <h1 class="text">
+          <span style="color: rgba(242, 91, 40, 1);">
+            H</span>igh 
+          <span style="color: rgba(242, 91, 40, 1);">
+            T</span>emperature 
+          <span style="color: rgba(242, 91, 40, 1);">
+            G</span>eochemistry<br/>
           Benchmark Database
-        </div>
+        </h1>
         <div class="bottom-div">
           <el-button class="card-div" @click="toSearchPage('rock')">
             <div class="card-icon">🌍</div>
@@ -84,6 +89,7 @@ export default {
   },
   data() {
     return {
+      imgUrl: require('@/assets/expert_data_simple.jpg'),
 
       // test_code: "CN9e02d255844a424bfcc127c361ed357a",
 
@@ -103,10 +109,19 @@ export default {
         expermentSample: {
           title: "Experiment Sample",
           number: 10,
-        }
+        },
       },
+
       showUserName: false, //是否展示用户名
       userName: "", //用户名
+
+      bg: [
+        require('@/assets/expert_data_simple.jpg'),
+        require('@/assets/upload_online_simple.jpg'),
+        require('@/assets/BJ1_simple.jpg'),
+      ],
+
+      currentImageIndex: 0,
       dropdowns: [
         {
           title: "Search & Match",
@@ -144,7 +159,6 @@ export default {
   computed: {},
 
   async created() {
-
     // 首先检测是不是cookie里面已经有信息了,如果有的话应当直接显示用户信息以及exit窗口
     if(this.$cookies.get("token")){
       // 检测是否过期
@@ -190,6 +204,7 @@ export default {
   },
 
   mounted() {
+    this.startImageRotation();
     if (sessionStorage.getItem("store")) {
       this.$store.replaceState(
         Object.assign(
@@ -207,6 +222,15 @@ export default {
   },
   
   methods: {
+    startImageRotation() {
+      setInterval(() => {
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.bg.length;
+        this.updateBackground();
+      }, 5000); // 切换图片间隔时间，单位为毫秒
+    },
+    updateBackground(){
+      this.imgUrl = this.bg[this.currentImageIndex];
+    },
     getUserName() {
       var userName = this.$store.state.userName;
       console.log(userName)
@@ -423,7 +447,7 @@ export default {
   font-size: 32px;
   font-weight: 400;
   text-align: center;
-  color: #E9D8A6;
+  color: rgba(242, 91, 40, 0.8);
 }
 .discription-text{
   font-size: 16px;
@@ -511,8 +535,9 @@ export default {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: url("../../assets/expert_data_simple.jpg");
+  // background: url("../../assets/expert_data_simple.jpg");
   background-size: 100% 100%;
+  transition: background-image 1s ease;
 }
 
 #building::before {

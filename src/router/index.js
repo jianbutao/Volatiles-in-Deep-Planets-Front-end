@@ -99,4 +99,5 @@ const router = new VueRouter({
     routes //指定路由列表
 })
 
+
 export default router

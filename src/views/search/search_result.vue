@@ -8,7 +8,6 @@
       </el-header>
       <el-main>
         <div class="main-div">
-
           <div class="main-left">
 
             <el-table
@@ -24,17 +23,11 @@
                 </template>
               </el-table-column>
               <template v-for="(item, key) in tableData[0]">
-                <el-table-column :prop="key" :label="translate(key)" width="100">
+                <el-table-column :prop="key" :label="translate(key)" :width="flexColumnWidth(key, null, tableData)">
                   <template v-if="isObject(item)">
                     <template v-for="(subItem, subKey) in item">
-                      <template v-if="subKey == 'title'">
-                        <el-table-column :key="subKey" :prop="key + '.' + subKey" :label="translate(subKey)" width="500">
-                        </el-table-column>
-                      </template>
-                      <template v-else>
-                        <el-table-column :key="subKey" :prop="key + '.' + subKey" :label="translate(subKey)" width="100">
-                        </el-table-column>
-                      </template>
+                      <el-table-column :key="subKey" :prop="key + '.' + subKey" :label="translate(subKey)" :width="flexColumnWidth(key, subKey, tableData)">
+                      </el-table-column>
                     </template>
                   </template>
                 </el-table-column>
@@ -54,6 +47,9 @@
             
           <div class="main-right">
             <div class="sub-div">
+              <el-button type="primary" class="my-btn" @click="backToSearch">Back to Search</el-button>
+            </div>
+            <div class="sub-div" style="margin-top: 10%;">
               <el-button type="primary" class="my-btn" :disabled="isDownloading" @click="downloadData()">Download Data</el-button>
             </div>
             <div class="sub-div" style="margin-top: 10%;">
@@ -175,7 +171,7 @@ export default {
     
       this.generateData(tableRawData);
       this.translateHistory(historyRawData);
-
+      
     }
     else{
       this.$message.error("No available search");
@@ -191,6 +187,10 @@ export default {
     //返回主页
     back() {
       this.$router.push({ path: "/main" });
+    },
+
+    backToSearch(){
+      this.$router.push({ path: `/${this.dataType}Data` });
     },
 
     tagTypes(objType){
@@ -443,7 +443,59 @@ export default {
       // 使用 window.location.href 进行跳转
       window.location.href = urlWithParams;
     },
-    
+
+    flexColumnWidth (str, str2, arr1) {
+        str = str + ''
+        let columnContent = ""
+        if (!arr1 || !arr1.length || arr1.length === 0 || arr1 === undefined) {
+          return
+        }
+        if (!str || !str.length || str.length === 0 || str === undefined) {
+          return
+        }
+        // 获取该列中最长的数据(内容)
+        let index = 0
+        if(str2 == null){
+          for (let i = 0; i < arr1.length; i++) {
+            if (this.isObject(arr1[i][str])) {
+              return
+            }
+            const now_temp = arr1[i][str] + ''
+            const max_temp = arr1[index][str] + ''
+            if (now_temp.length > max_temp.length) {
+              index = i
+            }
+          }
+          columnContent = JSON.parse(JSON.stringify(arr1[index][str])) + ''
+        }
+        else{
+          for (let i = 0; i < arr1.length; i++) {
+            if (arr1[i][str] === undefined || arr1[i][str][str2] === null || arr1[i][str][str2] === undefined) {
+              continue
+            }
+            const now_temp = arr1[i][str][str2] + ''
+            const max_temp = arr1[index][str][str2] + ''
+            if (now_temp.length > max_temp.length) {
+              index = i
+            }
+          }
+          if(arr1[index][str][str2] == undefined){
+            columnContent = ""
+          }
+          else{
+            columnContent = JSON.parse(JSON.stringify(arr1[index][str][str2])) + ''
+          }
+        }
+        // 以下分配的单位长度可根据实际需求进行调整
+        let flexWidth = 10
+        for (const char of columnContent) {
+          flexWidth += 8
+        }
+        if(flexWidth < 100){
+          flexWidth = 100
+        }
+        return flexWidth + 'px'
+    },
   },
 };
 </script>
@@ -494,8 +546,6 @@ export default {
 }
 
 .el-pagination {
-  position: absolute;
-  bottom: 10px;
   margin: 0 auto;
   width: 100%;
   padding: 10px 0; /* 添加上下 padding 以改善外观 */
