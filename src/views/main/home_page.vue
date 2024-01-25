@@ -174,14 +174,12 @@ export default {
 
     // 其次检测是否从DDE这边回来,如果是的话则要跳转到对应界面
     const codeValue = this.$route.query.code;
-    // const codeValue = "CN1d18bf30278eac6f804542697401f8a0"
     if(codeValue){
       // 通过验证
       if(await this.getTokenAndValidate(codeValue)){
         // 存储路由信息
         const whereToGo = this.$route.query.context;
         if(whereToGo){
-          // const decodedContext = whereToGo
 
           const decodedContext = atob(whereToGo)
 

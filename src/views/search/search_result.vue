@@ -202,12 +202,27 @@ export default {
       return dict[objType];
     },
 
+    hasLogin() {
+      let cookies = document.cookie.split("; ");
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].split("=");
+        if (cookie[0] === "token") {
+          return true;
+        }
+      }
+      return false;
+    },
 
     downloadData(){
 
-      // if(!this.$store.dispatch('login', "searchResult")){
-      //   return;
-      // }
+      if(!this.hasLogin()){
+        this.$message({
+          message: "Please log in first!",
+          type: "warning",
+        });
+        this.login("contactJoin")
+        return;
+      }
 
       const url_final = `/download/${this.dataType}Data`;
       const listForm = new FormData();
@@ -426,22 +441,9 @@ export default {
       this.$message.error("Please expecting at Version 2.0");
     },
 
-    login(context){
-      const loginUrl = loginURL.baseURL + loginURL.login
-      // 构建携带参数的 URL
-      const params = {
-        appCode: loginURL.appCode,
-        context: context,
-      };
-      // BASE64转化
-      params.context = btoa(params.context);
-      const queryString = Object.keys(params)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
-      // 拼接完整的 URL
-      const urlWithParams = `${loginUrl}?${queryString}`;
-      // 使用 window.location.href 进行跳转
-      window.location.href = urlWithParams;
+    //跳转到DDE登录页
+    login(context) {
+      this.$store.dispatch('login', context);
     },
 
     flexColumnWidth (str, str2, arr1) {

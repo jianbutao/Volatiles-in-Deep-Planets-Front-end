@@ -140,22 +140,9 @@ export default {
         return false;
       });
     },
-    login(context){
-      const loginUrl = loginURL.baseURL + loginURL.login
-      // 构建携带参数的 URL
-      const params = {
-        appCode: loginURL.appCode,
-        context: context,
-      };
-      // BASE64转化
-      params.context = btoa(params.context);
-      const queryString = Object.keys(params)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
-      // 拼接完整的 URL
-      const urlWithParams = `${loginUrl}?${queryString}`;
-      // 使用 window.location.href 进行跳转
-      window.location.href = urlWithParams;
+    //跳转到DDE登录页
+    login(context) {
+      this.$store.dispatch('login', context);
     },
   },
 };
