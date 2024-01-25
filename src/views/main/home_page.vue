@@ -164,7 +164,10 @@ export default {
       // 检测是否过期
       const expired = await this.validateToken(this.$cookies.get("token"))
       if(expired){
-        this.exitLogin()
+        this.$cookies.remove("token");
+        this.$store.commit("setUserName", "");
+        sessionStorage.removeItem("store");
+        this.showUserName = false;
       }
       else{
         this.showUserName = true;
@@ -231,7 +234,6 @@ export default {
     },
     getUserName() {
       var userName = this.$store.state.userName;
-      console.log(userName)
       if (userName.length > 0) {
         this.showUserName = true;
         this.userName = userName;
