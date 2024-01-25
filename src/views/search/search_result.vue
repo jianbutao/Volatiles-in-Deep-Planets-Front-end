@@ -220,7 +220,7 @@ export default {
           message: "Please log in first!",
           type: "warning",
         });
-        this.login("contactJoin")
+        this.login("searchResult")
         return;
       }
 
