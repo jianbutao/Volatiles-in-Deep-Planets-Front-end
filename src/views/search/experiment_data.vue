@@ -583,14 +583,16 @@
           validation_types = [search_type]
         }
 
-        // 添加键值对信息(对于element和age两个字段进行修改)
         search_types.forEach((type_info) => {
-          if(type_info == "element"){
-            result = this.elementTransform();
-          }
-          else{
+          if(validation_types.includes(type_info)){
             for (const key in this.form[type_info]) {
               result[key] = this.handleEmptyString(this.form[type_info][key]);
+            }
+          }
+          // 空值
+          else{
+            for (const key in initialData[type_info]) {
+              result[key] = initialData[type_info][key];
             }
           }
         });

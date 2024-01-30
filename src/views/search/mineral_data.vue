@@ -588,17 +588,17 @@
       ageTranslation(){
         const all_decades = this.form.selectGeologicalPeriods
 
-        let range_age_min = this.form.global_age_min ? this.form.global_age_min : 0;
+        let range_age_min = this.form.global_age_min ? this.form.global_age_min : -1;
         let range_age_max = this.form.global_age_max ? this.form.global_age_max : 4600;
 
         if(all_decades.length == 0){
-          if(range_age_min == 0 && range_age_max == 4600){
+          if(range_age_min == -1 && range_age_max == 4600){
             this.form.age.minAge = [];
             this.form.age.maxAge = [];
           }
           else{
-            this.form.age.minAge = [range_age_min];
-            this.form.age.maxAge = [range_age_max];
+            this.form.age.minAge = [parseFloat(range_age_min)];
+            this.form.age.maxAge = [parseFloat(range_age_max)];
           }
           return;
         }
@@ -866,18 +866,43 @@
 
         // 添加键值对信息(对于element和age两个字段进行修改)
         search_types.forEach((type_info) => {
-          if(type_info == "element"){
-            result = this.elementTransform();
-          }
-          else{
-            if(type_info == 'age'){
-              this.ageTranslation();
+          if(validation_types.includes(type_info)){
+            if(type_info == "element"){
+              let element_list = this.elementTransform();
+              for (const key in element_list) {
+                result[key] = this.handleEmptyString(element_list[key]);
+              }
             }
-            for (const key in this.form[type_info]) {
-              result[key] = this.handleEmptyString(this.form[type_info][key]);
+            else{
+              if(type_info == 'age'){
+                this.ageTranslation();
+              }
+              for (const key in this.form[type_info]) {
+                result[key] = this.handleEmptyString(this.form[type_info][key]);
+              }
+            }
+          }
+          // 空值
+          else{
+            if(type_info == "element"){
+              let element_list = {
+                elem_name: [],
+                elem_unit: [],
+                elem_lower_bound: [],
+                elem_upper_bound: [],
+              }
+              for (const key in element_list) {
+                result[key] = this.handleEmptyString(element_list[key]);
+              }
+            }
+            else{
+              for (const key in initialData[type_info]) {
+                result[key] = initialData[type_info][key];
+              }
             }
           }
         });
+
 
         // 表单验证
         let validation_number = 0;
