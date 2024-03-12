@@ -3,11 +3,9 @@
     <el-container>
       <el-header>
         <LogoComponent :page="'rockData'" />
-        <div class="title-div">Uploaded Data Template</div>
-        <el-button class="back-btn" @click="back">Home</el-button>
       </el-header>
-      <el-main>
 
+      <el-main>
         <div class="main-div">
 
           <div class="note-div">

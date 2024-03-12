@@ -1,56 +1,54 @@
 <template>
-  <div id="building">
-    <el-container>
-      <el-header>
-        <LogoComponent :page="'expertData'" />
-        <div class="title-div">Expert Data</div>
-        <el-button class="back-btn" @click="back">Home</el-button>
-      </el-header>
-      <el-main>
-        <div class="main-div">
-          <div class="top-note-div">
-            Expert Data of High T Geochemistry Database
-          </div>
-          <div class="bottom-note-div">
-            Here, we provide three templates for rock, mineral/Inclusion and
-            experiment sample respectively.
-          </div>
+  <el-container>
+    <el-header>
+      <LogoComponent :page="'expertData'" />
+    </el-header>
+    <el-main>
+      <div class="main-div">
+        <div class="top-note-div">
+          Expert Data of High T Geochemistry Database
+        </div>
+        <!-- <div class="bottom-note-div">
+          Here, we provide three templates for rock, mineral/Inclusion and
+          experiment sample respectively.
+        </div> -->
+        <el-card class="box-card">
           <div class="file-list-div">
             <el-table :data="fileList" 
               class="my-table" 
-              height="400"
+              height="800"
               v-loading="loading"
-              :header-cell-style="{'text-align':'center'}"
-              :cell-style="{'text-align':'center'}"
+              :header-cell-style="cellStyle"
+              :cell-style="cellStyle"
               empty-text="No available data"
               element-loading-text="now loading"
             >
-              <el-table-column prop="file_name">
-                <template slot="header">
-                  <div class="table-title">File Name</div>
-                </template>
-              </el-table-column>
-              <el-table-column width="180">
-                <template slot="header">
-                  <div class="table-title">Download</div>
-                </template>
-                <template slot-scope="scope">
-                  <el-button type="text" @click="handleClick(scope.row.file_name, 'xlsx')">xlsx</el-button>
-                  <!-- <el-button type="text" @click="handleClick(scope.row.file_name, 'csv')">csv</el-button>
-                  <el-button type="text" @click="handleClick(scope.row.file_name, 'txt')">txt</el-button> -->
-                </template>
-              </el-table-column>
-              <el-table-column prop="downloads" width="150">
-                <template slot="header">
-                  <div class="table-title">Counts</div>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
+            <el-table-column prop="file_name" width="320">
+              <template slot="header">
+                <div class="table-title">File Name</div>
+              </template>
+            </el-table-column>
+            <el-table-column width="220">
+              <template slot="header">
+                <div class="table-title">Download</div>
+              </template>
+              <template slot-scope="scope">
+                <el-button type="text" @click="handleClick(scope.row.file_name, 'xlsx')">xlsx</el-button>
+                <!-- <el-button type="text" @click="handleClick(scope.row.file_name, 'csv')">csv</el-button>
+                <el-button type="text" @click="handleClick(scope.row.file_name, 'txt')">txt</el-button> -->
+              </template>
+            </el-table-column>
+            <el-table-column prop="downloads" width="220">
+              <template slot="header">
+                <div class="table-title">Count</div>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-      </el-main>
-    </el-container>
-  </div>
+      </el-card>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 <script>
 import LogoComponent from "@/components/LogoComponent.vue";
@@ -77,6 +75,19 @@ export default {
     //返回主页
     back() {
       this.$router.push({ path: "/main" });
+    },
+
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      // 比如说，你想让第一列居中，其他列靠左
+      if (columnIndex === 0) {
+        return {
+          'text-align': 'left',
+        };
+      } else {
+        return {
+          'text-align': 'center',
+        };
+      }
     },
 
     getFileList() {
@@ -175,8 +186,10 @@ export default {
 <style scoped>
 .table-title{
   font-weight:bold;
-  font-size: large;
-  color: #000000;
+  font-size: 25px;
+  color: rgba(0, 0, 0, 0.8);
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 .my-table{
   width: 100%;
@@ -190,24 +203,24 @@ export default {
 }
 .bottom-note-div {
   font-family: "Arial Normal", "Arial";
-  font-weight: 400;
-  font-size: 20px;
-  color: #000000;
+  font-weight: 200;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.8);
   text-align: left;
-  margin-top: 20px;
   margin-left: 50px;
   margin-bottom: 50px;
 }
 .top-note-div {
   /* border: 1px solid blue; */
-  font-family: "Arial Negreta", "Arial Normal", "Arial";
-  font-weight: 700;
+  font-family: Jost;
   font-size: 28px;
-  color: #000000;
+  color: rgba(242, 91, 40, 1);
   text-align: left;
-  margin-left: 50px;
+  margin-left: 30px;
+  margin-bottom: 50px;
 }
 .main-div {
+  border: 1px;
   padding: 40px;
   background-color: rgba(255, 255, 255, 0.8); 
   margin: 20px auto;
@@ -226,12 +239,9 @@ export default {
 .el-container {
   height: 100vh;
 }
-#building {
-  background: url("../../assets/expert_data_simple.jpg");
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow-y: auto;
-  background-size: 100% 100%;
+
+.box-card {
+  margin: auto;
+  width: 90%;
 }
 </style>

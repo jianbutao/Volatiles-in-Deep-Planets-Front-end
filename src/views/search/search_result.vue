@@ -3,8 +3,6 @@
     <el-container>
       <el-header>
         <LogoComponent :page="'rockData'" />
-        <div class="title-div">{{ pageTitle }}</div>
-        <el-button class="back-btn" @click="back">Home</el-button>
       </el-header>
       <el-main>
         <div class="main-div">
@@ -26,7 +24,7 @@
                 <el-table-column :prop="key" :label="translate(key)" :width="flexColumnWidth(key, null, tableData)">
                   <template v-if="isObject(item)">
                     <template v-for="(subItem, subKey) in item">
-                      <el-table-column :key="subKey" :prop="key + '.' + subKey" :label="translate(subKey)" :width="flexColumnWidth(key, subKey, tableData)">
+                      <el-table-column :prop="key + '.' + subKey" :label="translate(subKey)" :width="flexColumnWidth(key, subKey, tableData)">
                       </el-table-column>
                     </template>
                   </template>

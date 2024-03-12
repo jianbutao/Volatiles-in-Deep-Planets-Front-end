@@ -3,8 +3,6 @@
     <el-container>
       <el-header>
         <LogoComponent :page="'expertData'" />
-        <div class="title-div">HTG Team & Project</div>
-        <el-button class="back-btn" @click="back">Home</el-button>
       </el-header>
       <el-main>
         <div class="main-div">

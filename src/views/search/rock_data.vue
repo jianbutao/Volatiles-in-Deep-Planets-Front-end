@@ -3,8 +3,6 @@
     <el-container>
       <el-header>
         <LogoComponent :page="'rockData'" />
-        <div class="title-div">Search Data - Rock(natural)</div>
-        <el-button class="back-btn" @click="back">Home</el-button>
       </el-header>
       <el-main>
         <div style="max-width: 800px; margin: auto;">
