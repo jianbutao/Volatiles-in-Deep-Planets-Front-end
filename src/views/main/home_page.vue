@@ -137,13 +137,13 @@ export default {
           items: [
             { label: "Expert Data", command: "expertData" },
             { label: "Raw-Clean Pair", command: "rawCleanPair" },
+            { label: "Data Template", command: "dataTemplate" },
           ],
         },
         {
           title: "Upload Data",
           items: [
             { label: "Upload Online", command: "uploadOnline" },
-            { label: "Data Template", command: "dataTemplate" },
           ],
         },
         {
