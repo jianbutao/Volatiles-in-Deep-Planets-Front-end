@@ -73,6 +73,7 @@ export default {
           title: "Upload Data",
           items: [
             { label: "Upload Online", command: "uploadOnline" },
+            { label: "Upload Batch", command: "uploadBatch" },
           ],
         },
         {
@@ -84,9 +85,6 @@ export default {
         },
       ],
     };
-  },
-  created(){
-    this.getUserAdmin();
   },
   methods: {
     toHome() {

@@ -10,19 +10,19 @@ import VueCookies from "vue-cookies";
 import './styles/globalStyle.less';
 import './styles/font.less';
 
-// 导航守卫
-router.beforeEach((to, from, next) => {
-  const notAllowedPaths = ['/uploadOnline'];
+// // 导航守卫
+// router.beforeEach((to, from, next) => {
+//   const notAllowedPaths = ['/uploadOnline', '/uploadBatch'];
 
-  // 如果 to.path 在 allowedPaths 中，则正常跳转，否则检查登录状态
-  if ((!notAllowedPaths.includes(to.path)) || hasLogin()) {
-    next();
-  } else {
-    // 用户未登录且访问了不允许的页面，跳转到登录页面
-    next('/main');
-  }
+//   // 如果 to.path 在 allowedPaths 中，则正常跳转，否则检查登录状态
+//   if ((!notAllowedPaths.includes(to.path)) || hasLogin()) {
+//     next();
+//   } else {
+//     // 用户未登录且访问了不允许的页面，跳转到登录页面
+//     next('/main');
+//   }
 
-});
+// });
   
 //判断是否登录
 function hasLogin() {

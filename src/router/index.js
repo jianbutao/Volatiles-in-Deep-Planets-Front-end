@@ -31,6 +31,10 @@ const routes = [
         component: () => import('../views/main/upload_online')
     },
     {
+        path:'/uploadBatch',
+        component: () => import('../views/main/upload_batch')
+    },
+    {
         path:'/expertData',
         component: () => import('../views/main/expert_data')
     },

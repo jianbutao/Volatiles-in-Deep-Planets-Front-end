@@ -132,7 +132,6 @@ export default {
             { label: "Rock Data", command: "rockData" },
             { label: "Mineral Data", command: "mineralData" },
             { label: "Experiment Data", command: "experimentData" },
-            // { label: "Match Data", command: "matchData" },
           ],
         },
         {
@@ -147,6 +146,7 @@ export default {
           title: "Upload Data",
           items: [
             { label: "Upload Online", command: "uploadOnline" },
+            { label: "Upload Batch", command: "uploadBatch" },
           ],
         },
         {
@@ -399,9 +399,9 @@ export default {
     },
     shouldShowItem(item) {
       // 根据用户的角色ID决定是否显示特定的菜单项
-      if (item.title === "Upload Data" && !this.$store.state.isAdmin) {
-        return false; // 隐藏 About Us 部分
-      }
+      // if (item.title === "Upload Data" && !this.$store.state.isAdmin) {
+      //   return false; // 隐藏 About Us 部分
+      // }
       return true; // 显示其他部分
     },
     handleCommand(command) {
