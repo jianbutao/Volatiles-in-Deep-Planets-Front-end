@@ -10,12 +10,10 @@
         </div>
         <div class="bottom-note-div">
           We provides two comparative data sets before and after manual cleaning, which can be used to test the effect of data cleaning.
-          <br>
-          <br>
+          <p></p>
           One comparison of the igneous rock data downloaded for EarthChem with the cleaned dataset of Liu's team cleaned; 
           Another comparison of clinopyroxene mineral data downloaded for Georoc with the cleaned dataset of Qin's team
-          <br>
-          <br>
+          <p></p>
           Here are the two files for Clinopyroxene mineral and Igneous rock comparison datasets respectively.
         </div>
         <div class="file-list-div-top">
@@ -64,7 +62,7 @@
                 </div>
               </div>
               <div class="sub-div" style="width: 70%; margin: 10px auto">
-                <el-button type="primary" class="my-btn" @click="handleClick('mineral_pairs', 'zip', 'Mineral')">Download All Mineral Files</el-button>
+                <el-button type="primary" @click="handleClick('mineral_pairs', 'zip', 'Mineral')">Download All Mineral Files</el-button>
               </div>
             </el-col>
             <el-col :span="12">
@@ -111,7 +109,7 @@
                   </div>
                 </div>
                 <div class="sub-div" style="width: 70%; margin: 10px auto">
-                  <el-button type="primary" class="my-btn" @click="handleClick('rock_pairs', 'zip', 'Rock')">Download All Rock Files</el-button>
+                  <el-button type="primary" @click="handleClick('rock_pairs', 'zip', 'Rock')">Download All Rock Files</el-button>
                 </div>
             </el-col>
           </el-row>
@@ -122,7 +120,6 @@
 </template>
 <script>
 import LogoComponent from "@/components/LogoComponent.vue";
-import { loginURL } from "@/store/loginURL";
 export default {
   components: {
     LogoComponent,
@@ -309,7 +306,7 @@ export default {
   margin-top: 20px;
   margin-left: 50px;
   margin-bottom: 50px;
-  line-height: 30px;
+  line-height: 20px;
 }
 
 .top-note-div   {
@@ -338,18 +335,6 @@ export default {
 
 .el-container {
   height: 100vh;
-}
-
-.my-btn {
-  width: 100%;
-  color: #ffffff;
-  font-family: "Arial Negreta", "Arial Normal", "Arial";
-  font-weight: 700;
-  font-size: 16px;
-  background-color: rgba(51, 51, 51, 1);
-  border: none;
-  border-radius: 9px;
-  margin-top: 20px;
 }
 
 .box-card {
