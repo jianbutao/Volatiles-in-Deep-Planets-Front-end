@@ -1,48 +1,49 @@
 <template>
-  <div id="building">
-    <el-container>
-      <el-header>
-        <LogoComponent :page="'expertData'" />
-      </el-header>
-      <el-main>
-        <div class="main-div">
-          <div class="top-note-div">
-            Raw-Clean Pairs of High T Geochemistry Database
-          </div>
-          <div class="bottom-note-div">
-            We provides two comparative data sets before and after manual cleaning, which can be used to test the effect of data cleaning.
-            <br>
-            <br>
-            One comparison of the igneous rock data downloaded for EarthChem with the cleaned dataset of Liu's team cleaned; 
-            Another comparison of clinopyroxene mineral data downloaded for Georoc with the cleaned dataset of Qin's team
-            <br>
-            <br>
-            Here are the two files for Clinopyroxene mineral and Igneous rock comparison datasets respectively.
-          </div>
-          <div class="file-list-div">
-            <el-row :gutter="30">
-              <el-col :span="12">
-                <div class="table-div">
-                  <div class="file-header-div">
-                    Raw-Clean Pairs for Clinopyroxene mineral
-                  </div>
-                  <div class="file-main-div">
-                    <el-table 
-                      :data="mineralFileList" 
-                      class="my-table"
-                      height="350"
-                      empty-text="No available data"
-                      v-loading="mineralLoading"
-                      element-loading-text="now loading"
-                      :header-cell-style="{'text-align':'center'}" 
-                      :cell-style="{'text-align':'center'}"
-                    >
+  <el-container>
+    <el-header>
+      <LogoComponent :page="'expertData'" />
+    </el-header>
+    <el-main>
+      <div class="main-div">
+        <div class="top-note-div">
+          Raw-Clean Pairs of High T Geochemistry Database
+        </div>
+        <div class="bottom-note-div">
+          We provides two comparative data sets before and after manual cleaning, which can be used to test the effect of data cleaning.
+          <br>
+          <br>
+          One comparison of the igneous rock data downloaded for EarthChem with the cleaned dataset of Liu's team cleaned; 
+          Another comparison of clinopyroxene mineral data downloaded for Georoc with the cleaned dataset of Qin's team
+          <br>
+          <br>
+          Here are the two files for Clinopyroxene mineral and Igneous rock comparison datasets respectively.
+        </div>
+        <div class="file-list-div-top">
+          <el-row :gutter="30">
+            <el-col :span="12">
+              <div class="table-div">
+                <div class="file-header-div">
+                  Raw-Clean Pairs for Clinopyroxene mineral
+                </div>
+                <div class="file-main-div">
+                  <el-card class="box-card">
+                    <div class="file-list-div">
+                      <el-table 
+                        :data="mineralFileList" 
+                        class="my-table"
+                        height="350"
+                        empty-text="No available data"
+                        v-loading="mineralLoading"
+                        element-loading-text="now loading"
+                        :header-cell-style="cellStyle"
+                        :cell-style="cellStyle"
+                      >
                         <el-table-column prop="file_name">
                           <template slot="header">
                             <div class="table-title">File Name</div>
                           </template>
                         </el-table-column>
-                        <el-table-column width="150">
+                        <el-table-column width="120">
                           <template slot="header">
                             <div class="table-title">Download</div>
                           </template>
@@ -52,40 +53,44 @@
                             <el-button type="text" @click="handleClick(scope.row.file_name, 'txt', 'Mineral')">txt</el-button>
                           </template>
                         </el-table-column>
-                        <el-table-column prop="downloads" width="100">
+                        <el-table-column prop="downloads" width="80">
                           <template slot="header">
-                            <div class="table-title">Counts</div>
+                            <div class="table-title">Count</div>
                           </template>
                         </el-table-column>
                       </el-table>
-                  </div>
-                </div>
-                <div class="sub-div" style="width: 70%; margin: 10px auto">
-                  <el-button type="primary" class="my-btn" @click="handleClick('mineral_pairs', 'zip', 'Mineral')">Download All Mineral Files</el-button>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="table-div">
-                    <div class="file-header-div">
-                      Raw-Clean Pairs for Igneous rock
                     </div>
-                    <div class="file-main-div">
-                      <el-table 
-                        :data="rockFileList" 
-                        class="my-table"
-                        height="350"
-                        empty-text="No available data"
-                        v-loading="rockLoading"
-                        element-loading-text="now loading"
-                        :header-cell-style="{'text-align':'center'}" 
-                        :cell-style="{'text-align':'center'}"
-                      >
+                  </el-card>
+                </div>
+              </div>
+              <div class="sub-div" style="width: 70%; margin: 10px auto">
+                <el-button type="primary" class="my-btn" @click="handleClick('mineral_pairs', 'zip', 'Mineral')">Download All Mineral Files</el-button>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="table-div">
+                  <div class="file-header-div">
+                    Raw-Clean Pairs for Igneous rock
+                  </div>
+                  <div class="file-main-div">
+                    <el-card class="box-card">
+                      <div class="file-list-div">
+                        <el-table 
+                          :data="rockFileList" 
+                          class="my-table"
+                          height="350"
+                          empty-text="No available data"
+                          v-loading="rockLoading"
+                          element-loading-text="now loading"
+                          :header-cell-style="cellStyle"
+                          :cell-style="cellStyle"
+                        >
                           <el-table-column prop="file_name">
                             <template slot="header">
                               <div class="table-title">File Name</div>
                             </template>
                           </el-table-column>
-                          <el-table-column width="150">
+                          <el-table-column width="120">
                             <template slot="header">
                               <div class="table-title">Download</div>
                             </template>
@@ -95,24 +100,25 @@
                               <el-button type="text" @click="handleClick(scope.row.file_name, 'txt', 'Rock')">txt</el-button>
                             </template>
                           </el-table-column>
-                          <el-table-column prop="downloads" width="100">
+                          <el-table-column prop="downloads" width="80">
                             <template slot="header">
-                              <div class="table-title">Counts</div>
+                              <div class="table-title">Count</div>
                             </template>
                           </el-table-column>
                         </el-table>
-                    </div>
+                      </div>
+                    </el-card>
                   </div>
-                  <div class="sub-div" style="width: 70%; margin: 10px auto">
-                    <el-button type="primary" class="my-btn" @click="handleClick('rock_pairs', 'zip', 'Rock')">Download All Rock Files</el-button>
-                  </div>
-              </el-col>
-            </el-row>
-          </div>
+                </div>
+                <div class="sub-div" style="width: 70%; margin: 10px auto">
+                  <el-button type="primary" class="my-btn" @click="handleClick('rock_pairs', 'zip', 'Rock')">Download All Rock Files</el-button>
+                </div>
+            </el-col>
+          </el-row>
         </div>
-      </el-main>
-    </el-container>
-  </div>
+      </div>
+    </el-main>
+  </el-container>
 </template>
 <script>
 import LogoComponent from "@/components/LogoComponent.vue";
@@ -140,6 +146,19 @@ export default {
     //返回主页
     back() {
       this.$router.push({ path: "/main" });
+    },
+    
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      // 比如说，你想让第一列居中，其他列靠左
+      if (columnIndex === 0) {
+        return {
+          'text-align': 'left',
+        };
+      } else {
+        return {
+          'text-align': 'center',
+        };
+      }
     },
 
     getFileList(objectType) {
@@ -244,27 +263,17 @@ export default {
 };
 </script>
 <style scoped>
-.table-title{
-  font-weight:bold;
-  font-size: large;
-  color: #000000;
-}
 .my-table{
   width: 100%;
   font-family: "Arial Normal", "Arial";
 }
 .file-header-div{
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-image: url('../../assets/row_clean.svg');
-  background-size: cover;
-  width: 100%;
-  height: 60px;
-  font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
-  font-weight: 700;
+  font-family: Jost;
   font-size: 20px;
-  color: #579fe2;
+  color: rgba(242, 91, 40, 1);
+  text-align: left;
 }
 .file-main-div{
   width: 100%;
@@ -280,24 +289,36 @@ export default {
   margin: auto;
 }
 
+.file-list-div-top {
+  width: 90%;
+  margin: auto;
+}
+.table-title{
+  font-weight:bold;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 20px;
+}
+
 .bottom-note-div {
   font-family: "Arial Normal", "Arial";
   font-weight: 400;
-  font-size: 20px;
-  color: #000000;
+  font-size: 15px;
+  color: rgba(0, 95, 115, 1);
   text-align: left;
   margin-top: 20px;
   margin-left: 50px;
   margin-bottom: 50px;
+  line-height: 30px;
 }
-.top-note-div {
-  /* border: 1px solid blue; */
-  font-family: "Arial Negreta", "Arial Normal", "Arial";
-  font-weight: 700;
+
+.top-note-div   {
+  font-family: Jost;
   font-size: 28px;
-  color: #000000;
+  color: rgba(242, 91, 40, 1);
   text-align: left;
-  margin-left: 50px;
+  margin-left: 30px;
+  margin-bottom: 20px;
 }
 .main-div {
   padding: 40px;
@@ -328,14 +349,18 @@ export default {
   background-color: rgba(51, 51, 51, 1);
   border: none;
   border-radius: 9px;
+  margin-top: 20px;
 }
 
-#building {
-  background: url("../../assets/expert_data_simple.jpg");
+.box-card {
+  margin: auto;
   width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow-y: auto;
-  background-size: 100% 100%;
 }
+
+.file-list-div {
+  width: 100%;
+  margin: auto;
+  overflow-y: auto;
+}
+
 </style>
