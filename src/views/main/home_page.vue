@@ -1,8 +1,11 @@
 <template>
   <div id="building" :style="{ backgroundImage: `url(${imgUrl})` }">
     <el-header>
-      <img class="icon-div" fit="cover" :src="logo_src">
-
+      <div class="total-div">
+        <img class="icon3-div" fit="cover" :src="logo3_src">
+        <img class="icon2-div" fit="cover" :src="logo2_src">
+        <img class="icon-div" fit="cover" :src="logo_src">
+      </div>
       <div class="dropdown-div">
         <el-dropdown
           @command="handleCommand"
@@ -93,9 +96,9 @@ export default {
 
       // test_code: "CN9e02d255844a424bfcc127c361ed357a",
 
-      role_id: 2,
-
-      logo_src: require('../../assets/logo_simple.png'),
+      logo_src: require('../../assets/icon/icon1.png'),
+      logo2_src: require('../../assets/icon/icon2.svg'),
+      logo3_src: require('../../assets/icon/icon3.svg'),
 
       displayInfo: {
         rock: {
@@ -166,6 +169,7 @@ export default {
       if(expired){
         this.$cookies.remove("token");
         this.$store.commit("setUserName", "");
+        this.$store.commit("setUserAdmin", false);
         sessionStorage.removeItem("store");
         this.showUserName = false;
       }
@@ -352,6 +356,7 @@ export default {
 
       if(validationResponse.data){
         this.$store.commit("setUserName", validationResponse.data.accountName);
+        this.$store.commit("setUserAdmin", validationResponse.data.admin === "true");
         this.getUserName();
       }
     },
@@ -360,6 +365,7 @@ export default {
     async exitLogin() {
       this.$cookies.remove("token");
       this.$store.commit("setUserName", "");
+      this.$store.commit("setUserAdmin", false);
       sessionStorage.removeItem("store");
 
       // DDE系统那边的退出
@@ -393,7 +399,7 @@ export default {
     },
     shouldShowItem(item) {
       // 根据用户的角色ID决定是否显示特定的菜单项
-      if (item.title === "Upload Data" && this.role_id === 2) {
+      if (item.title === "Upload Data" && !this.$store.state.isAdmin) {
         return false; // 隐藏 About Us 部分
       }
       return true; // 显示其他部分
@@ -459,11 +465,29 @@ export default {
 .el-header{
   background-color: rgba(0, 0, 0, 0);
 }
-.icon-div{
+
+.total-div{
+  margin-left: 10px;
+  margin-top: 30px;
   position: absolute;
+  display: flex;
+}
+
+.icon-div{
+  height: 70px;
+  width: 70px;
+  margin-top: 30px;
+}
+
+.icon2-div{
   height: 80px;
-  width: 80px;
-  margin-left: 100px;
+  width: 100px;
+  margin-top: 30px;
+}
+
+.icon3-div{
+  height: 80px;
+  width: 100px;
   margin-top: 30px;
 }
 

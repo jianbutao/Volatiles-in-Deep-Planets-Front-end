@@ -133,6 +133,7 @@ export default {
     exitLogin() {
       this.$cookies.remove("token");
       this.$store.commit("setUserName", "");
+      this.$store.commit("setUserAdmin", false);
       sessionStorage.removeItem("store");
 
       // DDE系统那边的退出

@@ -1,6 +1,8 @@
 <template>
   <div class="total-div">
     <div class="logo-div" @click="toHome">
+      <img :src='logo3_src' class="logo3-img" fit="cover" >
+      <img :src='logo2_src' class="logo2-img" fit="cover" >
       <img :src='logo_src' class="logo-img" fit="cover" >
     </div>
     <div class="dropdown-div">
@@ -43,10 +45,12 @@ export default {
   props: ['page'],
   data() {
     return {
-      logo_src:require('../assets/logo_simple.png'),
+      logo_src: require('../assets/icon/icon1.png'),
+      logo2_src: require('../assets/icon/icon2.svg'),
+      logo3_src: require('../assets/icon/icon3.svg'),
+
       search_src:require('../assets/icon/search.png'),
       face_src:require('../assets/icon/face.png'),
-      role_id: 2,
       dropdowns: [
         {
           title: "Search & Match",
@@ -81,6 +85,9 @@ export default {
       ],
     };
   },
+  created(){
+    this.getUserAdmin();
+  },
   methods: {
     toHome() {
       if(this.page == 'home'){
@@ -89,14 +96,13 @@ export default {
         this.$router.push({path: "/main"});
       }
     },
-
     toSearch() {
       this.$router.push({path: "/rockData"});
     },
 
     shouldShowItem(item) {
       // 根据用户的角色ID决定是否显示特定的菜单项
-      if (item.title === "Upload Data" && this.role_id === 2) {
+      if (item.title === "Upload Data" && !this.$store.state.isAdmin) {
         return false; // 隐藏 About Us 部分
       }
       return true; // 显示其他部分
@@ -127,15 +133,42 @@ export default {
   margin-top: 10px;
   font-size: 17px;
 }
+
 .logo-img{
   margin: auto;
+  height: 50px;
   width: 50px;
-  left: 50px;
+}
+.logo2-img{
+  margin: auto;
+  height: 60px;
+  width: 100px;
+}
+.logo3-img{
+  margin: auto;
+  height: 60px;
+  width: 100px;
 }
 
 .total-div{
   display: flex;
-  height: 60px;
+  height: 80px;
+}
+
+.logo-div{
+  cursor: pointer;
+  display: flex;
+  text-align: center;
+  width: 80px;
+  margin-left: 20px;
+}
+
+.logo-div{
+  cursor: pointer;
+  display: flex;
+  text-align: center;
+  width: 80px;
+  margin-left: 20px;
 }
 
 .logo-div{

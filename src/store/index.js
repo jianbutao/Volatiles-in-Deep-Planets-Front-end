@@ -8,6 +8,7 @@ const state = {
     userStatus: 'login',
     userName: '',
     showPassForm: false,
+    isAdmin: false,
 }
 
 const actions = {
@@ -51,6 +52,9 @@ const mutations = {
     showPassForm(state) {
         state.showPassForm = true;
     },
+    setUserAdmin(state, admin){
+        state.isAdmin = admin;
+    }
 }
 
 const getters = {}
