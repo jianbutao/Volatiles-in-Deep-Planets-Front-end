@@ -40,14 +40,19 @@
 </template>
 
 <script>
+import icon1 from "../assets/icon/icon1.png"
+import icon2 from "../assets/icon/icon2.svg"
+import icon3 from "../assets/icon/icon3.svg"
+
 export default {
   name: 'LogoComponent',
   props: ['page'],
   data() {
     return {
-      logo_src: require('../assets/icon/icon1.png'),
-      logo2_src: require('../assets/icon/icon2.svg'),
-      logo3_src: require('../assets/icon/icon3.svg'),
+      logo_src: icon1,
+      logo2_src: icon2,
+      logo3_src: icon3,
+      isAdmin: false,
 
       search_src:require('../assets/icon/search.png'),
       face_src:require('../assets/icon/face.png'),
@@ -86,6 +91,9 @@ export default {
       ],
     };
   },
+  mounted(){
+    this.getUserName();
+  },
   methods: {
     toHome() {
       if(this.page == 'home'){
@@ -100,7 +108,7 @@ export default {
 
     shouldShowItem(item) {
       // 根据用户的角色ID决定是否显示特定的菜单项
-      if ((item.title === "Upload Data" || item.title === "Upload Data") && !this.$store.state.isAdmin) {
+      if ((item.title === "Upload Data" || item.title === "Upload Data") && !this.isAdmin) {
         return false; // 隐藏 About Us 部分
       }
       return true; // 显示其他部分
@@ -109,6 +117,11 @@ export default {
       let pathUrl = "/";
       pathUrl += command;
       this.$router.push({ path: pathUrl });
+    },
+
+    getUserName() {
+      var isAdmin = this.$store.state.isAdmin;
+      this.isAdmin = isAdmin
     },
   }
 };

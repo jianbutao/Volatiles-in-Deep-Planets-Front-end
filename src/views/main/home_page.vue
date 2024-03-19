@@ -81,6 +81,9 @@
   </div>
 </template>
 <script>
+import icon1 from "../../assets/icon/icon1.png"
+import icon2 from "../../assets/icon/icon2.svg"
+import icon3 from "../../assets/icon/icon3.svg"
 import LogoComponent from "@/components/LogoComponent.vue";
 import MyPopover from "@/components/PopoverCompont.vue";
 import { loginURL }  from "@/store/loginURL"
@@ -94,11 +97,9 @@ export default {
     return {
       imgUrl: require('@/assets/expert_data_simple.jpg'),
 
-      // test_code: "CN9e02d255844a424bfcc127c361ed357a",
-
-      logo_src: require('../../assets/icon/icon1.png'),
-      logo2_src: require('../../assets/icon/icon2.svg'),
-      logo3_src: require('../../assets/icon/icon3.svg'),
+      logo_src: icon1,
+      logo2_src: icon2,
+      logo3_src: icon3,
 
       displayInfo: {
         rock: {
@@ -117,6 +118,7 @@ export default {
 
       showUserName: false, //是否展示用户名
       userName: "", //用户名
+      isAdmin: false,
 
       bg: [
         require('@/assets/expert_data_simple.jpg'),
@@ -238,6 +240,8 @@ export default {
     },
     getUserName() {
       var userName = this.$store.state.userName;
+      var isAdmin = this.$store.state.isAdmin;
+      this.isAdmin = isAdmin
       if (userName.length > 0) {
         this.showUserName = true;
         this.userName = userName;
@@ -399,7 +403,7 @@ export default {
     },
     shouldShowItem(item) {
       // 根据用户的角色ID决定是否显示特定的菜单项
-      if ((item.title === "Upload Data" || item.title === "Upload Data") && !this.$store.state.isAdmin) {
+      if ((item.title === "Upload Data" || item.title === "Upload Data") && !this.isAdmin) {
         return false; // 隐藏 About Us 部分
       }
       return true; // 显示其他部分
