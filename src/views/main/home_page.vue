@@ -403,7 +403,7 @@ export default {
     },
     shouldShowItem(item) {
       // 根据用户的角色ID决定是否显示特定的菜单项
-      if ((item.title === "Upload Data" || item.title === "Upload Data") && !this.isAdmin) {
+      if (item.title === "Upload Data" && !this.isAdmin) {
         return false; // 隐藏 About Us 部分
       }
       return true; // 显示其他部分
