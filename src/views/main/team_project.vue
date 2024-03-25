@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <LogoComponent :page="'expertData'" />
+      <LogoComponent :page="'tempProject'" />
     </el-header>
     <el-main>
       <div class="main-div">
