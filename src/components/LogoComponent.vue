@@ -164,7 +164,7 @@ export default {
 
 .total-div{
   display: flex;
-  height: 80px;
+  height: 60px;
 }
 
 .logo-div{

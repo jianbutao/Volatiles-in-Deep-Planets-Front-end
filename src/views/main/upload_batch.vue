@@ -273,8 +273,6 @@ export default {
   color: #ffffff;
 }
 
-
-
 .el-main {
   padding: 0;
 }
