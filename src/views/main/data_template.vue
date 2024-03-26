@@ -1,59 +1,55 @@
 <template>
-  <div id="building">
-    <el-container>
-      <el-header>
-        <LogoComponent :page="'rockData'" />
-      </el-header>
+  <el-container>
+    <el-header>
+      <LogoComponent :page="'rockData'" />
+    </el-header>
 
-      <el-main>
-        <div class="main-div">
+    <el-main>
+      <div class="main-div">
 
-          <div class="note-div">
-            Data Templates of High T Geochemistry Database
-          </div>
-          
-          <div class="message-div">
-            <!-- 文字部分 -->
-            <div class="message-head-div text-style">
+        <div class="top-note-div">
+          Data Templates of High T Geochemistry Database
+        </div>
+        
+        <div class="message-div">
+          <!-- 文字部分 -->
+          <div class="bottom-note-div">
+            <div class="simple-text">
               High T Geochemistry database mainly include natural rocks, natural minerals, natural inclusions and experimental synthetic samples which are formed in high temperature environment.
-              <br>
-              <br>
+              <p></p>
               Sample information includes sample age, rock property, mineral property, chemical composition, sampling location, geological environment and data source.
-              <br>
-              <br>
+              <p></p>
               Here, we provide three templates for rock, mineral/Inclusion and experiment sample respectively.
             </div>
+          </div>
 
-            <!-- 下载部分 -->
-            <div class="show-div">
-              <el-table :data="fileList" empty-text="No available data"
-              :show-header="false" :cell-style="{'text-align':'center'}">
-                <el-table-column prop="file_name" label="File Name"></el-table-column>
-                <el-table-column label="Download">
-                  <template slot-scope="scope">
-                    <el-button type="text" @click="handleClick(scope.row.object_name, 'xlsx')">xlsx</el-button>
-                    <!-- <el-button type="text" @click="handleClick(scope.row.object_name, 'xls')">xls</el-button>
-                    <el-button type="text" @click="handleClick(scope.row.object_name, 'csv')">csv</el-button> -->
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
+          <!-- 下载部分 -->
+          <div class="show-div">
+            <el-table :data="fileList" empty-text="No available data"
+            :show-header="false" :cell-style="{'text-align':'center'}">
+              <el-table-column prop="file_name" label="File Name"></el-table-column>
+              <el-table-column label="Download">
+                <template slot-scope="scope">
+                  <el-button type="text" @click="handleClick(scope.row.object_name, 'xlsx')">xlsx</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
 
-            <div class="message-bottom-div text-style">
+          <div class="bottom-note-div">
+            <div class="simple-text">
               If you are submitting data to this database, please place the data correctly in the template provided above. Your uploaded data would be published on the website as the open source.
-              <br>
-              <br>
+              <p></p>
               Click here to <router-link to="/uploadOnline" class="route-link">Upload Online</router-link>
-              <br>
-              <br>
+              <p></p>
               If the existing template does not fit your data well, please click here to <router-link to="/contactJoin" class="route-link">Contact Us</router-link>
             </div>
           </div>
-
         </div>
-      </el-main>
-    </el-container>
-  </div>
+
+      </div>
+    </el-main>
+  </el-container>
 </template>
 <script>
 import LogoComponent from "@/components/LogoComponent.vue";
@@ -146,42 +142,63 @@ export default {
 };
 </script>
 <style scoped>
+
 .route-link{
   font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
   font-weight: 700;
   font-size: 18px;
-  color: #4ddeff;
+  color: rgba(242, 91, 40, 1);
   text-decoration: none;
 }
 
 .message-bottom-div{
   margin-top: 20px;
 }
+
 .show-div{
   width: 100%;
+  margin-bottom: 50px;
 }
 .text-style{
-  font-family: 'Arial Normal', 'Arial';
   font-weight: 400;
-  font-size: 18px;
-  color: #000000;
   text-align: left;
+  line-height: 20px;
+  font-size: 15px;
+  letter-spacing: 0.1ch;
+  color: rgb(26, 34, 27);
 }
 .message-head-div{
   width: 100%;
   margin-bottom: 20px;
 }
-.note-div{
-  font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
-  font-weight: 700;
+
+.top-note-div   {
+  font-family: Jost;
   font-size: 28px;
-  color: #000000;
-  text-align: center;
-  margin-bottom: 40px;
+  color: rgba(242, 91, 40, 1);
+  text-align: left;
+  margin-left: 50px;
+  margin-bottom: 20px;
 }
+
+.bottom-note-div {
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.simple-text{
+  font-weight: 400;
+  text-align: left;
+  line-height: 20px;
+  font-size: 15px;
+  letter-spacing: 0.1ch;
+  color: rgb(26, 34, 27);
+}
+
 .message-div{
   height: 90%;
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
 
@@ -214,14 +231,4 @@ export default {
   font-size: 36px;
   color: #ffffff;
 }
-
-#building {
-  background: url("../../assets/upload_online_simple.jpg");
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow-y: auto;
-  background-size: 100% 100%;
-}
-
 </style>

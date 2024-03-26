@@ -84,10 +84,15 @@
 import icon1 from "../../assets/icon/icon1.png"
 import icon2 from "../../assets/icon/icon2.svg"
 import icon3 from "../../assets/icon/icon3.svg"
+import BG1 from "../../assets/background/BG1.jpg"
+import BG2 from "../../assets/background/BG2.jpg"
+import BG3 from "../../assets/background/BG3.jpg"
+
 import LogoComponent from "@/components/LogoComponent.vue";
 import MyPopover from "@/components/PopoverCompont.vue";
 import { loginURL }  from "@/store/loginURL"
 import axios from "axios";
+
 export default {
   components: {
     LogoComponent,
@@ -95,7 +100,8 @@ export default {
   },
   data() {
     return {
-      imgUrl: require('@/assets/expert_data_simple.jpg'),
+
+      imgUrl: BG1,
 
       logo_src: icon1,
       logo2_src: icon2,
@@ -121,9 +127,7 @@ export default {
       isAdmin: false,
 
       bg: [
-        require('@/assets/expert_data_simple.jpg'),
-        require('@/assets/upload_online_simple.jpg'),
-        require('@/assets/BJ1_simple.jpg'),
+        BG1, BG2, BG3
       ],
 
       currentImageIndex: 0,
@@ -186,14 +190,14 @@ export default {
     if(codeValue){
       // 通过验证
       if(await this.getTokenAndValidate(codeValue)){
+        this.showUserName = true;
+
         // 存储路由信息
         const whereToGo = this.$route.query.context;
         if(whereToGo){
-
           const decodedContext = atob(whereToGo)
 
           // 使用 Vue Router 跳转到对应路由
-          this.showUserName = true;
           if(decodedContext == "main"){
             this.$router.go(0);
           }
@@ -563,7 +567,6 @@ export default {
   position: fixed;
   width: 100%;
   height: 100%;
-  // background: url("../../assets/expert_data_simple.jpg");
   background-size: 100% 100%;
   transition: background-image 1s ease;
 }

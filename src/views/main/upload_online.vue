@@ -418,7 +418,7 @@ export default {
   height: 100vh;
 }
 #building {
-  background: url("../../assets/upload_online_simple.jpg");
+  background: url("../../assets/background/BG1.jpg");
   width: 100%;
   overflow-y: auto;
   height: 100%;

@@ -210,7 +210,7 @@ export default {
   position: relative;
   top: 0;
   left: 0;
-  background: url('../../assets/aboutUs.png') center/cover no-repeat;
+  background: url('../../assets/background/aboutUs.png') center/cover no-repeat;
   z-index: -1;
 }
 

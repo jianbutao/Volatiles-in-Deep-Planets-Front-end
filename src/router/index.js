@@ -15,10 +15,6 @@ const routes = [
         component: () => import('../views/main/home_page')
     },
     {
-        path:'/login',
-        component: () => import('../views//user/user_login')
-    },
-    {
         path:'/rockData',
         component: () => import('../views/search/rock_data')
     },
@@ -62,42 +58,6 @@ const routes = [
         path:'/contactJoin',
         component: () => import('../views/main/contact_join')
     },
-    {
-        path:'/userCenter',
-        component: () => import('../views/user/user_center'),
-        children:[
-            {   path: 'userMessage', 
-                component: () => import('../views/user/user_message') 
-            },
-            {   path: 'userUploadStatus', 
-                component: () => import('../views/user/user_upload_status') 
-            },
-            {   path: 'userReportStatus', 
-                component: () => import('../views/user/user_report_status') 
-            },
-            {   path: 'userSearchHistory', 
-                component: () => import('../views/user/user_search_history') 
-            }
-        ]
-    },
-    {
-        path:'/manageCenter',
-        component: () => import('../views/manage/manage_center'),
-        children:[
-            {   path: 'userMessage', 
-                component: () => import('../views/manage/manage_message') 
-            },
-            {   path: 'uploadManage', 
-                component: () => import('../views/manage/upload_manage') 
-            },
-            {   path: 'reportManage', 
-                component: () => import('../views/manage/report_manage') 
-            },
-            {   path: 'userManage', 
-                component: () => import('../views/manage/user_manage') 
-            }
-        ]
-    }
 ]
 
 const router = new VueRouter({

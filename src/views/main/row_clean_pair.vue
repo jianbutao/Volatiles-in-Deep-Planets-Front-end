@@ -298,15 +298,15 @@ export default {
 }
 
 .bottom-note-div {
-  font-family: "Arial Normal", "Arial";
   font-weight: 400;
-  font-size: 15px;
-  color: rgba(0, 95, 115, 1);
   text-align: left;
   margin-top: 20px;
   margin-left: 50px;
   margin-bottom: 50px;
   line-height: 20px;
+  font-size: 15px;
+  letter-spacing: 0.1ch;
+  color: rgb(26, 34, 27);
 }
 
 .top-note-div   {
@@ -317,6 +317,7 @@ export default {
   margin-left: 30px;
   margin-bottom: 20px;
 }
+
 .main-div {
   padding: 40px;
   background-color: rgba(255, 255, 255, 0.8); 
@@ -324,6 +325,7 @@ export default {
   /* 定死 */
   width: 1000px;
 }
+
 .title-div {
   margin: 0 auto;
   font-family: "Comic Sans MS Negreta", "Comic Sans MS Normal", "Comic Sans MS";

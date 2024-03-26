@@ -1,85 +1,82 @@
 <template>
-  <div id="building">
-    <el-container>
-      <el-header>
-        <LogoComponent :page="'expertData'" />
-      </el-header>
-      <el-main>
-        <div class="main-div">
-          <span class="text-title">Feedback Report<br /></span>
-          <span class="text-info"
-            >If you find that the data does not fit original literature, data
-            missing from the sample, data template does not match and other
-            problems during the use of this website, please fill in the
-            following form and feedback to us.<br/></span>
-            <br/>
-            <br/>
-            <span class="text-info">Please fill the table:<br/></span>
-          <div class="report-form">
-            <el-form ref="form" label-position="top" :model="form" label-width="80px" :rules="rules">
-              <el-form-item label="Your Name" prop="reporter_name">
-                <el-input v-model="form.reporter_name"></el-input>
-              </el-form-item>
-              <el-form-item label="Please select a subject" prop="subject">
-                <el-select v-model="form.subject" style="width: 100%;" placeholder="Please select">
-                  <el-option label="Suggestion" value="suggestion"></el-option>
-                  <el-option label="Compliment" value="compliment"></el-option>
-                  <el-option label="Something's error" value="error"></el-option>
-                  <el-option label="I have a question" value="question"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="What would you like to share with us?" prop="problems">
-                <el-input
-                  type="textarea"
-                  :rows="3"
-                  placeholder="Please enter content"
-                  v-model="form.problems">
-                </el-input>
-              </el-form-item>
-              <el-form-item label="Relative files (if applicable)" prop="file">
-                <el-upload
-                  action="#"
-                  style="height: 100%; width: 100%"
-                  drag
-                  :before-upload="beforeUpload"
-                  :on-exceed="handleExceed"
-                  :limit="1"
-                  :http-request="Upload"
-                  multiple>
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text">Drag the file here, or <em> click Upload </em></div>
-                </el-upload>
-              </el-form-item>
+  <el-container>
+    <el-header>
+      <LogoComponent :page="'expertData'" />
+    </el-header>
+    <el-main>
+      <div class="main-div">
+        <span class="text-title">Feedback Report<br /></span>
+        <span class="text-info"
+          >If you find that the data does not fit original literature, data
+          missing from the sample, data template does not match and other
+          problems during the use of this website, please fill in the
+          following form and feedback to us.<br/></span>
+          <br/>
+          <br/>
+          <span class="text-info">Please fill the table:<br/></span>
+        <div class="report-form">
+          <el-form ref="form" label-position="top" :model="form" label-width="80px" :rules="rules">
+            <el-form-item label="Your Name" prop="reporter_name">
+              <el-input v-model="form.reporter_name"></el-input>
+            </el-form-item>
+            <el-form-item label="Please select a subject" prop="subject">
+              <el-select v-model="form.subject" style="width: 100%;" placeholder="Please select">
+                <el-option label="Suggestion" value="suggestion"></el-option>
+                <el-option label="Compliment" value="compliment"></el-option>
+                <el-option label="Something's error" value="error"></el-option>
+                <el-option label="I have a question" value="question"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="What would you like to share with us?" prop="problems">
+              <el-input
+                type="textarea"
+                :rows="3"
+                placeholder="Please enter content"
+                v-model="form.problems">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Relative files (if applicable)" prop="file">
+              <el-upload
+                action="#"
+                style="height: 100%; width: 100%"
+                drag
+                :before-upload="beforeUpload"
+                :on-exceed="handleExceed"
+                :limit="1"
+                :http-request="Upload"
+                multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">Drag the file here, or <em> click Upload </em></div>
+              </el-upload>
+            </el-form-item>
 
-              <el-form-item label="Email Address" prop="email">
-                <el-input v-model="form.email"></el-input>
-              </el-form-item>
-              <el-form-item label="How likely are you to recommend us to your friends and colleagues?"  prop="rank">
-                <el-rate
-                    v-model="form.rank"
-                    :max="10"
-                    show-text
-                    :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-                    void-color="rgba(0, 0, 0, 0.5)"
-                    :texts="['1 Very unlikely', '2', '3', '4', '5', '6', '7', '8', '9', '10 Extremely likely']"
-                  >
-                </el-rate>
-              </el-form-item>
-              <br/>
-              <el-form-item style="text-align: center;">
-                <el-button  type="primary" @click="onSubmit">SUBMIT</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
+            <el-form-item label="Email Address" prop="email">
+              <el-input v-model="form.email"></el-input>
+            </el-form-item>
+            <el-form-item label="How likely are you to recommend us to your friends and colleagues?"  prop="rank">
+              <el-rate
+                  v-model="form.rank"
+                  :max="10"
+                  show-text
+                  :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                  void-color="rgba(0, 0, 0, 0.5)"
+                  :texts="['1 Very unlikely', '2', '3', '4', '5', '6', '7', '8', '9', '10 Extremely likely']"
+                >
+              </el-rate>
+            </el-form-item>
+            <br/>
+            <el-form-item style="text-align: center;">
+              <el-button  type="primary" @click="onSubmit">SUBMIT</el-button>
+            </el-form-item>
+          </el-form>
         </div>
-        <div class="bottom-div"></div>
-      </el-main>
-    </el-container>
-  </div>
+      </div>
+      <div class="bottom-div"></div>
+    </el-main>
+  </el-container>
 </template>
 <script>
 import LogoComponent from "@/components/LogoComponent.vue";
-import { loginURL } from "@/store/loginURL";
 export default {
   components: {
     LogoComponent,
@@ -242,15 +239,6 @@ export default {
   font-style: normal;
   font-size: 36px;
   color: #ffffff;
-}
-
-#building {
-  background: url("../../assets/expert_data_simple.jpg");
-  width: 100%;
-  overflow-y: auto;
-  height: 100%;
-  position: fixed;
-  background-size: 100% 100%;
 }
 .upload-text-div{
   margin: 0 auto;
