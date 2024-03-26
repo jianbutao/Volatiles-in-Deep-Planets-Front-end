@@ -94,6 +94,9 @@ export default {
   created(){
     this.getUserName();
   },
+  beforeDestroy() {
+    sessionStorage.setItem("store", JSON.stringify(this.$store.state));
+  },
   methods: {
     toHome() {
       if(this.page == 'home'){
@@ -121,7 +124,6 @@ export default {
 
     getUserName() {
       var isAdmin = this.$store.state.isAdmin;
-      console.log(isAdmin)
       this.isAdmin = isAdmin
     },
   }
