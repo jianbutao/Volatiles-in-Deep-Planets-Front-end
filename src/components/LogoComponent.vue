@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import icon1 from "../assets/icon/icon1.png"
-import icon2 from "../assets/icon/icon2.svg"
-import icon3 from "../assets/icon/icon3.svg"
+import icon1 from "@/assets/icon/icon1.png"
+import icon2 from "@/assets/icon/icon2.svg"
+import icon3 from "@/assets/icon/icon3.svg"
 
 export default {
   name: 'LogoComponent',
@@ -63,7 +63,6 @@ export default {
             { label: "Rock Data", command: "rockData" },
             { label: "Mineral Data", command: "mineralData" },
             { label: "Experiment Data", command: "experimentData" },
-            // { label: "Match Data", command: "matchData" },
           ],
         },
         {
@@ -91,7 +90,7 @@ export default {
       ],
     };
   },
-  created(){
+  mounted() {
     if(sessionStorage.getItem('store')) {
       this.$store.replaceState(
         Object.assign(
