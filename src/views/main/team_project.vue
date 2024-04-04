@@ -137,6 +137,7 @@ import zjy from "@/assets/photos/zjy.jpg";
 import syt from "@/assets/photos/syt.jpg";
 import lsy from "@/assets/photos/lsy.jpg";
 import wjn from "@/assets/photos/wjn.jpg";
+import lne from '@/assets/photos/lne.jpg';
 
 export default {
   components: {
@@ -201,6 +202,12 @@ export default {
           career: "Back-end Develop",
           from: "China University of Geosciences, Beijing",
           photo: crt,
+        },
+        {
+          name: "Nuoer Li",
+          career: "User Guide Docs",
+          from: "Central South University, ChangSha",
+          photo: lne,
         },
       ],
     };
