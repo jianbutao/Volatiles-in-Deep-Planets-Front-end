@@ -91,7 +91,9 @@ import BG3 from "../../assets/background/BG3.jpg"
 import LogoComponent from "@/components/LogoComponent.vue";
 import MyPopover from "@/components/PopoverCompont.vue";
 import { loginURL }  from "@/store/loginURL"
+import { eventTrackingInfo } from "@/store/eventTracking"
 import axios from "axios";
+// import { AutoReport } from 'dde-log-reporter';
 
 export default {
   components: {
@@ -168,6 +170,7 @@ export default {
   computed: {},
 
   async created() {
+    this.startImageRotation();
     // 首先检测是不是cookie里面已经有信息了,如果有的话应当直接显示用户信息以及exit窗口
     if(this.$cookies.get("token")){
       // 检测是否过期
@@ -215,16 +218,18 @@ export default {
   },
 
   mounted() {
-    this.startImageRotation();
-    if (sessionStorage.getItem("store")) {
+    if(sessionStorage.getItem('store')) {
       this.$store.replaceState(
         Object.assign(
           {},
           this.$store.state,
-          JSON.parse(sessionStorage.getItem("store"))
+          JSON.parse(sessionStorage.getItem('store'))
         )
-      );
+      )
     }
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+    })
     this.getUserName();
   },
 

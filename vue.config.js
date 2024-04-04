@@ -22,6 +22,13 @@ module.exports = defineConfig({
         pathRewrite: {
           '^/login': ''
         }
+      },
+      '/report': {
+        target: "http://log-analysis-dev.deep-time.org",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/report': ''
+        }
       }
     }
   },

@@ -38,7 +38,7 @@
                 </div>
               </el-col>
               <el-col :span="12">
-                <img :src="group1_src" class="group-img" alt="Group Image">
+                <img :src="group1_src" class="intro-img" alt="Group Image">
               </el-col>
             </el-row>
           </div>
@@ -48,7 +48,7 @@
           <div class="intro-container">
             <el-row :gutter="20">
               <el-col :span="12">
-                <img :src="group2_src" class="group-img" alt="Group Image">
+                <img :src="group2_src" class="intro-img" alt="Group Image">
               </el-col>
               <el-col :span="12">
                 <div class="intro-grid-content">
@@ -106,13 +106,13 @@
           </div>
           <div class="intro-container">
             <el-row class="card-container" justify="center" align="middle">
-              <!-- 循环生成卡片 -->
               <el-col v-for="card in cards" :key="card.name" :span="6">
                 <el-card class="card-info">
-                  <img :src="people_src" class="group-img" alt="Group Image">
+                  <img :src="card.photo" class="group-img" alt="Group Image">
                   <div class="text-title">{{ card.name }}</div>
                   <div class="text-career">{{ card.career }}</div>
                   <div class="text-info">{{ card.from }}</div>
+                  <el-link v-if="card.name == 'Junbo Wang'" type="warning" href="https://bbo-junbo.github.io/">Persaonl Webpage</el-link>
                 </el-card>
               </el-col>
             </el-row>
@@ -125,10 +125,18 @@
 
 <script>
 import LogoComponent from "@/components/LogoComponent.vue";
-import group1 from "../../assets/group/group1.png";
-import group2 from "../../assets/group/group2.png";
-import bar from "../../assets/group/bar.png";
-import people from "../../assets/group/people.png";
+import group1 from "@/assets/group/group1.png";
+import group2 from "@/assets/group/group2.png";
+import bar from "@/assets/group/bar.png";
+import crt from "@/assets/photos/crt.jpg";
+import hsq from "@/assets/photos/hsq.jpg";
+import ly from "@/assets/photos/ly.jpg";
+import psf from "@/assets/photos/psf.jpg";
+import wjb from "@/assets/photos/wjb.jpg";
+import zjy from "@/assets/photos/zjy.jpg";
+import syt from "@/assets/photos/syt.jpg";
+import lsy from "@/assets/photos/lsy.jpg";
+import wjn from "@/assets/photos/wjn.jpg";
 
 export default {
   components: {
@@ -139,52 +147,60 @@ export default {
       group1_src: group1, 
       group2_src: group2, 
       bar_src: bar,
-      people_src: people,
       cards: [
       {
           name: "Yang Lyu",
           career: "Team Leader",
           from: "Zhejiang University, Hangzhou",
+          photo: ly,
         },
         {
           name: "Shengfeng Pan",
           career: "Technical Guidance",
           from: "Java Full Stack Engineer, Shenzhen",
+          photo: psf,
         },
         {
           name: "Jinyuan Zhang",
           career: "Technical Guidance",
           from: "Web Front-end Developer, Shenzhen",
+          photo: zjy,
         },
         {
           name: "Siqi Huang",
           career: "Data Arrangement",
           from: "Central China Normal University, Wuhan",
+          photo: hsq,
         },
         {
           name: "Shuyi Li",
           career: "UI Design",
           from: "Communication University of China, Beijing",
+          photo: lsy,
         },
         {
           name: "Yutong Sun",
           career: "Front-end Develop",
           from: "Zhejiang University, Hangzhou",
+          photo: syt,
         },
         {
           name: "Junbo Wang",
           career: "Back-end Develop",
           from: "China University of Geosciences, Beijing",
+          photo: wjb,
         },
         {
           name: "Jianing Wang",
           career: "Back-end Develop",
           from: "National University of Singapore, Singapore",
+          photo: wjn,
         },
         {
           name: "Ruitao Chang",
           career: "Back-end Develop",
           from: "China University of Geosciences, Beijing",
+          photo: crt,
         },
       ],
     };
@@ -271,10 +287,15 @@ export default {
   margin-top: 12%;
 }
 
-.group-img {
+.intro-img {
   width: 100%;
   max-width: 500px;
   height: auto;
+}
+
+.group-img {
+  height: 200px;
+  width: auto;
 }
 
 .bar-img {
