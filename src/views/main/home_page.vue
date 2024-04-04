@@ -81,17 +81,16 @@
   </div>
 </template>
 <script>
-import icon1 from "../../assets/icon/icon1.png"
-import icon2 from "../../assets/icon/icon2.svg"
-import icon3 from "../../assets/icon/icon3.svg"
-import BG1 from "../../assets/background/BG1.jpg"
-import BG2 from "../../assets/background/BG2.jpg"
-import BG3 from "../../assets/background/BG3.jpg"
+import icon1 from "@/assets/icon/icon1.png"
+import icon2 from "@/assets/icon/icon2.svg"
+import icon3 from "@/assets/icon/icon3.svg"
+import BG1 from "@/assets/background/BG1.jpg"
+import BG2 from "@/assets/background/BG2.jpg"
+import BG3 from "@/assets/background/BG3.jpg"
 
 import LogoComponent from "@/components/LogoComponent.vue";
 import MyPopover from "@/components/PopoverCompont.vue";
 import { loginURL }  from "@/store/loginURL"
-import { eventTrackingInfo } from "@/store/eventTracking"
 import axios from "axios";
 // import { AutoReport } from 'dde-log-reporter';
 

@@ -16,7 +16,11 @@ import { loginURL } from '@/store/loginURL';
 export default {
   name: "PopoverCompont",
   props: ["userName"],
-  data() {},
+  data() {
+    return{
+
+    }
+  },
   computed: {},
   created() {},
   methods: {
