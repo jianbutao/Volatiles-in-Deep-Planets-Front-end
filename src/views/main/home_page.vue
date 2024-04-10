@@ -39,6 +39,9 @@
             >Log in</el-button
           >
         </div>
+        <div class="icon-guide-div" @click="toGuide">
+          <img class="icon-guide-div" fit="cover" :src="guide_src">
+        </div>
       </div>
 
       
@@ -87,6 +90,7 @@ import icon3 from "@/assets/icon/icon3.svg"
 import BG1 from "@/assets/background/BG1.jpg"
 import BG2 from "@/assets/background/BG2.jpg"
 import BG3 from "@/assets/background/BG3.jpg"
+import guide from "@/assets/icon/guide_main.png"
 
 import LogoComponent from "@/components/LogoComponent.vue";
 import MyPopover from "@/components/PopoverCompont.vue";
@@ -107,6 +111,8 @@ export default {
       logo_src: icon1,
       logo2_src: icon2,
       logo3_src: icon3,
+
+      guide_src: guide,
 
       displayInfo: {
         rock: {
@@ -245,6 +251,9 @@ export default {
     },
     updateBackground(){
       this.imgUrl = this.bg[this.currentImageIndex];
+    },
+    toGuide() {
+      window.location.href = 'https://test-for-users-doc.readthedocs.io/en/latest/index.html';
     },
     getUserName() {
       var userName = this.$store.state.userName;
@@ -503,8 +512,17 @@ export default {
   margin-top: 30px;
 }
 
+.icon-guide-div{
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  right: 0;
+  top: 3px;
+}
+
 .user-div-all{
   position: absolute;
+  display: flex;
   height: 80px;
   margin-top: 80px;
   width: 200px;
@@ -518,13 +536,13 @@ export default {
 }
 .userName-div {
   position: absolute;
-  right: 5%;
+  right: 50px;
   color: #d7d7d7;
   font-size: large;
 }
 .user-div {
   position: absolute;
-  right: 3%;
+  right: 50px;
 }
 
 .dropdown-div{

@@ -35,6 +35,9 @@
       <div class="icon-btn" @click="toHome">
         <img :src='face_src' class="icon-img" fit="cover" >
       </div>
+      <div class="icon-btn" @click="toGuide">
+        <img :src='guide_src' class="icon-img" fit="cover" >
+      </div>
     </div>
   </div>
 </template>
@@ -56,6 +59,8 @@ export default {
 
       search_src:require('../assets/icon/search.png'),
       face_src:require('../assets/icon/face.png'),
+      guide_src:require('../assets/icon/guide.png'),
+
       dropdowns: [
         {
           title: "Search & Match",
@@ -118,6 +123,9 @@ export default {
     },
     toSearch() {
       this.$router.push({path: "/rockData"});
+    },
+    toGuide() {
+      window.location.href = 'https://test-for-users-doc.readthedocs.io/en/latest/index.html';
     },
 
     shouldShowItem(item) {
