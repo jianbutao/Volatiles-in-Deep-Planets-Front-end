@@ -1,5 +1,5 @@
 export const loginURL = {
-    baseURL: 'https://test-user-oneid.deep-time.org',
+    baseURL: 'https://user-oneid.deep-time.org',
     
     appCode: 'htg',
 
