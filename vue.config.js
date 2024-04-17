@@ -6,7 +6,6 @@ module.exports = defineConfig({
   devServer:{
     historyApiFallback:true,
     allowedHosts: "all",
-    // port: 8080,
     proxy: {
       //名字可以自定义，这里我用的是api
       '/api': {
