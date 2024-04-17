@@ -22,13 +22,6 @@ module.exports = defineConfig({
           '^/login': ''
         }
       },
-      '/report': {
-        target: "http://log-analysis-dev.deep-time.org",
-        changeOrigin: true,
-        pathRewrite: {
-          '^/report': ''
-        }
-      }
     }
   },
   outputDir: "./build/dist",
