@@ -5,7 +5,7 @@ export const loginURL = {
 
     domain: 'deep-time.org',
 
-    secretCode: '9abxmzzbf8kvalvlsqoybd77fcnl54gu',
+    secretCode: 'vbco1xljy91lbozetlmdhyafqx55fndw',
 
     login: '/ngiam-rst/v1/sdk/login/sso',
 
