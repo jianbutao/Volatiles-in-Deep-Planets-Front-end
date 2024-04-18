@@ -9,11 +9,11 @@ export const loginURL = {
 
     login: '/ngiam-rst/v1/sdk/login/sso',
 
-    tokenChange: '/login/ngiam-rst/oauth2/token',
+    tokenChange: '/loginToDDE/ngiam-rst/oauth2/token',
 
-    infoChange: '/login/ngiam-rst/oauth2/userinfo',
+    infoChange: '/loginToDDE/ngiam-rst/oauth2/userinfo',
 
-    validate: '/login/ngiam-rst/oauth2/validate',
+    validate: '/loginToDDE/ngiam-rst/oauth2/validate',
 
     exit: '/ngiam-rst/cas/logout',
 }
