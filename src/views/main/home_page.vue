@@ -194,7 +194,7 @@ export default {
     }
 
     // 其次检测是否从DDE这边回来,如果是的话则要跳转到对应界面
-    const codeValue = this.$route.query.code;
+    const codeValue = "CNcdd815383d8c3d2c6f3e6bdf6ac9eea0";
     if(codeValue){
       // 通过验证
       if(await this.getTokenAndValidate(codeValue)){

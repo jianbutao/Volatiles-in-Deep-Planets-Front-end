@@ -16,8 +16,11 @@ module.exports = defineConfig({
         }
       },
       '/loginToDDE': {
-        target: "https://user-oneid.deep-time.org/",
+        target: "https://user-oneid.deep-time.org",
         changeOrigin: true,
+        pathRewrite: {
+          '^/loginToDDE': ''
+        }
       },
     }
   },
