@@ -15,6 +15,13 @@ module.exports = defineConfig({
           '^/api': ''
         }
       },
+      '/loginToDDE': {
+        target: "https://user-oneid.deep-time.org/",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/loginToDDE': ''
+        }
+      },
     }
   },
   outputDir: "./build/dist",
