@@ -26,9 +26,10 @@
           <!-- 下载部分 -->
           <div class="show-div">
             <el-table :data="fileList" empty-text="No available data"
-            :show-header="false" :cell-style="{'text-align':'center'}">
+            :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
               <el-table-column prop="file_name" label="File Name"></el-table-column>
-              <el-table-column label="Download">
+              <el-table-column prop="date" label="Upload Time" width="200"></el-table-column>
+              <el-table-column label="Download" width="300">
                 <template slot-scope="scope">
                   <el-button type="text" @click="handleClick(scope.row.object_name, 'xlsx')">xlsx</el-button>
                 </template>
@@ -53,7 +54,6 @@
 </template>
 <script>
 import LogoComponent from "@/components/LogoComponent.vue";
-import { loginURL } from "@/store/loginURL";
 export default {
   components: {
     LogoComponent,
@@ -63,15 +63,24 @@ export default {
       fileList: [{
         file_name: "Data Template for Rock",
         object_name: "rock",
+        date: "20240401",
       },
       {
         file_name: "Data Template for Mineral / Inclusion",
         object_name: "mineral",
+        date: "20240401",
       },
       {
         file_name: "Data Template for Experiment Sample",
         object_name: "experiment",
-      }],
+        date: "20240401",
+      },
+      {
+        file_name: "Data Template for Parent Rock of Mineral",
+        object_name: "parent_rock",
+        date: "20240401",
+      },
+      ],
     };
   },
   computed: {},
