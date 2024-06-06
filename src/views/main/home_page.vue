@@ -304,7 +304,6 @@ export default {
         const token = tokenResponse.data.accessToken;
         const expire = tokenResponse.data.expire;
 
-
         if(token){
           // 发送验证请求
           const tokenExpired = await this.validateToken(token);

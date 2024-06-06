@@ -13,8 +13,9 @@ const state = {
 
 const actions = {
     login({ commit }, context) {
+        // loginUrl: https://user-oneid.deep-time.org/ngiam-rst/v1/sdk/login/sso
         const loginUrl = loginURL.baseURL + loginURL.login;
-    
+        // loginParams
         const params = {
           appCode: loginURL.appCode,
           context: context,
