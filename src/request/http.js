@@ -5,7 +5,7 @@ let baseURL = "/api";
 
 const service = axios.create({
     baseURL,
-    timeout:10000,//请求超时时间,
+    timeout:20000,//请求超时时间,
     withCredentials:true,//是否跨站点访问请求控制
     cache: false,
 })

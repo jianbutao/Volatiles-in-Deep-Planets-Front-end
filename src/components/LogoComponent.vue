@@ -169,8 +169,8 @@ export default {
 
 .logo-img{
   margin: auto;
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
 }
 .logo2-img{
   margin: auto;
@@ -188,29 +188,14 @@ export default {
   height: 60px;
 }
 
-.logo-div{
-  cursor: pointer;
-  display: flex;
-  text-align: center;
-  width: 80px;
-  margin-left: 20px;
-}
 
 .logo-div{
   cursor: pointer;
   display: flex;
   text-align: center;
-  width: 80px;
   margin-left: 20px;
 }
 
-.logo-div{
-  cursor: pointer;
-  display: flex;
-  text-align: center;
-  width: 80px;
-  margin-left: 20px;
-}
 
 .dropdown-div{
   margin-left: 100px;

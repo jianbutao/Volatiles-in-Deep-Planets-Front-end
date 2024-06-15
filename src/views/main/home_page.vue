@@ -389,6 +389,7 @@ export default {
       sessionStorage.removeItem("store");
 
       // DDE系统那边的退出
+      
       const exitUrl = loginURL.baseURL + loginURL.exit
 
       // 构建携带参数的 URL

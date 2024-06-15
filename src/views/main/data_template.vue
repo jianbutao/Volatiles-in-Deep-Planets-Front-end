@@ -62,22 +62,27 @@ export default {
     return {
       fileList: [{
         file_name: "Data Template for Rock",
-        object_name: "rock",
+        object_name: "rock_template",
         date: "20240401",
       },
       {
         file_name: "Data Template for Mineral / Inclusion",
-        object_name: "mineral",
+        object_name: "mineral_template",
         date: "20240401",
       },
       {
         file_name: "Data Template for Experiment Sample",
-        object_name: "experiment",
+        object_name: "experiment_template",
         date: "20240401",
       },
       {
         file_name: "Data Template for Parent Rock of Mineral",
-        object_name: "parent_rock",
+        object_name: "parent_rock_template",
+        date: "20240401",
+      },
+      {
+        file_name: "Data Dictionary Table",
+        object_name: "data_dictionary_table",
         date: "20240401",
       },
       ],
@@ -109,7 +114,7 @@ export default {
         this.login("dataTemplate")
         return;
       }
-      return this.$service.get(`/template/download/${objectType}_template?format=${fileType}`, { responseType: 'arraybuffer' })
+      return this.$service.get(`/template/download/${objectType}?format=${fileType}`, { responseType: 'arraybuffer' })
       .then(response => {
         let mimeType = 'application/octet-stream'; // 默认 MIME 类型
 
@@ -128,7 +133,7 @@ export default {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = objectType + "_template";
+        link.download = objectType;
         document.body.appendChild(link);
         // 触发下载
         link.click();
