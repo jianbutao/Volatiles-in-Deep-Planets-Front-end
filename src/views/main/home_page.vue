@@ -1,52 +1,51 @@
 <template>
-  <div id="building" :style="{ backgroundImage: `url(${imgUrl})` }">
-    <el-header>
-      <div class="total-div">
-        <img class="icon3-div" fit="cover" :src="logo3_src">
-        <img class="icon2-div" fit="cover" :src="logo2_src">
-        <img class="icon-div" fit="cover" :src="logo_src">
-      </div>
-      <div class="dropdown-div">
-        <el-dropdown
-          @command="handleCommand"
-          class="dropdown-span"
-          placement="bottom"
-          v-for="(dropdown, index) in dropdowns"
-          :key="index"
-          v-if="shouldShowItem(dropdown)"
-        >
-          <div class="dropdown-link">
-            {{ dropdown.title }}
-          </div>
-          <el-dropdown-menu slot="dropdown" class="dropdown-menu">
-            <el-dropdown-item
-              :command="item.command"
-              v-for="(item, index) in dropdown.items"
-              class="dropdown-item"
-              :key="index"
-              >{{ item.label }}</el-dropdown-item
-            >
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-
-      <div class="user-div-all">
-        <div class="userName-div" v-if="showUserName">
-          <MyPopover :userName="userName"></MyPopover>
+  <div class="outer-container">
+    <!-- main part -->
+    <div class="building" :style="{ backgroundImage: `url(${imgUrl})`}">
+      <div class="nav-div">
+        <div class="total-div">
+          <img class="icon3-div" fit="cover" :src="logo3_src">
+          <img class="icon2-div" fit="cover" :src="logo2_src">
+          <img class="icon-div" fit="cover" :src="logo_src">
         </div>
-        <div class="user-div" v-else>
-          <el-button class="user-btn" type="text" @click="login('main')"
-            >Log in</el-button
+        <div class="dropdown-div">
+          <el-dropdown
+            @command="handleCommand"
+            placement="bottom"
+            v-for="(dropdown, index) in dropdowns"
+            :key="index"
+            v-if="shouldShowItem(dropdown)"
           >
+            <div class="dropdown-link">
+              {{ dropdown.title }}
+            </div>
+            <el-dropdown-menu slot="dropdown" class="dropdown-menu">
+              <el-dropdown-item
+                :command="item.command"
+                v-for="(item, index) in dropdown.items"
+                class="dropdown-item"
+                :key="index"
+                >{{ item.label }}</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
-        <div class="icon-guide-div" @click="toGuide">
-          <img class="icon-guide-div" fit="cover" :src="guide_src">
+
+        <div class="user-div-all">
+          <div class="userName-div" v-if="showUserName">
+            <MyPopover :userName="userName"></MyPopover>
+          </div>
+          <div class="user-div" v-else>
+            <el-button class="user-btn" type="text" @click="login('main')"
+              >Log in</el-button
+            >
+          </div>
+          <div class="icon-guide-div" @click="toGuide">
+            <img class="icon-guide-div" fit="cover" :src="guide_src">
+          </div>
         </div>
       </div>
 
-      
-    </el-header>
-    <el-main>
       <div class="main-div">
         <h1 class="text">
           <span style="color: rgba(242, 91, 40, 1);">
@@ -56,7 +55,7 @@
           <span style="color: rgba(242, 91, 40, 1);">
             G</span>eochemistry<br/>
           Benchmark Database
-        </h1>
+          </h1>
         <div class="bottom-div">
           <el-button class="card-div" @click="toSearchPage('rock')">
             <div class="card-icon">🌍</div>
@@ -75,12 +74,97 @@
           </el-button>
         </div>
       </div>
-    </el-main>
-    <el-footer>
-      <div class="footer-div">
-        High T Geochemistry Benchmark Database, All Rights Reserved &#169; 2023
+    </div>
+    <!-- description part -->
+    <div class="description-div">
+      <div class="description-block">
+        <div class="description-title">
+          What is this
+        </div>
+        <br/>
+        <br/>
+        <div class="description-info">
+          This is a benchmark dataset in high temperature geochemistry. Up to now, 200,000 
+          rock and mineral data have been checked and corrected manually based on the FAIR 
+          principle (findable, accessible, interoperable, and reusable).
+        </div>
+        <br/>
+        <br/>
+        <div class="description-info">
+          The web portal offers a querying function to search for specific geochemistry 
+          data and a matching function to find rock-mineral combinations and mineral-mineral pairs generated under the same formation conditions. In the future, the 
+          database will be uploaded to the Deep-time Digital Earth program platform for 
+          data integration.
+        </div>
       </div>
-    </el-footer>
+    </div>
+
+    <!-- image part -->
+    <div class="image-div">
+      <div class="image-block-empty"></div>
+      <div class="image-block">
+        <div class="image-description">
+          <div class="image-description-block">
+            <div class="image-title">
+              Key features
+            </div>
+            <br/>
+            <div class="image-detail">
+              FAIR principle (Findable, Accessible, Interoperable, Reusable).
+              Manual cleaning ~ 200,000 rock and mineral data.
+              Raw-clean data pairs to test data filtering algorithms.
+              User-friendly Website
+            </div>
+          </div>
+        </div>
+        <div class="image-card">
+          <img class="image-info" fit="cover" :src="image1_src" />
+        </div>
+      </div>
+      <div class="image-block">
+        <div class="image-card">
+          <img class="image-info" fit="cover" :src="image2_src" />
+        </div>
+        <div class="image-description">
+          <div class="image-description-block">
+            <div class="image-title">
+              Chang log
+            </div>
+            <br/>
+            <div style="height: 200px; width: 500px">
+              <el-table :data="logList" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
+                <el-table-column prop="Phase" label="Phase" width="70"></el-table-column>
+                <el-table-column prop="ChangeTime" label="Change Time" width="120"></el-table-column>
+                <el-table-column prop="Content" label="Content" width="310"></el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="image-block-empty"></div>
+    </div>
+
+    <div class="custom-divider"></div>
+
+    <!-- ready part -->
+    <div class="ready-div">
+      <div class="ready-block">
+        <div class="ready-title">
+          Ready to take a leap into the
+          world of GeoResearch? Dive in now!
+        </div>
+      </div>
+      <div class="ready-block">
+        <el-button type="primary" style="font-weight: bold;" @click="toSearchPage('rock')">Start Exploring</el-button>
+        <el-button type="warning" style="color: black; font-weight: bold;" @click="toGuide">Learn More</el-button>
+      </div>
+    </div>
+
+    <div class="custom-divider"></div>
+
+    <div class="footer-div">
+      High T Geochemistry Benchmark Database, All Rights Reserved &#169; 2023
+    </div>
   </div>
 </template>
 <script>
@@ -91,6 +175,8 @@ import BG1 from "@/assets/background/BG1.jpg"
 import BG2 from "@/assets/background/BG2.jpg"
 import BG3 from "@/assets/background/BG3.jpg"
 import guide from "@/assets/icon/guide_main.png"
+import image1 from '@/assets/background/image1.png'
+import image2 from '@/assets/background/image2.png'
 
 import LogoComponent from "@/components/LogoComponent.vue";
 import MyPopover from "@/components/PopoverCompont.vue";
@@ -111,6 +197,9 @@ export default {
       logo_src: icon1,
       logo2_src: icon2,
       logo3_src: icon3,
+
+      image1_src: image1,
+      image2_src: image2,
 
       guide_src: guide,
 
@@ -169,6 +258,18 @@ export default {
             { label: "Contact Us", command: "contactJoin" },
           ],
         },
+      ],
+
+      logList: [{
+        Phase: "V1.0",
+        ChangeTime: "2023.12",
+        Content: 'near 200,000 samples (rock, mineral, inclusion, experiment sample)'
+      },{
+        Phase: "V2.0",
+        ChangeTime: "wait for it",
+        Content: 'expected at 2024.03'
+      }
+
       ],
     };
   },
@@ -439,18 +540,21 @@ export default {
   },
 };
 </script>
+
 <style lang="less" scoped>
 .main-div{
-  width: 90%;
+  position: absolute;
+  width: 100%;
   height: 100%;
 }
+
 .bottom-div{
   position: absolute;
   display: flex;
   width: 100%;
   height: 100px;
   left: 100px;
-  bottom: 50px;
+  bottom: 150px;
 }
 
 .card-icon{
@@ -487,46 +591,54 @@ export default {
   background-color: rgba(0, 0, 0, 0);
 }
 
+.nav-div{
+  width: 95%;
+  margin: auto;
+  height: 80px;
+  display: flex;
+}
+
 .total-div{
-  margin-left: 10px;
-  margin-top: 30px;
-  position: absolute;
+  min-width: 280px;
+  width: 20%;
   display: flex;
 }
 
 .icon-div{
+  z-index: 1;
   height: 70px;
   width: 70px;
-  margin-top: 30px;
 }
 
 .icon2-div{
+  z-index: 1;
   height: 80px;
   width: 100px;
-  margin-top: 30px;
 }
 
 .icon3-div{
+  z-index: 1;
   height: 80px;
   width: 100px;
-  margin-top: 30px;
 }
 
 .icon-guide-div{
-  position: absolute;
+  z-index: 1;
   height: 30px;
   width: 30px;
-  right: 0;
-  top: 3px;
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 .user-div-all{
-  position: absolute;
-  display: flex;
+  z-index: 1;
   height: 80px;
-  margin-top: 80px;
-  width: 200px;
-  right: 20px;
+  min-width: 100px;
+  width: 10%;
+  margin: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .user-btn {
   height: 40px;
@@ -535,22 +647,14 @@ export default {
   font-weight: bold;
 }
 .userName-div {
-  position: absolute;
-  right: 50px;
   color: #d7d7d7;
   font-size: large;
 }
-.user-div {
-  position: absolute;
-  right: 50px;
-}
 
 .dropdown-div{
-  width: 1000px;
-  height: 60px;
-  margin-top: 30px;
-  position: absolute;
-  right: 150px;
+  min-width: 800px;
+  width: 70%;
+  height: 80px;
 }
 .dropdown-link {
   line-height: 80px;
@@ -572,44 +676,191 @@ export default {
   border: 1px solid transparent;
   font-family: Kailasa;
   background-color: rgb(85, 85, 85, 0.23);
-  top: 87px !important;
+  top: 54px !important;
 }
 
 .text{
   margin-top: 100px;
-  margin-left: 150px;
+  margin-left: 165px !important;
   font-weight: 500;
 	font-family: Jost; /* 字体名 */
 	font-size: 44px;
 	color: #FFFFFF;
   text-align: left;
+  z-index: 1;
 }
 
-#building {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-size: 100% 100%;
+.building {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
   transition: background-image 1s ease;
+  z-index: 0;
 }
 
-#building::before {
+.building::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 调整这里的透明度,0为完全透明,1为完全不透明 */
-  z-index: -1; /* 确保叠加在图片底下 */
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明叠加层 */
+  z-index: 0;
+  pointer-events: none; /* 避免伪元素拦截鼠标事件 */
 }
 
 .footer-div{
-  position: absolute;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #E9D8A6;
+  background-color: black;
+  font-size: 20px;
+}
+
+.outer-container {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+.description-div{
+  height: 500px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.description-block{
+  margin-left: 10%;
+  width: 50%;
+  height: 60%;
+  text-align: left;
+}
+
+.description-title{
+  font-weight: 700;
+	font-family: HelveticaBold; /* 字体名 */
+	font-size: 24px;
+	color: #BB3E03;
+}
+
+.description-info {
+  font-weight: 400;
+  font-family: Helvetica; /* 字体名 */
+  font-size: 20px;
+  color: #005F73;
+  word-spacing: 0.2em; /* 增加词间距 */
+  line-height: 25px;
+}
+
+.image-div{
+  height: 80vw;
+  background-color: black;
   width: 100%;
   text-align: center;
-  bottom: 10px;
 }
+
+.image-block-empty{
+  height: 10%;
+  width: 100%;
+}
+.image-block{
+  height: 40%;
+  width: 80%;
+  display: flex;
+  margin: auto;
+}
+
+.image-description{
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.image-description-block{
+  width: 90%;
+  margin: auto;
+  text-align: left;
+}
+
+.image-card{
+  height: 100%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.image-info{
+  height: 90%;
+  width: 90%;
+}
+
+.image-title{
+  font-weight: 700;
+	font-family: HelveticaBold; /* 字体名 */
+	font-size: 24px;
+	color: white;
+}
+
+.image-detail{
+  font-weight: 400;
+  font-family: Helvetica; /* 字体名 */
+  font-size: 16px;
+  color: white;
+  word-spacing: 0.1em; /* 增加词间距 */
+  line-height: 25px;
+}
+
+.ready-div{
+  position: relative;
+  background-color: black;
+  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ready-block{
+  margin-top: 100px;
+  margin-left: 10%;
+  width: 30%;
+  height: 60%;
+  text-align: left;
+}
+
+.ready-button{
+  margin-left: 10%;
+  width: 30%;
+  text-align: left;
+}
+
+.ready-title{
+  font-weight: 700;
+	font-family: HelveticaBold; /* 字体名 */
+	font-size: 24px;
+	color: #E9D8A6;
+}
+
+.custom-divider {
+  width: 100%;
+  height: 2px;
+  background-color: #E9D8A6;
+}
+
 
 
 </style>
