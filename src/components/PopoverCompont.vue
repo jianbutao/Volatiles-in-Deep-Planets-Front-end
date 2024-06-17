@@ -5,7 +5,7 @@
         >exit</el-button
       >
     </div>
-    <el-avatar shape="square" :size="40" slot="reference">{{
+    <el-avatar shape="square" :size="50" slot="reference">{{
       userName
     }}</el-avatar>
   </el-popover>
