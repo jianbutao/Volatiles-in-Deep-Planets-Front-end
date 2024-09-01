@@ -15,6 +15,10 @@ const routes = [
         component: () => import('../views/main/home_page')
     },
     {
+        path:'/login',
+        component: () => import('../views/user/user_login')
+    },
+    {
         path:'/rockData',
         component: () => import('../views/search/rock_data')
     },

@@ -40,25 +40,32 @@ export default {
       this.$cookies.remove("token");
       this.$store.commit("setUserName", "");
       this.$store.commit("setUserAdmin", false);
-      sessionStorage.removeItem("store");
+      // reload page
+      let currentPath = this.$router.currentRoute.path;
+      if (currentPath != '/main') {
+        this.$router.push("/main");
+      } else {
+        location.reload();
+      }
+      // sessionStorage.removeItem("store");
 
-      // DDE系统那边的退出
-      const exitUrl = loginURL.baseURL + loginURL.exit
+      // // DDE系统那边的退出
+      // const exitUrl = loginURL.baseURL + loginURL.exit
 
-      // 构建携带参数的 URL
-      const params = {
-        context: "https://htgdb.deep-time.org/main"
-      };
+      // // 构建携带参数的 URL
+      // const params = {
+      //   context: "https://htgdb.deep-time.org/main"
+      // };
 
-      const queryString = Object.keys(params)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
+      // const queryString = Object.keys(params)
+      //   .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+      //   .join('&');
 
-      // 拼接完整的 URL
-      const urlWithParams = `${exitUrl}?${queryString}`;
+      // // 拼接完整的 URL
+      // const urlWithParams = `${exitUrl}?${queryString}`;
 
-      // 发送 token 验证请求
-      window.location.href = urlWithParams;
+      // // 发送 token 验证请求
+      // window.location.href = urlWithParams;
     },
   },
 };

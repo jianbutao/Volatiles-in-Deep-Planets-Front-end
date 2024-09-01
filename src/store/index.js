@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Router from '@/router'
 import { loginURL } from './loginURL'
 
 Vue.use(Vuex)
@@ -12,23 +13,29 @@ const state = {
 }
 
 const actions = {
+    // dde login
+
+    // login({ commit }, context) {
+    //     // loginUrl: https://user-oneid.deep-time.org/ngiam-rst/v1/sdk/login/sso
+    //     const loginUrl = loginURL.baseURL + loginURL.login;
+    //     // loginParams
+    //     const params = {
+    //       appCode: loginURL.appCode,
+    //       context: context,
+    //     };
+    
+    //     params.context = btoa(params.context);
+    
+    //     const queryString = Object.keys(params)
+    //       .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    //       .join('&');
+    
+    //     const urlWithParams = `${loginUrl}?${queryString}`;
+    //     window.location.href = urlWithParams;
+    // },
+
     login({ commit }, context) {
-        // loginUrl: https://user-oneid.deep-time.org/ngiam-rst/v1/sdk/login/sso
-        const loginUrl = loginURL.baseURL + loginURL.login;
-        // loginParams
-        const params = {
-          appCode: loginURL.appCode,
-          context: context,
-        };
-    
-        params.context = btoa(params.context);
-    
-        const queryString = Object.keys(params)
-          .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-          .join('&');
-    
-        const urlWithParams = `${loginUrl}?${queryString}`;
-        window.location.href = urlWithParams;
+        Router.push({ path: "/login" });
     },
 
     loginCheck({ dispatch }) {

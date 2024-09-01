@@ -277,50 +277,52 @@ export default {
 
   async created() {
     this.startImageRotation();
-    // 首先检测是不是cookie里面已经有信息了,如果有的话应当直接显示用户信息以及exit窗口
-    if(this.$cookies.get("token")){
-      // 检测是否过期
-      const expired = await this.validateToken(this.$cookies.get("token"))
-      if(expired){
-        this.$cookies.remove("token");
-        this.$store.commit("setUserName", "");
-        this.$store.commit("setUserAdmin", false);
-        sessionStorage.removeItem("store");
-        this.showUserName = false;
-      }
-      else{
-        this.showUserName = true;
-      }
-      return;
-    }
 
-    // 其次检测是否从DDE这边回来,如果是的话则要跳转到对应界面
-    const codeValue = this.$route.query.code;
-    if(codeValue){
-      // 通过验证
-      if(await this.getTokenAndValidate(codeValue)){
-        this.showUserName = true;
 
-        // 存储路由信息
-        const whereToGo = this.$route.query.context;
-        if(whereToGo){
-          const decodedContext = atob(whereToGo)
+    // // 首先检测是不是cookie里面已经有信息了,如果有的话应当直接显示用户信息以及exit窗口
+    // if(this.$cookies.get("token")){
+    //   // 检测是否过期
+    //   const expired = await this.validateToken(this.$cookies.get("token"))
+    //   if(expired){
+    //     this.$cookies.remove("token");
+    //     this.$store.commit("setUserName", "");
+    //     this.$store.commit("setUserAdmin", false);
+    //     sessionStorage.removeItem("store");
+    //     this.showUserName = false;
+    //   }
+    //   else{
+    //     this.showUserName = true;
+    //   }
+    //   return;
+    // }
 
-          // 使用 Vue Router 跳转到对应路由
-          if(decodedContext == "main"){
-            this.$router.go(0);
-          }
-          else{
-            this.$router.push({ path: decodedContext });
-          }
-        }
-        else{
-          console.error("No Context Returned!")
-        }
-      }
-    }
+    // // 其次检测是否从DDE这边回来,如果是的话则要跳转到对应界面
+    // const codeValue = this.$route.query.code;
+    // if(codeValue){
+    //   // 通过验证
+    //   if(await this.getTokenAndValidate(codeValue)){
+    //     this.showUserName = true;
 
-    // 最后,如果没有codeValue,说明用户尚未登陆,不做处理
+    //     // 存储路由信息
+    //     const whereToGo = this.$route.query.context;
+    //     if(whereToGo){
+    //       const decodedContext = atob(whereToGo)
+
+    //       // 使用 Vue Router 跳转到对应路由
+    //       if(decodedContext == "main"){
+    //         this.$router.go(0);
+    //       }
+    //       else{
+    //         this.$router.push({ path: decodedContext });
+    //       }
+    //     }
+    //     else{
+    //       console.error("No Context Returned!")
+    //     }
+    //   }
+    // }
+
+    // // 最后,如果没有codeValue,说明用户尚未登陆,不做处理
   },
 
   mounted() {
@@ -482,32 +484,6 @@ export default {
       }
     },
 
-    //退出登录
-    async exitLogin() {
-      this.$cookies.remove("token");
-      this.$store.commit("setUserName", "");
-      this.$store.commit("setUserAdmin", false);
-      sessionStorage.removeItem("store");
-
-      // DDE系统那边的退出
-      
-      const exitUrl = loginURL.baseURL + loginURL.exit
-
-      // 构建携带参数的 URL
-      const params = {
-        context: "https://htgdb.deep-time.org/main"
-      };
-
-      const queryString = Object.keys(params)
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
-
-      // 拼接完整的 URL
-      const urlWithParams = `${exitUrl}?${queryString}`;
-
-      // 发送 token 验证请求
-      window.location.href = urlWithParams;
-    },
     //判断是否登录
     hasLogin() {
       let cookies = document.cookie.split("; ");
