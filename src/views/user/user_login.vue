@@ -229,15 +229,18 @@ export default {
           if(res.data.msg === "The user name already exists！"){
             this.$message.error("User name already in use!");
             // reload page
-            let currentPath = this.$router.currentRoute.path;
-            if (currentPath != '/main') {
-              this.$router.push("/main");
-            } else {
-              location.reload();
-            }
+            // let currentPath = this.$router.currentRoute.path;
+            // if (currentPath != '/main') {
+            //   this.$router.push("/main");
+            // } else {
+            //   location.reload();
+            // }
+            this.signUpForm.account = "";
+            this.signUpForm.captcha = "";
           }
           else{
             this.$message.error("captcha code is incorrect");
+            this.signUpForm.captcha = "";
             this.getCaptcha()
           }
           return false;
@@ -248,8 +251,8 @@ export default {
         }
       });
 
-      this.signUpForm.password = "";
-      this.signUpForm.confirmPassword = "";
+      // this.signUpForm.password = "";
+      // this.signUpForm.confirmPassword = "";
     },
 
     async goToLogin() {
@@ -264,20 +267,20 @@ export default {
         if (!res.data.success) {
           if(res.data.msg === "Wrong username or password"){
             this.$message.error("The account or password is incorrect");
-            this.loginForm.password = "";
+            // this.loginForm.password = "";
             this.loginForm.captcha = "";
             // reload page
-            let currentPath = this.$router.currentRoute.path;
-            if (currentPath != '/main') {
-              this.$router.push("/main");
-            } else {
-              location.reload();
-            }
+            // let currentPath = this.$router.currentRoute.path;
+            // if (currentPath != '/main') {
+            //   this.$router.push("/main");
+            // } else {
+            //   location.reload();
+            // }
           }
           else{
             this.$message.error("captcha code is incorrect");
             this.getCaptcha()
-            this.loginForm.password = "";
+            // this.loginForm.password = "";
             this.loginForm.captcha = "";
           }
           return false;
