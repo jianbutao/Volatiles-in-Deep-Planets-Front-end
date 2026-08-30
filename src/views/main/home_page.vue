@@ -4,9 +4,11 @@
     <div class="building" :style="{ backgroundImage: `url(${imgUrl})`}">
       <div class="nav-div">
         <div class="total-div">
-          <img class="icon3-div" fit="cover" :src="logo3_src">
-          <img class="icon2-div" fit="cover" :src="logo2_src">
           <img class="icon-div" fit="cover" :src="logo_src">
+          <div class="home-wordmark">
+            <span>Volatiles in</span>
+            <strong>Deep Planets</strong>
+          </div>
         </div>
         <div class="dropdown-div">
           <el-dropdown
@@ -48,14 +50,12 @@
 
       <div class="main-div">
         <h1 class="text">
-          <span style="color: rgba(242, 91, 40, 1);">
-            H</span>igh 
-          <span style="color: rgba(242, 91, 40, 1);">
-            T</span>emperature 
-          <span style="color: rgba(242, 91, 40, 1);">
-            G</span>eochemistry<br/>
-          Benchmark Database
-          </h1>
+          <span class="brand-accent">Volatiles</span> in Deep Planets
+          <span class="brand-subtitle">
+            A Database for Volatile-Bearing Materials and Processes<br/>
+            in Planetary Interiors
+          </span>
+        </h1>
         <div class="bottom-div">
           <el-button class="card-div" @click="toSearchPage('rock')">
             <div class="card-icon">🌍</div>
@@ -84,9 +84,10 @@
         <br/>
         <br/>
         <div class="description-info">
-          This is a benchmark dataset in high temperature geochemistry. Up to now, 200,000 
-          rock and mineral data have been checked and corrected manually based on the FAIR 
-          principle (findable, accessible, interoperable, and reusable).
+          Volatiles in Deep Planets brings together high-temperature geochemical data for
+          natural rocks, minerals, inclusions, and experimental samples. Nearly 200,000
+          rock and mineral records have been checked and corrected manually following the
+          FAIR principles: findable, accessible, interoperable, and reusable.
         </div>
         <br/>
         <br/>
@@ -128,7 +129,7 @@
         <div class="image-description">
           <div class="image-description-block">
             <div class="image-title">
-              Chang log
+              Change log
             </div>
             <br/>
             <div style="height: 200px; width: 500px">
@@ -150,8 +151,8 @@
     <div class="ready-div">
       <div class="ready-block">
         <div class="ready-title">
-          Ready to take a leap into the
-          world of GeoResearch? Dive in now!
+          Explore volatile-bearing materials and
+          processes in planetary interiors.
         </div>
       </div>
       <div class="ready-block">
@@ -163,14 +164,12 @@
     <div class="custom-divider"></div>
 
     <div class="footer-div">
-      High T Geochemistry Benchmark Database, All Rights Reserved &#169; 2023
+      Volatiles in Deep Planets, All Rights Reserved &#169; 2026
     </div>
   </div>
 </template>
 <script>
-import icon1 from "@/assets/icon/icon1.png"
-import icon2 from "@/assets/icon/icon2.svg"
-import icon3 from "@/assets/icon/icon3.svg"
+import icon1 from "@/assets/icon/vdp-logo-web.png"
 import BG1 from "@/assets/background/BG1.jpg"
 import BG2 from "@/assets/background/BG2.jpg"
 import BG3 from "@/assets/background/BG3.jpg"
@@ -195,8 +194,6 @@ export default {
       imgUrl: BG1,
 
       logo_src: icon1,
-      logo2_src: icon2,
-      logo3_src: icon3,
 
       image1_src: image1,
       image2_src: image2,
@@ -546,7 +543,7 @@ export default {
   height: 100px;
   border: 0;
   margin-left: 65px;
-  background-color: #000b1042;
+  background-color: rgba(4, 22, 34, 0.68);
 }
 
 .card-text{
@@ -554,7 +551,7 @@ export default {
   font-size: 32px;
   font-weight: 400;
   text-align: center;
-  color: rgba(242, 91, 40, 0.8);
+  color: #ff7a3d;
 }
 .discription-text{
   font-size: 16px;
@@ -575,27 +572,36 @@ export default {
 }
 
 .total-div{
-  min-width: 280px;
+  min-width: 310px;
   width: 20%;
   display: flex;
+  align-items: center;
 }
 
 .icon-div{
   z-index: 1;
-  height: 70px;
-  width: 70px;
+  height: 66px;
+  width: 66px;
+  object-fit: contain;
 }
 
-.icon2-div{
+.home-wordmark {
   z-index: 1;
-  height: 80px;
-  width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
 }
 
-.icon3-div{
-  z-index: 1;
-  height: 80px;
-  width: 100px;
+.home-wordmark strong {
+  color: #56ddd7;
+  font-size: 21px;
+  font-weight: 700;
 }
 
 .icon-guide-div{
@@ -639,7 +645,7 @@ export default {
   font-size: 18px;
   padding: 0 30px;
   cursor: pointer;
-  color: rgba(00, 00, 00, 0.58);
+  color: rgba(255, 255, 255, 0.88);
 }
 .dropdown-item {
   color: #ffffff;
@@ -660,10 +666,25 @@ export default {
   margin-left: 165px !important;
   font-weight: 500;
 	font-family: Jost; /* 字体名 */
-	font-size: 44px;
+	font-size: 50px;
 	color: #FFFFFF;
   text-align: left;
   z-index: 1;
+}
+
+.brand-accent {
+  color: #50ddd6;
+}
+
+.brand-subtitle {
+  display: block;
+  max-width: 760px;
+  margin-top: 18px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
 }
 
 .building {
@@ -678,6 +699,7 @@ export default {
 
 .building::before {
   content: '';
+  background-image: linear-gradient(90deg, rgba(2, 14, 25, 0.48), rgba(4, 32, 43, 0.12));
   position: absolute;
   top: 0;
   left: 0;

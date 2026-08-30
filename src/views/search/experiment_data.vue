@@ -40,8 +40,8 @@
               <!-- 多选框 -->
               <el-form-item label="sample type">
                 <el-checkbox-group v-model="form.sample.dataType">
-                  <el-checkbox v-for="item in sampleType" :label="item" :key="item">
-                    {{item}}
+                  <el-checkbox v-for="item in sampleType" :label="item.value" :key="item.value">
+                    {{item.label}}
                   </el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
@@ -582,6 +582,21 @@
         }
 
         search_types.forEach((type_info) => {
+          if(type_info === "element"){
+            if(validation_types.includes(type_info)){
+              Object.assign(result, this.elementTransform());
+            }
+            else{
+              Object.assign(result, {
+                elem_name: [],
+                elem_unit: [],
+                elem_lower_bound: [],
+                elem_upper_bound: [],
+              });
+            }
+            return;
+          }
+
           if(validation_types.includes(type_info)){
             for (const key in this.form[type_info]) {
               result[key] = this.handleEmptyString(this.form[type_info][key]);

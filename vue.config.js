@@ -9,7 +9,7 @@ module.exports = defineConfig({
     proxy: {
       //名字可以自定义,这里我用的是api
       '/api': {
-        target: "http://10.203.99.91",
+       target: process.env.HTG_API_TARGET || "http://127.0.0.1:8809",
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

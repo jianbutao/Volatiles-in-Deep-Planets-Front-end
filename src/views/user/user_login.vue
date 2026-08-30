@@ -100,7 +100,7 @@
         </div>
       </el-main>
       <el-footer>
-        High T Geochemistry Benchmark Database, All Rights Reserved &#169; 2023
+        Volatiles in Deep Planets, All Rights Reserved &#169; 2026
       </el-footer>
     </el-container>
   </div>
@@ -162,7 +162,7 @@ export default {
         ]
       },
       captchaImage: "",
-      url: require('../../assets/icon/icon1.png')
+      url: require('../../assets/icon/vdp-logo-web.png')
     };
   },
   async created() {

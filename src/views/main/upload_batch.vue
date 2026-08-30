@@ -42,7 +42,7 @@
                     Note1: Please ensure that your data format fits the data template of this database.
                   </div>
                   <div slot="tip" class="el-upload__tip">
-                    Note2: The uploaded data will be reviewed and imported on HTG database as an open source for all users.
+                    Note2: The uploaded data will be reviewed and imported into Volatiles in Deep Planets as an open resource for all users.
                   </div>
                   <el-link type="primary" @click.stop="toTemplatePage">
                     click here to data template

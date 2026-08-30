@@ -6,7 +6,7 @@
     <el-main>
       <div class="main-div">
         <div class="top-note-div">
-          Raw-Clean Pairs of High T Geochemistry Database
+          Raw-Clean Pairs of Volatiles in Deep Planets
         </div>
         <div class="bottom-note-div">
           We provides two comparative data sets before and after manual cleaning, which can be used to test the effect of data cleaning.
@@ -313,6 +313,7 @@ import image6 from '@/assets/image/imageBot2.png'
 import image7 from '@/assets/image/imageBot3.png'
 import image8 from '@/assets/image/imageBot4.png'
 import LogoComponent from "@/components/LogoComponent.vue";
+import { downloadArrayBufferResponse } from "@/utils/download";
 export default {
   components: {
     LogoComponent,
@@ -418,37 +419,11 @@ export default {
 
       return this.$service.get(`/rawcleanpairs/download${objectType}/${fileName}/?format=${fileType}`, { responseType: 'arraybuffer' })
       .then(response => {
-        let mimeType = 'application/octet-stream'; // 默认 MIME 类型
-
-        if (fileType === 'xlsx') {
-          mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        } else if (fileType === 'xls') {
-          mimeType = 'application/vnd.ms-excel';
-        } else if (fileType === 'csv') {
-          mimeType = 'text/csv';
-        } else if (fileType === 'txt') {
-          mimeType = 'text/plain';
-        } else if (fileType == 'zip'){
-          mimeType = 'application/zip';
-        }
-        // 将二进制数据转换为 Blob 对象
-        const blob = new Blob([response.data], { type: mimeType });
-        // 创建一个下载链接
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        // 触发下载
-        link.click();
-        // 释放资源
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(link);
-
-        return true;
+        return downloadArrayBufferResponse(response, fileName, fileType);
       })
       .catch(error => {
         console.error('Error downloading file:', error);
+        this.$message.error(error.message || "Download failed.");
         return false;
       });
     },

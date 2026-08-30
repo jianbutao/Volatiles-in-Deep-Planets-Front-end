@@ -1,9 +1,11 @@
 <template>
   <div class="total-div">
     <div class="logo-div" @click="toHome">
-      <img :src='logo3_src' class="logo3-img" fit="cover" >
-      <img :src='logo2_src' class="logo2-img" fit="cover" >
       <img :src='logo_src' class="logo-img" fit="cover" >
+      <div class="brand-wordmark">
+        <span>Volatiles in</span>
+        <strong>Deep Planets</strong>
+      </div>
     </div>
     <div class="dropdown-div">
       <el-dropdown
@@ -43,9 +45,7 @@
 </template>
 
 <script>
-import icon1 from "@/assets/icon/icon1.png"
-import icon2 from "@/assets/icon/icon2.svg"
-import icon3 from "@/assets/icon/icon3.svg"
+import icon1 from "@/assets/icon/vdp-logo-web.png"
 
 export default {
   name: 'LogoComponent',
@@ -53,8 +53,6 @@ export default {
   data() {
     return {
       logo_src: icon1,
-      logo2_src: icon2,
-      logo3_src: icon3,
       isAdmin: false,
 
       search_src:require('../assets/icon/search.png'),
@@ -168,19 +166,29 @@ export default {
 }
 
 .logo-img{
-  margin: auto;
-  height: 60px;
-  width: 60px;
+  height: 54px;
+  width: 54px;
+  margin: 3px 10px 3px 0;
+  object-fit: contain;
 }
-.logo2-img{
-  margin: auto;
-  height: 60px;
-  width: 100px;
+
+.brand-wordmark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 158px;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.15;
+  text-align: left;
+  letter-spacing: 0.02em;
 }
-.logo3-img{
-  margin: auto;
-  height: 60px;
-  width: 100px;
+
+.brand-wordmark strong {
+  color: #56ddd7;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .total-div{
@@ -193,12 +201,13 @@ export default {
   cursor: pointer;
   display: flex;
   text-align: center;
+  min-width: 230px;
   margin-left: 20px;
 }
 
 
 .dropdown-div{
-  margin-left: 100px;
+  margin-left: 35px;
   width: 1000px;
   height: 60px;
   right: 150px;

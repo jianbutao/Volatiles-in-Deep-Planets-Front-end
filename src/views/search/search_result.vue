@@ -110,6 +110,7 @@
   <script>
 import LogoComponent from "@/components/LogoComponent.vue";
 import { loginURL } from "@/store/loginURL";
+import { downloadArrayBufferResponse } from "@/utils/download";
 export default {
   components: {
     LogoComponent,
@@ -226,33 +227,21 @@ export default {
       const listForm = new FormData();
       listForm.append("list", this.downloadList);
       this.isDownloading = true;
-      this.$service.post(url_final, listForm, { responseType: 'arraybuffer' }).then((response) => {
-        if(response){
-          let mimeType = 'application/octet-stream'; // 默认 MIME 类型
-          mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-          // 将二进制数据转换为 Blob 对象
-          const blob = new Blob([response.data], { type: mimeType });
-          // 创建一个下载链接
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = this.dataType + "_search_result";
-          document.body.appendChild(link);
-          // 触发下载
-          link.click();
-          // 释放资源
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(link);
-          this.isDownloading = false;
-        }
-        else{
-          this.$message({
-            message: "Message Transform Error!",
-            type: "warning",
-          });
-          this.isDownloading = false;
-        }
+      this.$service.post(url_final, listForm, { responseType: 'arraybuffer' })
+      .then((response) => {
+        return downloadArrayBufferResponse(
+          response,
+          `${this.dataType}_search_result`,
+          "xlsx"
+        );
       })
+      .catch((error) => {
+        console.error("Error downloading search result:", error);
+        this.$message.error(error.message || "Download failed.");
+      })
+      .finally(() => {
+        this.isDownloading = false;
+      });
     },
 
     isObject(item) {

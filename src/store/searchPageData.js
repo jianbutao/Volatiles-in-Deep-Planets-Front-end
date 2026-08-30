@@ -9,7 +9,9 @@ export const searchPageData = {
 
 	mineralSpotLocation: ['core', 'rim', 'zone'],
 
-	experimentSampleType: ['experiment rock', 'experiment minral'],
+	experimentSampleType: [
+		{ label: 'Experiment Mineral', value: 'expriment mineral' },
+	],
 
 	// 所有的大洲/海洋名称
 	continent: [
@@ -143,6 +145,7 @@ export const searchPageData = {
 		"CHROME-SPINEL",
 		"CHROMITE",
 		"CLINOPYROXENE",
+		"DIAMOND",
 		"ENSTATITE",
 		"FAYALITE",
 		"FE-CHROMITE",
