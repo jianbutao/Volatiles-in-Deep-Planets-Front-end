@@ -1,9 +1,8 @@
 name: FrontendDeploy
 
 on:
-  push: 
-    branches:
-      - main 
+  # 暂时只允许手动部署，待 ZJU 仓库 Secrets 和发布流程确认后再启用自动部署
+  workflow_dispatch:
 
 jobs:
 
